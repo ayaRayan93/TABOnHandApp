@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TAB ERP SOLUTIONS</string>
+    <string name="str_remember_me">Remember my password</string>
+    <string name="title_activity_basic">BasicActivity</string>
+    <string name="error_connection_eng">Check Your Internet Connection</string>
+    <string name="error_connection_arb">برجاء التأكد من الاتصال بالأنترنت</string>
+</resources>
