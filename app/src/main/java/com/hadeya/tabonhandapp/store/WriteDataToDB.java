@@ -7,11 +7,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.hadeya.tabonhandapp.Helpers.Parser;
-import com.hadeya.tabonhandapp.Models.Area;
-import com.hadeya.tabonhandapp.Models.Classification;
-import com.hadeya.tabonhandapp.Models.Customer;
+import com.hadeya.tabonhandapp.json.Parser;
+import com.hadeya.tabonhandapp.models.Area;
+import com.hadeya.tabonhandapp.models.Classification;
+import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.app.AppController;
+import com.hadeya.tabonhandapp.models.Invoice;
+import com.hadeya.tabonhandapp.models.InvoiceItem;
+import com.hadeya.tabonhandapp.models.Item;
+import com.hadeya.tabonhandapp.models.User;
 
 import java.util.Iterator;
 
@@ -23,15 +27,15 @@ public class WriteDataToDB {
 
     public static void downloadData()
     {
-        storeCustomer();
+        storeCustomer("13007");
         storeClassification();
         storeArea();
     }
 
-    public static void storeCustomer()
+    public static void storeCustomer(String repCode)
     {
       // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/13007";
+        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/"+repCode;
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -65,7 +69,6 @@ public class WriteDataToDB {
 
         //return dataSet;
     }
-
     public static void storeClassification()
     {
         //final List<Classification> dataClass=new ArrayList<>();
@@ -139,7 +142,150 @@ public class WriteDataToDB {
        // return dataArea;
     }
 
+    public static void StoreItems()
+    {
+        // final List<Customer> dataSet=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
 
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+              /*  if (dataSet != null){
+                    dataSet.clear();
+
+                }*/
+                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                while (iterator.hasNext()){
+                    Item item = (Item) iterator.next();
+                    //dataSet.add(customer);
+                    addItem(item);
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+    }
+    public static void StoreInvoices()
+    {
+        // final List<Customer> dataSet=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+              /*  if (dataSet != null){
+                    dataSet.clear();
+
+                }*/
+                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                while (iterator.hasNext()){
+                    Invoice invoice = (Invoice) iterator.next();
+                    //dataSet.add(customer);
+                    addInvoice(invoice);
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+    }
+    public static void StoreInvoiceItems()
+    {
+        // final List<Customer> dataSet=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+              /*  if (dataSet != null){
+                    dataSet.clear();
+
+                }*/
+                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                while (iterator.hasNext()){
+                    InvoiceItem invoiceItem = (InvoiceItem) iterator.next();
+                    //dataSet.add(customer);
+                    addInvoiceItem(invoiceItem);
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+    }
+    public static void StoreUser()
+    {
+        // final List<Customer> dataSet=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+              /*  if (dataSet != null){
+                    dataSet.clear();
+
+                }*/
+                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                while (iterator.hasNext()){
+                    User user = (User) iterator.next();
+                    //dataSet.add(customer);
+                    addUser(user);
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+    }
 
     public static void addCustomer(Customer customer)
     {
@@ -182,6 +328,78 @@ public class WriteDataToDB {
         ContentValues values = new ContentValues();
         values.put(AreaTable.AreaId, area.getId());
         values.put(AreaTable.AreaName, area.getName());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        AreaContentProvider areaContentProvider=new AreaContentProvider();
+        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
+
+    }
+
+    public static void addItem(Item item)
+    {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ItemTable.UnitCode, item.getUnitCode());
+        values.put(ItemTable.ItemName, item.getItemName());
+        values.put(ItemTable.ItemNameLat, item.getItemNameLat());
+        values.put(ItemTable.ItemCode, item.getItemCode());
+        values.put(ItemTable.TaxSet, item.getTaxSet());
+        values.put(ItemTable.SelPrice1Default, item.getSelPrice1Default());
+        values.put(ItemTable.NotActive, item.getNotActive());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        ItemContentProvider itemContentProvider=new ItemContentProvider();
+        itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
+    }
+    public static void addInvoice(Invoice invoice)
+    {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(InvoiceTable.Id, invoice.getId());
+        values.put(InvoiceTable.InvoiceTypeId, invoice.getInvoiceTypeId());
+        values.put(InvoiceTable.InvoiceNo, invoice.getInvoiceNo());
+        values.put(InvoiceTable.CustmerId, invoice.getCustmerId());
+        values.put(InvoiceTable.PayementTypeId, invoice.getPayementTypeId());
+        values.put(InvoiceTable.Notes, invoice.getNotes());
+        values.put(InvoiceTable.RefNO, invoice.getRefNO());
+        values.put(InvoiceTable.RepCodeId, invoice.getRepCodeId());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider();
+        invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
+    }
+    public static void addInvoiceItem(InvoiceItem invoiceItem)
+    {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(InvoiceItemTable.Id, invoiceItem.getId());
+        values.put(InvoiceItemTable.InvoiceId, invoiceItem.getInvoiceId());
+        values.put(InvoiceItemTable.ItemCode, invoiceItem.getItemCode());
+        values.put(InvoiceItemTable.ItemName, invoiceItem.getItemName());
+        values.put(InvoiceItemTable.Quantity, invoiceItem.getQuantity());
+        values.put(InvoiceItemTable.Tax, invoiceItem.getTax());
+        values.put(InvoiceItemTable.ExpityDate, invoiceItem.getExpityDate());
+        values.put(InvoiceItemTable.Price, invoiceItem.getPrice());
+        values.put(InvoiceItemTable.DiscountPercent, invoiceItem.getDiscountPercent());
+        values.put(InvoiceItemTable.DiscountAmount, invoiceItem.getDiscountAmount());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider();
+        invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
+    }
+
+    public static void addUser(User user)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(UserTable.RepCode, user.getRepCodId());
+        values.put(UserTable.UserName, user.getUserName());
+        values.put(UserTable.UserPassword, user.getPassword());
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection

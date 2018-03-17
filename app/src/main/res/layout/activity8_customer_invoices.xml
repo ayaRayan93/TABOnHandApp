@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="29"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="29"
+            android:weightSum="29"
+            android:background="#fff">
+            <android.support.v4.widget.DrawerLayout
+                android:id="@+id/drawer_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="29"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:weightSum="29"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="29">
+                        <include layout="@layout/activity8_customer_invoices_content" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <include
+                    android:id="@+id/drawer_content"
+                    layout="@layout/menu_layout_new" />
+            </android.support.v4.widget.DrawerLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

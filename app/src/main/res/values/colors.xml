@@ -11,4 +11,10 @@
     <color name="thirdColor">#663A5695</color>
     <color name="backgroundColor">#ff4c4c</color>
     <color name="textColor">#7f0000</color>
+
+    //aya
+    <color name="mainColor">#A61D24</color>
+    <color name="customColor">#BB4D50</color>
+    <color name="textColor1">#D2ADAE</color>
+    <color name="textColor2">#999999</color>
 </resources>

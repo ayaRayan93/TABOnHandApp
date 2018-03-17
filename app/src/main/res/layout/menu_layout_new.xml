@@ -13,8 +13,31 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:weightSum="9"
+            android:weightSum="11"
+            android:background="@color/customColor"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:background="#fff"
+                android:padding="20dp"
+                >
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@mipmap/logo"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/customColor"
+                    android:textSize="15sp"
+                    android:layout_margin="10dp"
+                    />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/RelAbout"
                 android:layout_width="fill_parent"
@@ -28,9 +51,9 @@
                     android:layout_weight="3"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/aboutus"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -47,14 +70,7 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/Viewabout0"
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dip"
-                android:background="#333333"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                />
+
             <LinearLayout
                 android:id="@+id/RelContact"
                 android:layout_width="fill_parent"
@@ -68,9 +84,9 @@
                     android:layout_weight="3"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/contact"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -87,14 +103,7 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/Viewtoppowerdby02"
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dip"
-                android:background="#333333"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                />
+
             <LinearLayout
                 android:id="@+id/RelUpdate"
                 android:layout_width="fill_parent"
@@ -108,9 +117,9 @@
                     android:layout_weight="3"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/passwpord"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -127,14 +136,7 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/Viewtoppowerdby03"
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dip"
-                android:background="#333333"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                />
+
             <LinearLayout
                 android:id="@+id/RelUrl"
                 android:layout_width="fill_parent"
@@ -148,9 +150,9 @@
                     android:layout_weight="3"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/web"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -167,14 +169,7 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/Viewweb0"
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dip"
-                android:background="#333333"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                />
+
             <LinearLayout
                 android:id="@+id/Rellang"
                 android:layout_width="fill_parent"
@@ -188,9 +183,9 @@
                     android:layout_weight="3"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/arabic"
                         android:id="@+id/arabi"/>
                 </LinearLayout>
                 <LinearLayout
@@ -208,14 +203,7 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/Viewtoppowerdby05"
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dip"
-                android:background="#333333"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                />
+
             <LinearLayout
                 android:id="@+id/RelLogout"
                 android:layout_width="fill_parent"
@@ -229,9 +217,9 @@
                     android:layout_weight="3"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/logout"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -248,18 +236,12 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/Viewtoppowerdby07"
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dip"
-                android:background="#333333"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                />
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"></LinearLayout>
+
             <LinearLayout
                 android:id="@+id/RelVersion"
                 android:layout_width="fill_parent"
@@ -270,7 +252,7 @@
                     android:id="@+id/txtVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/mainColor"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="2.0.0.1"/>

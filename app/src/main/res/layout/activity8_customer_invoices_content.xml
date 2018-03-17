@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.hadeya.tabonhandapp.activities.CustomerMainActivity"
+    android:weightSum="10"
+    >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:background="@color/mainColor">
+        <ImageView
+            android:id="@+id/drawer"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/toggle"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5sp"/>
+        <TextView
+            android:id="@+id/organizationName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="20sp"
+            android:layout_weight="9"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Basic Data > Customer Invoices"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="20sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="8"
+                android:layout_margin="20dp"
+                >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:weightSum="8"
+                    android:background="@drawable/selector"
+                    android:padding="8dp"
+                    >
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        android:hint="Search"
+                        android:id="@+id/search"
+                        android:background="#fff"
+                        />
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:padding="5dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/search2"
+                        android:layout_margin="5dp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            >
+
+            <include layout="@layout/activity8_2_customer_invoice_list"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+
