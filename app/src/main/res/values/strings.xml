@@ -4,4 +4,7 @@
     <string name="title_activity_basic">BasicActivity</string>
     <string name="error_connection_eng">Check Your Internet Connection</string>
     <string name="error_connection_arb">برجاء التأكد من الاتصال بالأنترنت</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

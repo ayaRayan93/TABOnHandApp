@@ -3,10 +3,14 @@ package com.hadeya.tabonhandapp.activities.customers;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -49,7 +53,21 @@ public class CustomerMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity4_customers_content);
+        setContentView(R.layout.activity4_customer_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        // navigationView.setNavigationItemSelectedListener(this);
+
         downloadData();//for first time do load to database
         ImageButton AddNew=(ImageButton)findViewById(R.id.AddNew);
         AddNew.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +101,10 @@ public class CustomerMainActivity extends AppCompatActivity {
 
         mLayoutManager = new GridLayoutManager(this,1);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mSwipeRefreshLayout.setRefreshing(false);
         if (!mSwipeRefreshLayout.isRefreshing())
         {
-            mSwipeRefreshLayout.setRefreshing(true);
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         final EditText search=(EditText)findViewById(R.id.search);

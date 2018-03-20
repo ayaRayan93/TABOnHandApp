@@ -145,7 +145,7 @@ public class WriteDataToDB {
     public static void StoreItems()
     {
         // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+        String Url="http://toh.hadeya.net/api/getalldata/TOHItems/13007";
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -158,7 +158,7 @@ public class WriteDataToDB {
                     dataSet.clear();
 
                 }*/
-                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                Iterator iterator = Parser.parseItem(response).iterator();
                 while (iterator.hasNext()){
                     Item item = (Item) iterator.next();
                     //dataSet.add(customer);

@@ -1,47 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.hadeya.tabonhandapp.activities.CustomerMainActivity"
-    android:weightSum="10"
+    tools:context="com.hadeya.tabonhandapp.activities.items.ItemsActivity"
     >
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:background="@color/mainColor">
-        <ImageView
-            android:id="@+id/drawer"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/toggle"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5sp"/>
-        <TextView
-            android:id="@+id/organizationName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="20sp"
-            android:layout_weight="9"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:layout_marginLeft="10sp"/>
-    </LinearLayout>
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="12"
         >
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:orientation="vertical"
             >
             <LinearLayout
@@ -52,14 +30,21 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Basic Data > Items"
-                    android:textStyle="bold"
+                    android:text="Basic Data > Customers"
                     android:textColor="@color/mainColor"
+                    android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
                     />
-
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/setting"
+                    android:layout_margin="5dp"
+                    android:id="@+id/update"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,24 +77,28 @@
                         android:layout_margin="5dp"
                         />
                 </LinearLayout>
-
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/add"
+                    android:layout_margin="5dp"
+                    android:id="@+id/AddNew"
+                    />
             </LinearLayout>
         </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp"
-            >
+                    <include layout="@layout/activity6_2_item_list"/>
 
-            <include layout="@layout/activity4_2_list_customer"/>
-
-        </LinearLayout>
+                </LinearLayout>
     </LinearLayout>
-
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
 

@@ -16,5 +16,7 @@ public class CustomersActivity extends Activity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity4_customers);
 
+
+
     }
 }
