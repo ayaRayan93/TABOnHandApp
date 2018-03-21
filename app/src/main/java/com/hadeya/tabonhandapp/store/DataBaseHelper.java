@@ -24,6 +24,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         CustomerTable.onCreate(db);
         AreaTable.onCreate(db);
         ClassificationTable.onCreate(db);
+        ItemTable.onCreate(db);
+        InvoiceItemTable.onCreate(db);
+        InvoiceTable.onCreate(db);
     }
 
     @Override

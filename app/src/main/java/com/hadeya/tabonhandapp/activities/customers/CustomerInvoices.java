@@ -1,6 +1,5 @@
-package com.hadeya.tabonhandapp.activities.items;
+package com.hadeya.tabonhandapp.activities.customers;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,29 +12,26 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
-import android.view.Window;
 import android.widget.EditText;
 
 import com.hadeya.tabonhandapp.R;
-import com.hadeya.tabonhandapp.adapters.CustomerAdapter;
-import com.hadeya.tabonhandapp.adapters.ItemsAdapter;
-import com.hadeya.tabonhandapp.models.Customer;
-import com.hadeya.tabonhandapp.models.Item;
+import com.hadeya.tabonhandapp.adapters.CustomerInvoicesAdapter;
+import com.hadeya.tabonhandapp.adapters.ItemInvoicesAdapter;
+import com.hadeya.tabonhandapp.models.Invoice;
+import com.hadeya.tabonhandapp.models.InvoiceItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
-import static com.hadeya.tabonhandapp.store.WriteDataToDB.StoreItems;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
 
 /**
- * Created by AyaAli on 19/03/2018.
+ * Created by AyaAli on 21/03/2018.
  */
 
-public class ItemsActivity extends AppCompatActivity {
+public class CustomerInvoices extends AppCompatActivity {
 
     @BindView(R.id.recyclerViewItem)
     RecyclerView mRecyclerView;
@@ -45,15 +41,15 @@ public class ItemsActivity extends AppCompatActivity {
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Menu menu;
-    protected ItemsAdapter itemAdapter;
+    protected CustomerInvoicesAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<Item> dataSet;
+    protected List<Invoice> dataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity6_item_main);
+        setContentView(R.layout.activity8_customer_invoice_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,11 +67,11 @@ public class ItemsActivity extends AppCompatActivity {
 
 
         dataSet = new ArrayList<>();
-       // dataSet=getAllItems(this);
+        // dataSet=getAllItems(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewItem);
         mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshItem);
         mRecyclerView.setHasFixedSize(true);
-        itemAdapter = new ItemsAdapter(this,dataSet);
+        itemAdapter = new CustomerInvoicesAdapter(this,dataSet);
         mRecyclerView.setAdapter(itemAdapter);
 
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
@@ -92,7 +88,7 @@ public class ItemsActivity extends AppCompatActivity {
             mSwipeRefreshLayout.setRefreshing(false);
         }
         final EditText search=(EditText)findViewById(R.id.search);
-       search.addTextChangedListener(new TextWatcher() {
+        search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -109,18 +105,18 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
-         initiateRefresh(1);
+        initiateRefresh(1);
         //insertCustomersTolocalDB(dataSet);
     }
 
     private void filter(String text) {
         //new array list that will hold the filtered data
-        List<Item> filterdNames = new ArrayList<>();
+        List<InvoiceItem> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (Item s : dataSet) {
+        for (InvoiceItem s : dataSet) {
             //if the existing elements contains the search input
-            if (s.getItemName().toLowerCase().contains(text.toLowerCase())) {
+            if (s.getInvoiceId().toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
                 filterdNames.add(s);
 
@@ -134,7 +130,7 @@ public class ItemsActivity extends AppCompatActivity {
     public  void initiateRefresh(int i)
     {
 
-        List<Item> dataSet1= getAllItems(this);
+        List<InvoiceItem> dataSet1= getItemInvoices(this);
         itemAdapter.filterList(dataSet1);
 
 

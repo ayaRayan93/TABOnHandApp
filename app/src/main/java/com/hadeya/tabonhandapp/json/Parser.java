@@ -152,13 +152,14 @@ public class Parser {
 
             for (int i = 0 ; i <jsonArray.length();i++)
             {
-                String ItemCode = jsonArray.getJSONObject(i).getString("ItemCode");
-                String ItemName = jsonArray.getJSONObject(i).getString("ItemName");
-                String ItemNameLat = jsonArray.getJSONObject(i).getString("ItemNameLat");
-                String UnitCode = jsonArray.getJSONObject(i).getString("UnitCode");
-                String TaxSet = jsonArray.getJSONObject(i).getString("TaxSet");
-                String SelPrice1Default = jsonArray.getJSONObject(i).getString("SelPrice1Default");
-                String NotActive = jsonArray.getJSONObject(i).getString("NotActive");
+                JSONObject JsonObject = jsonArray.getJSONObject(i);
+                String ItemCode = JsonObject.optString("ItemCode");
+                String ItemName = JsonObject.optString("ItemName");
+                String ItemNameLat = JsonObject.optString("ItemNameLat");
+                String UnitCode = JsonObject.optString("UnitCode");
+                String TaxSet = JsonObject.optString("TaxSet");
+                String SelPrice1Default = JsonObject.optString("SelPrice1Default");
+                String NotActive = JsonObject.optString("NotActive");
 
                 Item item = new Item();
 

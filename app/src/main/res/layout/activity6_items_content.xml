@@ -30,21 +30,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Basic Data > Customers"
+                    android:text="Basic Data > Items"
                     android:textColor="@color/mainColor"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
                     />
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/setting"
-                    android:layout_margin="5dp"
-                    android:id="@+id/update"
-                    />
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,14 +70,7 @@
                         android:layout_margin="5dp"
                         />
                 </LinearLayout>
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/add"
-                    android:layout_margin="5dp"
-                    android:id="@+id/AddNew"
-                    />
+
             </LinearLayout>
         </LinearLayout>
             <LinearLayout

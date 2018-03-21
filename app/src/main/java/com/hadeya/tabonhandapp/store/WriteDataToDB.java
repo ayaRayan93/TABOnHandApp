@@ -30,6 +30,7 @@ public class WriteDataToDB {
         storeCustomer("13007");
         storeClassification();
         storeArea();
+        StoreItems();
     }
 
     public static void storeCustomer(String repCode)
