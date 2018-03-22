@@ -31,6 +31,8 @@ public class WriteDataToDB {
         storeClassification();
         storeArea();
         StoreItems();
+        StoreInvoiceItems();
+        //StoreInvoices();
     }
 
     public static void storeCustomer(String repCode)
@@ -182,7 +184,7 @@ public class WriteDataToDB {
     public static void StoreInvoices()
     {
         // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+        String Url="http://toh.hadeya.net/api/TOHInvoices/repCodeTOHInvoices/13007";
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -195,7 +197,7 @@ public class WriteDataToDB {
                     dataSet.clear();
 
                 }*/
-                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                Iterator iterator = Parser.parseInvoice(response).iterator();
                 while (iterator.hasNext()){
                     Invoice invoice = (Invoice) iterator.next();
                     //dataSet.add(customer);
@@ -218,7 +220,7 @@ public class WriteDataToDB {
     public static void StoreInvoiceItems()
     {
         // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+        String Url="http://toh.hadeya.net/api/TOHInvoices/repCodeTOHInvoices/13007";
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -231,7 +233,7 @@ public class WriteDataToDB {
                     dataSet.clear();
 
                 }*/
-                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                Iterator iterator = Parser.parseInvoiceItem(response).iterator();
                 while (iterator.hasNext()){
                     InvoiceItem invoiceItem = (InvoiceItem) iterator.next();
                     //dataSet.add(customer);
@@ -389,8 +391,8 @@ public class WriteDataToDB {
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider();
-        invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
+        InvoiceItemContentProvider invoiceItemContentProvider=new InvoiceItemContentProvider();
+        invoiceItemContentProvider.insert(InvoiceItemContentProvider.CONTENT_URI_add,values);
     }
 
     public static void addUser(User user)

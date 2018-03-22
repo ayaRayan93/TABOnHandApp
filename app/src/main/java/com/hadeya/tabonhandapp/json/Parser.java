@@ -233,33 +233,36 @@ public class Parser {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
-                String Id = employeeJsonObject.optString("Id");
-                String InvoiceId =employeeJsonObject.optString("InvoiceId");
-                String ItemCode = employeeJsonObject.optString("ItemCode");
-                String ItemName =employeeJsonObject.optString("ItemName");
-                String Quantity = employeeJsonObject.optString("Quantity");
-                String Tax =employeeJsonObject.optString("Tax");
-                String ExpityDate = employeeJsonObject.optString("ExpityDate");
-                String Price =employeeJsonObject.optString("Price");
-                String DiscountPercent = employeeJsonObject.optString("DiscountPercent");
-                String DiscountAmount =employeeJsonObject.optString("DiscountAmount");
+                JSONArray aa=employeeJsonObject.getJSONArray("TOHInvoiceDetails");
+                for (int j=0;j<aa.length();j++) {
+                    employeeJsonObject = aa.getJSONObject(j);
+                    String Id = employeeJsonObject.optString("Id");
+                    String InvoiceId = employeeJsonObject.optString("InvoiceId");
+                    String ItemCode = employeeJsonObject.optString("ItemCode");
+                    String ItemName = employeeJsonObject.optString("ItemName");
+                    String Quantity = employeeJsonObject.optString("Quantity");
+                    String Tax = employeeJsonObject.optString("Tax");
+                    String ExpityDate = employeeJsonObject.optString("ExpityDate");
+                    String Price = employeeJsonObject.optString("Price");
+                    String DiscountPercent = employeeJsonObject.optString("DiscountPercent");
+                    String DiscountAmount = employeeJsonObject.optString("DiscountAmount");
 
-                InvoiceItem invoiceItem = new InvoiceItem();
-                invoiceItem.setId(Id);
-                invoiceItem.setInvoiceId(InvoiceId);
-                invoiceItem.setItemCode(ItemCode);
-                invoiceItem.setItemName(ItemName);
-                invoiceItem.setQuantity(Quantity);
-                invoiceItem.setTax(Tax);
-                invoiceItem.setExpityDate(ExpityDate);
-                invoiceItem.setPrice(Price);
-                invoiceItem.setDiscountPercent(DiscountPercent);
-                invoiceItem.setDiscountAmount(DiscountAmount);
+                    InvoiceItem invoiceItem = new InvoiceItem();
+                    invoiceItem.setId(Id);
+                    invoiceItem.setInvoiceId(InvoiceId);
+                    invoiceItem.setItemCode(ItemCode);
+                    invoiceItem.setItemName(ItemName);
+                    invoiceItem.setQuantity(Quantity);
+                    invoiceItem.setTax(Tax);
+                    invoiceItem.setExpityDate(ExpityDate);
+                    invoiceItem.setPrice(Price);
+                    invoiceItem.setDiscountPercent(DiscountPercent);
+                    invoiceItem.setDiscountAmount(DiscountAmount);
 
-                modelInvoiceItem.add(invoiceItem);
+                    modelInvoiceItem.add(invoiceItem);
 
 
-
+                }
             }
 
             return modelInvoiceItem;

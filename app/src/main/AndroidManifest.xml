@@ -70,6 +70,15 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".activities.items.ItemsInvoices"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="ItemsInvoices" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
         <activity android:name=".activities.start.MainTopicsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

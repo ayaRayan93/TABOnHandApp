@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class InvoiceItemTable {
     // Contacts table name
-    public static final String InvoiceItemTable ="invoice" ;
+    public static final String InvoiceItemTable ="InvoiceItem" ;
     // Customer Table Columns names
     public static final String Id ="Id" ;
     public static final String InvoiceId ="InvoiceId" ;

@@ -69,9 +69,9 @@ public class ItemsInvoices extends AppCompatActivity {
 
         dataSet = new ArrayList<>();
         // dataSet=getAllItems(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewItem);
-        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshItem);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewInvoiceItem);
+        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefresInvoiceItem);
+      //  mRecyclerView.setHasFixedSize(true);
         itemAdapter = new ItemInvoicesAdapter(this,dataSet);
         mRecyclerView.setAdapter(itemAdapter);
 

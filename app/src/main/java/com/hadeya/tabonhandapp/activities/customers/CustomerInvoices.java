@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomerInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
 
 /**
@@ -111,12 +112,12 @@ public class CustomerInvoices extends AppCompatActivity {
 
     private void filter(String text) {
         //new array list that will hold the filtered data
-        List<InvoiceItem> filterdNames = new ArrayList<>();
+        List<Invoice> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (InvoiceItem s : dataSet) {
+        for (Invoice s : dataSet) {
             //if the existing elements contains the search input
-            if (s.getInvoiceId().toLowerCase().contains(text.toLowerCase())) {
+            if (s.getInvoiceNo().toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
                 filterdNames.add(s);
 
@@ -130,7 +131,7 @@ public class CustomerInvoices extends AppCompatActivity {
     public  void initiateRefresh(int i)
     {
 
-        List<InvoiceItem> dataSet1= getItemInvoices(this);
+        List<Invoice> dataSet1= getCustomerInvoices(this);
         itemAdapter.filterList(dataSet1);
 
 

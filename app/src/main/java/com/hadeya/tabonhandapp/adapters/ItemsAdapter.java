@@ -3,6 +3,8 @@ package com.hadeya.tabonhandapp.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,15 +14,19 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hadeya.tabonhandapp.activities.items.ItemsInvoices;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by mohamed shaban on 09/03/2018.
@@ -46,6 +52,18 @@ public  class ViewHolder extends RecyclerView.ViewHolder
     public ViewHolder(View v)
     {
         super(v);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Element " + getPosition() + " clicked.");
+
+                    Context context2 = v.getContext();
+                    Intent intent = new Intent(context2, ItemsInvoices.class);
+                  //  intent.putExtra("item", (Serializable) DataSet.get(getPosition()));
+                    context2.startActivity(intent);
+
+            }
+        });
 
         ButterKnife.bind(this,v);
 
