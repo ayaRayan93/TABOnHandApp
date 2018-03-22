@@ -1,6 +1,7 @@
 package com.hadeya.tabonhandapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.hadeya.tabonhandapp.activities.customers.CustomerInvoices;
+import com.hadeya.tabonhandapp.activities.items.ItemsInvoices;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.R;
 
@@ -16,6 +19,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by AyaAli on 05/03/2018.
@@ -41,7 +46,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         public ViewHolder(View v)
         {
             super(v);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Element " + getPosition() + " clicked.");
 
+                    Context context2 = v.getContext();
+                    Intent intent = new Intent(context2, CustomerInvoices.class);
+                    //  intent.putExtra("item", (Serializable) DataSet.get(getPosition()));
+                    context2.startActivity(intent);
+
+                }
+            });
             ButterKnife.bind(this,v);
 
         }

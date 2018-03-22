@@ -130,7 +130,7 @@ public class ReadDataFromDB {
         List<Invoice> invoiceList = new ArrayList<>();
 // Select All Query
         String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable;
-        InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider(context);
+        InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider();
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = invoiceContentProvider.query(InvoiceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
 // looping through all rows and adding to list

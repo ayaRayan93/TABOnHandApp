@@ -40,7 +40,7 @@ public class ItemInvoicesAdapter extends RecyclerView.Adapter<ItemInvoicesAdapte
         //@BindView(R.id.itemCode)TextView itemCode;
         //@BindView(R.id.taxSet)TextView taxSet;
         @BindView(R.id.price)TextView price;
-        @BindView(R.id.value)TextView value;
+        @BindView(R.id.value2)TextView value2;
         @BindView(R.id.qty)TextView qty;
         //@BindView(R.id.discount)TextView discount;
         //@BindView(R.id.tax)TextView tax;
@@ -70,12 +70,12 @@ public class ItemInvoicesAdapter extends RecyclerView.Adapter<ItemInvoicesAdapte
             this.price = price;
         }
 
-        public TextView getValue() {
-            return value;
+        public TextView getValue2() {
+            return value2;
         }
 
-        public void setValue(TextView value) {
-            this.value = value;
+        public void setValue2(TextView value2) {
+            this.value2 = value2;
         }
 
         public TextView getQty() {
@@ -105,7 +105,7 @@ public class ItemInvoicesAdapter extends RecyclerView.Adapter<ItemInvoicesAdapte
             Log.d("", "Element " + position + " set.");
             holder.getItemName().setText(DataSet.get(position).getItemName());
             holder.getPrice().setText(DataSet.get(position).getPrice());
-            holder.getValue().setText(DataSet.get(position).getTax());
+            holder.getValue2().setText(DataSet.get(position).getTax());
             holder.getQty().setText(DataSet.get(position).getQuantity());
         }
     }

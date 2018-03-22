@@ -44,6 +44,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.customers.CustomerInvoices"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="CustomerInvoices" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.customers.AddNewCustomer"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

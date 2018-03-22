@@ -32,7 +32,7 @@ public class WriteDataToDB {
         storeArea();
         StoreItems();
         StoreInvoiceItems();
-        //StoreInvoices();
+        StoreInvoices();
     }
 
     public static void storeCustomer(String repCode)

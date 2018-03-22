@@ -34,11 +34,11 @@ import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
 
 public class CustomerInvoices extends AppCompatActivity {
 
-    @BindView(R.id.recyclerViewItem)
+    @BindView(R.id.recyclerViewInvoiceCustomer)
     RecyclerView mRecyclerView;
 
 
-    @BindView(R.id.swipeRefreshItem)
+    @BindView(R.id.swipeRefreshInvoiceCustomer)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Menu menu;
@@ -69,9 +69,9 @@ public class CustomerInvoices extends AppCompatActivity {
 
         dataSet = new ArrayList<>();
         // dataSet=getAllItems(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewItem);
-        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshItem);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewInvoiceCustomer);
+        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshInvoiceCustomer);
+//        mRecyclerView.setHasFixedSize(true);
         itemAdapter = new CustomerInvoicesAdapter(this,dataSet);
         mRecyclerView.setAdapter(itemAdapter);
 

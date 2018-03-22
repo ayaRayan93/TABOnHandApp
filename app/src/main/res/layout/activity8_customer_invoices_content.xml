@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.hadeya.tabonhandapp.activities.CustomerMainActivity"
+    tools:context="com.hadeya.tabonhandapp.activities.customers.CustomerInvoices"
     android:weightSum="10"
     >
     <LinearLayout
