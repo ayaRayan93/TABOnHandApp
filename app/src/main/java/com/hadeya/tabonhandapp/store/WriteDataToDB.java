@@ -12,9 +12,11 @@ import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.app.AppController;
+import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.Item;
+import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
 
 import java.util.Iterator;
@@ -25,12 +27,17 @@ import java.util.Iterator;
 
 public class WriteDataToDB {
 
+    public static DataBaseHelper mdatabase;
     public static void downloadData()
     {
+        //basic data
         storeCustomer("13007");
         storeClassification();
         storeArea();
+        storeCustomerInvoice();
         StoreItems();
+        storeItemInvoice();
+
         StoreInvoiceItems();
         StoreInvoices();
     }
@@ -144,6 +151,42 @@ public class WriteDataToDB {
 
        // return dataArea;
     }
+    public static void storeCustomerInvoice()
+    {
+        //final List<Area> dataArea=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHInvoices/CustomerTOHInvoices/13007?CustomerId=11";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+               /* if (dataArea != null){
+                    dataArea.clear();
+                }*/
+                Iterator iterator = Parser.parseCustomerInvoice(response).iterator();
+                while (iterator.hasNext()){
+                    CustomerInvoice customerInvoice = (CustomerInvoice) iterator.next();
+                    // dataArea.add(movie);
+                    addCustomerInvoice(customerInvoice);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+        // return dataArea;
+    }
 
     public static void StoreItems()
     {
@@ -181,6 +224,140 @@ public class WriteDataToDB {
         AppController.getInstance().addToRequestQueue(strReq);
 
     }
+    public static void storeItemInvoice()
+    {
+        //final List<Area> dataArea=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHInvoices/ItemTOHInvoices/13007?itemCode=1";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+               /* if (dataArea != null){
+                    dataArea.clear();
+                }*/
+                Iterator iterator = Parser.parseItemInvoice(response).iterator();
+                while (iterator.hasNext()){
+                    ItemInvoice itemInvoice = (ItemInvoice) iterator.next();
+                    // dataArea.add(movie);
+                    addItemInvoice(itemInvoice);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+        // return dataArea;
+    }
+
+    public static void addCustomer(Customer customer)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
+        values.put(CustomerTable.CustName, customer.getCustName());
+        values.put(CustomerTable.StreetAra,customer.getStreetAra());
+        values.put(CustomerTable.Classification,customer.getClassification());
+        values.put(CustomerTable.PersonToConnect,customer.getPersonToConnect());
+        values.put(CustomerTable.Tel,customer.getTel());
+        values.put(CustomerTable.TAXID,customer.getTAXID());
+        values.put(CustomerTable.Flag,"1");//
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        CustomerContentProvider moviesContentProvider=new CustomerContentProvider(mdatabase);
+        moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
+
+    }
+    public static void addClassfication(Classification classification)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ClassificationTable.ClassificationId, classification.getId());
+        values.put(ClassificationTable.ClassificationName, classification.getName());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        ClassificationContentProvider classificationContentProvider=new ClassificationContentProvider(mdatabase);
+        classificationContentProvider.insert(ClassificationContentProvider.CONTENT_URI_add,values);
+
+    }
+    public static void addArea(Area area)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AreaTable.AreaId, area.getId());
+        values.put(AreaTable.AreaName, area.getName());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        AreaContentProvider areaContentProvider=new AreaContentProvider(mdatabase);
+        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
+
+    }
+    public static void addCustomerInvoice(CustomerInvoice customerInvoice)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CustomerInvoiceTable.InvoceId, customerInvoice.getInvoceId());
+        values.put(CustomerInvoiceTable.InvoiceNo, customerInvoice.getInvoiceNo());
+        values.put(CustomerInvoiceTable.Date, customerInvoice.getDate());
+        values.put(CustomerInvoiceTable.Value, customerInvoice.getValue());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        CustomerInvoiceContentProvider customerInvoiceContentProvider=new CustomerInvoiceContentProvider(mdatabase);
+        customerInvoiceContentProvider.insert(CustomerInvoiceContentProvider.CONTENT_URI_add,values);
+
+    }
+    public static void addItem(Item item)
+    {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ItemTable.UnitCode, item.getUnitCode());
+        values.put(ItemTable.ItemName, item.getItemName());
+        values.put(ItemTable.ItemNameLat, item.getItemNameLat());
+        values.put(ItemTable.ItemCode, item.getItemCode());
+        values.put(ItemTable.TaxSet, item.getTaxSet());
+        values.put(ItemTable.SelPrice1Default, item.getSelPrice1Default());
+        values.put(ItemTable.NotActive, item.getNotActive());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        ItemContentProvider itemContentProvider=new ItemContentProvider(mdatabase);
+        itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
+    }
+    public static void addItemInvoice(ItemInvoice itemInvoice)
+    {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ItemInvoiceTable.InvoiceNo, itemInvoice.getInvoiceNo());
+        values.put(ItemInvoiceTable.CustomerName, itemInvoice.getCustomerName());
+        values.put(ItemInvoiceTable.Price, itemInvoice.getPrice());
+        values.put(ItemInvoiceTable.Quantity, itemInvoice.getQuantity());
+        values.put(ItemInvoiceTable.Value, itemInvoice.getValue());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        ItemInvoiceContentProvider itemInvoiceContentProvider=new ItemInvoiceContentProvider(mdatabase);
+        itemInvoiceContentProvider.insert(ItemInvoiceContentProvider.CONTENT_URI_add,values);
+    }
+    //
     public static void StoreInvoices()
     {
         // final List<Customer> dataSet=new ArrayList<>();
@@ -256,10 +433,11 @@ public class WriteDataToDB {
     public static void StoreUser()
     {
         // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/";
+        String Url="http://toh.hadeya.net/api/Account";
+
 
         /////////////connection//////////
-        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        StringRequest strReq = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)
@@ -290,72 +468,12 @@ public class WriteDataToDB {
 
     }
 
-    public static void addCustomer(Customer customer)
-    {
 
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
-        values.put(CustomerTable.CustName, customer.getCustName());
-        values.put(CustomerTable.StreetAra,customer.getStreetAra());
-        values.put(CustomerTable.Classification,customer.getClassification());
-        values.put(CustomerTable.PersonToConnect,customer.getPersonToConnect());
-        values.put(CustomerTable.Tel,customer.getTel());
-        values.put(CustomerTable.TAXID,customer.getTAXID());
-        values.put(CustomerTable.Flag,"1");//
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        CustomerContentProvider moviesContentProvider=new CustomerContentProvider();
-        moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
+    //
 
-    }
-    public static void addClassfication(Classification classification)
-    {
 
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ClassificationTable.ClassificationId, classification.getId());
-        values.put(ClassificationTable.ClassificationName, classification.getName());
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        ClassificationContentProvider classificationContentProvider=new ClassificationContentProvider();
-        classificationContentProvider.insert(ClassificationContentProvider.CONTENT_URI_add,values);
 
-    }
-    public static void addArea(Area area)
-    {
-
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(AreaTable.AreaId, area.getId());
-        values.put(AreaTable.AreaName, area.getName());
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        AreaContentProvider areaContentProvider=new AreaContentProvider();
-        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
-
-    }
-
-    public static void addItem(Item item)
-    {
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ItemTable.UnitCode, item.getUnitCode());
-        values.put(ItemTable.ItemName, item.getItemName());
-        values.put(ItemTable.ItemNameLat, item.getItemNameLat());
-        values.put(ItemTable.ItemCode, item.getItemCode());
-        values.put(ItemTable.TaxSet, item.getTaxSet());
-        values.put(ItemTable.SelPrice1Default, item.getSelPrice1Default());
-        values.put(ItemTable.NotActive, item.getNotActive());
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        ItemContentProvider itemContentProvider=new ItemContentProvider();
-        itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
-    }
+    //
     public static void addInvoice(Invoice invoice)
     {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -371,7 +489,7 @@ public class WriteDataToDB {
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider();
+        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider(mdatabase);
         invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
     }
     public static void addInvoiceItem(InvoiceItem invoiceItem)
@@ -391,7 +509,7 @@ public class WriteDataToDB {
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        InvoiceItemContentProvider invoiceItemContentProvider=new InvoiceItemContentProvider();
+        InvoiceItemContentProvider invoiceItemContentProvider=new InvoiceItemContentProvider(mdatabase);
         invoiceItemContentProvider.insert(InvoiceItemContentProvider.CONTENT_URI_add,values);
     }
 
@@ -403,10 +521,11 @@ public class WriteDataToDB {
         values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.UserName, user.getUserName());
         values.put(UserTable.UserPassword, user.getPassword());
+        values.put(UserTable.LoginStatus, "1");
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        AreaContentProvider areaContentProvider=new AreaContentProvider();
+        AreaContentProvider areaContentProvider=new AreaContentProvider(mdatabase);
         areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
 
     }

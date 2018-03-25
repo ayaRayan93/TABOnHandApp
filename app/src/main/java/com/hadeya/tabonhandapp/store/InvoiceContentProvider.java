@@ -18,11 +18,14 @@ import android.support.annotation.Nullable;
 public class InvoiceContentProvider extends ContentProvider {
 
     // database
-    private DataBaseHelper database=CustomerContentProvider.database;
+    private DataBaseHelper database;//=CustomerContentProvider.database;
     private Context context;
     // used for the UriMacher
     public InvoiceContentProvider() {
 
+    }
+    public InvoiceContentProvider(DataBaseHelper database) {
+        this.database=database;
     }
     public InvoiceContentProvider(Context context) {
         this.context = context;
@@ -54,8 +57,8 @@ public class InvoiceContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        //database = new DataBaseHelper(context);
-        database = CustomerContentProvider.database;
+        database = new DataBaseHelper(context);
+        //database = CustomerContentProvider.database;
         return false;
     }
 

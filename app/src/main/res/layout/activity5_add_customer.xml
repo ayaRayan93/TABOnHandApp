@@ -1,42 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.hadeya.tabonhandapp.activities.customers.AddNewCustomer">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="29"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="29"
-            android:weightSum="29"
-            android:background="#fff">
-            <android.support.v4.widget.DrawerLayout
-                android:id="@+id/drawer_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="29"
-                >
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:weightSum="29"
-                    android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="29">
-                        <include layout="@layout/activity5_add_customer_content" />
-                    </RelativeLayout>
-                </LinearLayout>
-                <include
-                    android:id="@+id/drawer_content"
-                    layout="@layout/menu_layout_new" />
-            </android.support.v4.widget.DrawerLayout>
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/activity5_add_customer_content" />
+</android.support.design.widget.CoordinatorLayout>

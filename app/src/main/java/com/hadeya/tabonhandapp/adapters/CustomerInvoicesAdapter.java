@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
+import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 
@@ -23,10 +24,10 @@ import butterknife.ButterKnife;
 
 public class CustomerInvoicesAdapter extends RecyclerView.Adapter<CustomerInvoicesAdapter.ViewHolder> {
 
-    private List<Invoice> DataSet;
+    private List<CustomerInvoice> DataSet;
     private static Context context;
 
-    public CustomerInvoicesAdapter(Context cont, List<Invoice> dataSet)
+    public CustomerInvoicesAdapter(Context cont, List<CustomerInvoice> dataSet)
     {
         context=cont;
         DataSet = dataSet;
@@ -88,8 +89,8 @@ public class CustomerInvoicesAdapter extends RecyclerView.Adapter<CustomerInvoic
         if (DataSet.get(position) != null) {
             Log.d("", "Element " + position + " set.");
             holder.getInvoiceCustomerNo().setText(DataSet.get(position).getInvoiceNo());
-            holder.getDate().setText(DataSet.get(position).getNotes());
-            holder.getValue1().setText(DataSet.get(position).getNotes());
+            holder.getDate().setText(DataSet.get(position).getDate());
+            holder.getValue1().setText(DataSet.get(position).getValue());
         }
     }
 
@@ -98,7 +99,7 @@ public class CustomerInvoicesAdapter extends RecyclerView.Adapter<CustomerInvoic
         return DataSet.size();
     }
 
-    public void filterList(List<Invoice> filterdNames) {
+    public void filterList(List<CustomerInvoice> filterdNames) {
         this.DataSet = filterdNames;
         notifyDataSetChanged();
     }

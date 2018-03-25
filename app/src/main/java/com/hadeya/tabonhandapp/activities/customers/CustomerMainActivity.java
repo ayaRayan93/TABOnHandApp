@@ -68,7 +68,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         // navigationView.setNavigationItemSelectedListener(this);
 
-        downloadData();//for first time do load to database
+        //downloadData();//for first time do load to database
         ImageButton AddNew=(ImageButton)findViewById(R.id.AddNew);
         AddNew.setOnClickListener(new View.OnClickListener() {
             @Override

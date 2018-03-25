@@ -17,11 +17,14 @@ import android.support.annotation.Nullable;
 
 public class UserContentProvider extends ContentProvider {
     // database
-    private DataBaseHelper database=CustomerContentProvider.database;
+    private DataBaseHelper database;//=CustomerContentProvider.database;
     private Context context;
     // used for the UriMacher
     public UserContentProvider() {
 
+    }
+    public UserContentProvider(DataBaseHelper database) {
+        this.database=database;
     }
     public UserContentProvider(Context context) {
         this.context = context;
@@ -50,8 +53,8 @@ public class UserContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        //database = new DataBaseHelper(context);
-        database = CustomerContentProvider.database;
+        database = new DataBaseHelper(context);
+        //database = CustomerContentProvider.database;
         return false;
     }
 

@@ -21,17 +21,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //basic data
         CustomerTable.onCreate(db);
         AreaTable.onCreate(db);
         ClassificationTable.onCreate(db);
+        CustomerInvoiceTable.onCreate(db);
         ItemTable.onCreate(db);
+        ItemInvoiceTable.onCreate(db);
+
+        //
         InvoiceTable.onCreate(db);
         InvoiceItemTable.onCreate(db);
+
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         CustomerTable.onUpgrade(db,oldVersion,newVersion);
+        AreaTable.onUpgrade(db,oldVersion,newVersion);
+        ClassificationTable.onUpgrade(db,oldVersion,newVersion);
+        ItemTable.onUpgrade(db,oldVersion,newVersion);
+        CustomerInvoiceTable.onUpgrade(db,oldVersion,newVersion);
+        ItemInvoiceTable.onUpgrade(db,oldVersion,newVersion);
+
+        InvoiceTable.onUpgrade(db,oldVersion,newVersion);
+        InvoiceItemTable.onUpgrade(db,oldVersion,newVersion);
     }
 }

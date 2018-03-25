@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.Item;
+import com.hadeya.tabonhandapp.models.ItemInvoice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,10 @@ import butterknife.ButterKnife;
 
 public class ItemInvoicesAdapter extends RecyclerView.Adapter<ItemInvoicesAdapter.ViewHolder> {
 
-    private List<InvoiceItem> DataSet;
+    private List<ItemInvoice> DataSet;
     private static Context context;
 
-    public ItemInvoicesAdapter(Context cont, List<InvoiceItem> dataSet)
+    public ItemInvoicesAdapter(Context cont, List<ItemInvoice> dataSet)
     {
         context=cont;
         DataSet = dataSet;
@@ -103,9 +104,9 @@ public class ItemInvoicesAdapter extends RecyclerView.Adapter<ItemInvoicesAdapte
     {
         if (DataSet.get(position) != null) {
             Log.d("", "Element " + position + " set.");
-            holder.getItemName().setText(DataSet.get(position).getItemName());
+            holder.getItemName().setText(DataSet.get(position).getInvoiceNo());
             holder.getPrice().setText(DataSet.get(position).getPrice());
-            holder.getValue2().setText(DataSet.get(position).getTax());
+            holder.getValue2().setText(DataSet.get(position).getValue());
             holder.getQty().setText(DataSet.get(position).getQuantity());
         }
     }
@@ -115,7 +116,7 @@ public class ItemInvoicesAdapter extends RecyclerView.Adapter<ItemInvoicesAdapte
         return DataSet.size();
     }
 
-    public void filterList(List<InvoiceItem> filterdNames) {
+    public void filterList(List<ItemInvoice> filterdNames) {
         this.DataSet = filterdNames;
         notifyDataSetChanged();
     }

@@ -51,7 +51,7 @@ public class AddNewCustomer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity5_add_customer);
+        setContentView(R.layout.activity5_add_customer_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -66,7 +66,7 @@ public class AddNewCustomer extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         // navigationView.setNavigationItemSelectedListener(this);
 
-        ButterKnife.bind(this);
+       ButterKnife.bind(this);
         Button addCustomer=(Button)findViewById(R.id.save);
         addCustomer.setOnClickListener(new View.OnClickListener() {
             @Override

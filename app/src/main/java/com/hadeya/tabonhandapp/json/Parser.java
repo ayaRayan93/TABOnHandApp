@@ -4,9 +4,11 @@ package com.hadeya.tabonhandapp.json;
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
+import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.Item;
+import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
 
 import org.json.JSONArray;
@@ -22,6 +24,7 @@ import java.util.List;
 
 public class Parser {
 
+    //Basic DATA
     public static List<Customer> parseStringToJson(String data) {
         List<Customer> modelCustomer;
 
@@ -142,6 +145,43 @@ public class Parser {
 
         return null;
     }
+    public static List<CustomerInvoice> parseCustomerInvoice(String data) {
+        List<CustomerInvoice> modelCustomerInvoice;
+
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            modelCustomerInvoice = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
+                String InvoiceNo = employeeJsonObject.optString("InvoiceNo");
+                String InvoceId =employeeJsonObject.optString("InvoceId");
+                String InvoiceDate = employeeJsonObject.optString("InvoiceDate");
+                String value = employeeJsonObject.optString("value");
+
+
+                CustomerInvoice customerInvoice = new CustomerInvoice();
+                customerInvoice.setInvoiceNo(InvoiceNo);
+                customerInvoice.setInvoceId(InvoceId);
+                customerInvoice.setDate(InvoiceDate);
+                customerInvoice.setValue(value);
+
+                modelCustomerInvoice.add(customerInvoice);
+
+
+
+            }
+
+            return modelCustomerInvoice;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+
     public static List<Item> parseItem(String data) {
         List<Item> modelItem;
 
@@ -181,6 +221,42 @@ public class Parser {
 
         return null;
     }
+    public static List<ItemInvoice> parseItemInvoice(String data) {
+        List<ItemInvoice> modelItemInvoice;
+
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            modelItemInvoice = new ArrayList<>();
+
+
+            for (int i = 0 ; i <jsonArray.length();i++)
+            {
+                JSONObject JsonObject = jsonArray.getJSONObject(i);
+                String InvoiceNo = JsonObject.optString("InvoiceNo");
+                String CustomerName =JsonObject.optString("CustomerName");
+                String Quantity = JsonObject.optString("Quantity");
+                String Price =JsonObject.optString("Price");
+                String value="0";//String.valueOf(Integer.parseInt(Quantity)*Double.parseDouble(Price));
+
+                ItemInvoice itemInvoice = new ItemInvoice();
+
+                itemInvoice.setInvoiceNo(InvoiceNo);
+                itemInvoice.setCustomerName(CustomerName);
+                itemInvoice.setQuantity(Quantity);
+                itemInvoice.setValue(value);
+                itemInvoice.setPrice(Price);
+                modelItemInvoice.add(itemInvoice);
+            }
+            return modelItemInvoice;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+   //
     public static List<Invoice> parseInvoice(String data) {
         List<Invoice> modelInvoice;
 
@@ -274,6 +350,8 @@ public class Parser {
 
         return null;
     }
+
+
     public static List<User> parseUser(String data) {
         List<User> modelUser;
 
@@ -307,4 +385,6 @@ public class Parser {
 
         return null;
     }
+
+
 }

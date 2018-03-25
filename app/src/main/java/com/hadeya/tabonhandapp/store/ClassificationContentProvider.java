@@ -17,15 +17,18 @@ import android.support.annotation.Nullable;
 
 public class ClassificationContentProvider extends ContentProvider {
     // database
-    private DataBaseHelper database=CustomerContentProvider.database;
+    private DataBaseHelper database;
     private Context context;
     // used for the UriMacher
+    public ClassificationContentProvider(DataBaseHelper database) {
+     this.database=database;
+    }
     public ClassificationContentProvider() {
 
     }
     public ClassificationContentProvider(Context context) {
         this.context = context;
-        //database = new DataBaseHelper(context);
+        database = new DataBaseHelper(context);
     }
 
     private static final int TODOS = 12;
@@ -53,8 +56,8 @@ public class ClassificationContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        //database = new DataBaseHelper(context);
-        database = CustomerContentProvider.database;
+        database = new DataBaseHelper(context);
+        //database = CustomerContentProvider.database;
         return false;
     }
 

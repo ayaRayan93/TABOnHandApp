@@ -17,9 +17,13 @@ import android.support.annotation.Nullable;
 
 public class CustomerContentProvider extends ContentProvider {
     // database
-    public static DataBaseHelper database;
+    DataBaseHelper database;
     private Context context;
     // used for the UriMacher
+    public CustomerContentProvider(DataBaseHelper database) {
+          this.database=database;
+    }
+
     public CustomerContentProvider() {
 
     }

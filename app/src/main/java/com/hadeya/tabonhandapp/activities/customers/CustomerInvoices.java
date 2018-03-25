@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.CustomerInvoicesAdapter;
 import com.hadeya.tabonhandapp.adapters.ItemInvoicesAdapter;
+import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 
@@ -25,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerInvoice;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomerInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
 
@@ -44,7 +46,7 @@ public class CustomerInvoices extends AppCompatActivity {
     private Menu menu;
     protected CustomerInvoicesAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<Invoice> dataSet;
+    protected List<CustomerInvoice> dataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -112,10 +114,10 @@ public class CustomerInvoices extends AppCompatActivity {
 
     private void filter(String text) {
         //new array list that will hold the filtered data
-        List<Invoice> filterdNames = new ArrayList<>();
+        List<CustomerInvoice> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (Invoice s : dataSet) {
+        for (CustomerInvoice s : dataSet) {
             //if the existing elements contains the search input
             if (s.getInvoiceNo().toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
@@ -131,7 +133,7 @@ public class CustomerInvoices extends AppCompatActivity {
     public  void initiateRefresh(int i)
     {
 
-        List<Invoice> dataSet1= getCustomerInvoices(this);
+        List<CustomerInvoice> dataSet1= getAllCustomerInvoice(this);
         itemAdapter.filterList(dataSet1);
 
 
