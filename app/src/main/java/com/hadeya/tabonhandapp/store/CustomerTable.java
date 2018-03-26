@@ -18,6 +18,7 @@ public class CustomerTable {
     public static final String Tel="Tel" ;
     public static final String TAXID="TAXID" ;
     public static final String SaleAreaCode="SaleAreaCode" ;
+    public static final String SalesRepCode="SalesRepCode" ;
     public static final String Flag="Flag" ;
 
     public static String CREATE_Database_TABLE = "CREATE TABLE " + CustomerTable + "("
@@ -28,6 +29,7 @@ public class CustomerTable {
             +PersonToConnect+" TEXT,"
             + Tel + " TEXT,"
             + TAXID + " TEXT,"
+            + SalesRepCode + " TEXT,"
             + Flag + " TEXT,"
             + SaleAreaCode + " TEXT" + ")";
 
