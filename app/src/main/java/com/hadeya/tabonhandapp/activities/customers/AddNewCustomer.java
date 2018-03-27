@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import com.hadeya.tabonhandapp.models.Area;
@@ -30,6 +32,7 @@ import butterknife.ButterKnife;
 
 ;import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerArea;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerClassification;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 public class AddNewCustomer extends AppCompatActivity {
 
@@ -72,7 +75,15 @@ public class AddNewCustomer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addNewCustomer();
-               // Toast.makeText(AddNewCustomer.this, "Done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddNewCustomer.this, "Done", Toast.LENGTH_SHORT).show();
+            }
+        });
+        ImageButton uploadCustomer=(ImageButton)findViewById(R.id.update);
+        addCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploade(getBaseContext(),"13007");
+                Toast.makeText(AddNewCustomer.this, "Done", Toast.LENGTH_SHORT).show();
             }
         });
 

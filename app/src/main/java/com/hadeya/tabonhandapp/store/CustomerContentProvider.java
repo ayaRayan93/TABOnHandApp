@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 /**
  * Created by AyaAli on 07/03/2018.
@@ -124,6 +125,10 @@ public class CustomerContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = database.getWritableDatabase();
+
+        int updateCount = db.update(CustomerTable.CustomerTable, values, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return updateCount;
     }
 }

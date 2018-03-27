@@ -14,6 +14,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "appDB";
     private static final int DATABASE_VERSION = 1;
 
+    public  SQLiteDatabase db;
     public DataBaseHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,6 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        this.db=db;
         //basic data
         CustomerTable.onCreate(db);
         AreaTable.onCreate(db);

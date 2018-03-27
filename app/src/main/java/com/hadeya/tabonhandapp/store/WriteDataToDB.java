@@ -1,12 +1,19 @@
 package com.hadeya.tabonhandapp.store;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
@@ -19,7 +26,9 @@ import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by AyaAli on 09/03/2018.
@@ -529,4 +538,100 @@ public class WriteDataToDB {
         areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
 
     }
+
+
+    //upload
+
+    public static void uploade(Context context, String repCode)
+    {
+        String[] projection={CustomerTable.CustomerCode,
+                CustomerTable.CustName,
+                CustomerTable.StreetAra,
+                CustomerTable.Classification,
+                CustomerTable.PersonToConnect,
+                CustomerTable.Tel,
+                CustomerTable.TAXID,
+                CustomerTable.SaleAreaCode,
+                CustomerTable.Flag,
+        };
+
+// Select All Query
+        String selectQuery = "SELECT * FROM " + CustomerTable.CustomerTable+"where Flag=0 and SalesRepCode="+repCode;
+        CustomerContentProvider  movieContentProvider=new CustomerContentProvider( WriteDataToDB.mdatabase);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = movieContentProvider.query(CustomerContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Customer customer = new Customer();
+                customer.setCustomerCode(cursor.getString(0));
+                customer.setCustName(cursor.getString(1));
+                customer.setStreetAra(cursor.getString(2));
+                customer.setClassification(cursor.getString(3));
+                customer.setPersonToConnect(cursor.getString(4));
+                customer.setTel(cursor.getString(5));
+                customer.setTAXID(cursor.getString(6));
+                customer.setSaleAreaCode(cursor.getString(7));
+                customer.setFlag(cursor.getString(8));
+// Adding contact to list
+                uploadCustomer(customer,context,repCode);
+                updateDB(customer.getCustomerCode());
+            } while (cursor.moveToNext());
+        }
+
+
+    }
+
+    public static void uploadCustomer(final Customer customer, final Context context, String repCode)
+    {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST,"http://toh.hadeya.net/api/TOHCustomers/addTOHCustomer/"+repCode, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(context, "Uploaded Done", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Uploaded Fail", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("CustomerCode",customer.getCustomerCode());
+                params.put("CustName",customer.getCustName());
+                params.put("CustomerNameLat",customer.getCustomerNameLat());
+                params.put("StreetAra",customer.getStreetAra());
+                params.put("Classification",customer.getClassification());
+                params.put("PersonToConnect",customer.getPersonToConnect());
+                params.put("Tel",customer.getTel());
+                params.put("TAXID",customer.getTAXID());
+                params.put("SaleAreaCode",customer.getSaleAreaCode());
+                params.put("Notes",customer.getNotes());
+                params.put("SalesRepCode",customer.getSalesRepCode());
+                params.put("CodeList",customer.getCodeList());
+                params.put("NotActive",customer.getNotes());
+
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public static void  updateDB(String custCode)
+    {
+        String query="update customer set Flag=1 where CustomerCode="+custCode;
+        mdatabase.db.execSQL(query);
+    }
+
 }
