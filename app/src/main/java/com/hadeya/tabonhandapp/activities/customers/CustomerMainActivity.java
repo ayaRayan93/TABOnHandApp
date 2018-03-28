@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 import com.hadeya.tabonhandapp.adapters.CustomerAdapter;
@@ -32,6 +33,7 @@ import butterknife.BindView;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 public class CustomerMainActivity extends AppCompatActivity {
 
@@ -82,8 +84,10 @@ public class CustomerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 downloadData();
+                uploade(getBaseContext(),"13007");
             }
         });
+
 
         dataSet = new ArrayList<>();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);

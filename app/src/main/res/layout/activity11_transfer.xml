@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hadeya.tabonhandapp.activities.customers.CustomerMainActivity">
+    tools:context="com.hadeya.tabonhandapp.activities.transaction.transfer.Transfer">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -19,5 +19,5 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/activity5_add_customer_content" />
+    <include layout="@layout/activity11_transfer_content" />
 </android.support.design.widget.CoordinatorLayout>

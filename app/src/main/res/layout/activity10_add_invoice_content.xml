@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hadeya.tabonhandapp.activities.transaction.invoices.AddInvoice"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        android:background="#fff"
+        android:weightSum="12"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            >
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Transaction > Add Invoice"
+            android:textColor="@color/mainColor"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_margin="3dp"
+                android:layout_weight="10"
+
+                >
+                <Spinner android:id="@+id/invoiceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittextstyl"
+                    android:textSize="20dp"
+                    android:hint="Select Invoice Type"
+                    android:textColor="@color/customColor"
+                    android:layout_margin="5dp"
+                    >
+                </Spinner>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edittextstyl"
+                    android:weightSum="10"
+                    android:layout_margin="5dp"
+                    >
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/barcode2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="#fff"
+                        android:textColor="@color/textColor1"
+                        android:hint="Invoice No"
+                        android:id="@+id/invoicetno"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edittextstyl"
+                    android:weightSum="10"
+                    android:layout_margin="5dp"
+                    >
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/date"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="#fff"
+                        android:textColor="@color/textColor1"
+                        android:hint="Invoice Date"
+                        android:id="@+id/invoiceDate"
+                        />
+                </LinearLayout>
+
+                <Spinner android:id="@+id/customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittextstyl"
+                    android:textSize="20dp"
+                    android:hint="Select Customer"
+                    android:textColor="@color/customColor"
+                    android:layout_margin="5dp"
+                    >
+                </Spinner>
+                <Spinner android:id="@+id/type"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittextstyl"
+                    android:textSize="20dp"
+                    android:hint="Select Type (Check/Cash)"
+                    android:textColor="@color/customColor"
+                    android:layout_margin="5dp"
+                    >
+                </Spinner>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edittextstyl"
+                    android:weightSum="10"
+                    android:layout_margin="5dp"
+                    >
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/receipt"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="#fff"
+                        android:textColor="@color/textColor1"
+                        android:hint="Notes"
+                        android:id="@+id/Mobile"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edittextstyl"
+                    android:weightSum="10"
+                    android:layout_margin="5dp"
+                    >
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/barcode2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="#fff"
+                        android:textColor="@color/textColor1"
+                        android:hint="Ref No"
+                        android:id="@+id/refno"
+                        />
+                </LinearLayout>
+
+                <Button
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_background"
+                    android:text="Save"
+                    android:id="@+id/save"
+                    android:textColor="#fff"
+                    />
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

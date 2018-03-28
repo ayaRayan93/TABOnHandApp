@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/activity5_add_customer"
+        layout="@layout/activity9_transaction"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -63,7 +63,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         }
 
       /*  public ImageView getPoster() {
-            return poster;
+            return1 poster;
         }*/
 
         public TextView getTitle() {
@@ -75,7 +75,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         }
 
        /* public TextView getText() {
-            return text;
+            return1 text;
         }
 
         public void setText(TextView text) {

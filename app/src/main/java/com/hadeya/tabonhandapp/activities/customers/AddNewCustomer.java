@@ -78,14 +78,7 @@ public class AddNewCustomer extends AppCompatActivity {
                 Toast.makeText(AddNewCustomer.this, "Done", Toast.LENGTH_SHORT).show();
             }
         });
-        ImageButton uploadCustomer=(ImageButton)findViewById(R.id.update);
-        addCustomer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploade(getBaseContext(),"13007");
-                Toast.makeText(AddNewCustomer.this, "Done", Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         dataClass= getAllCustomerClassification();
         String[] spinnerArray = new String[dataClass.size()];

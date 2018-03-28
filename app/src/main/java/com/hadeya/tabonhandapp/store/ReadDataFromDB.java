@@ -75,7 +75,7 @@ public class ReadDataFromDB {
                 customerList.add(customer);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return customerList;
 
     }
@@ -102,7 +102,7 @@ public class ReadDataFromDB {
                 ClassificationList.add(classification);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return ClassificationList;
 
     }
@@ -129,7 +129,7 @@ public class ReadDataFromDB {
                 AreaList.add(area);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return AreaList;
 
     }
@@ -160,7 +160,7 @@ public class ReadDataFromDB {
                 CustomerInvoiceList.add(customerInvoice);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return CustomerInvoiceList;
 
     }
@@ -197,7 +197,7 @@ public class ReadDataFromDB {
                 itemList.add(item);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return itemList;
 
     }
@@ -229,7 +229,7 @@ public class ReadDataFromDB {
                 ItemInvoiceList.add(itemInvoice);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return ItemInvoiceList;
 
     }
@@ -273,7 +273,7 @@ public class ReadDataFromDB {
                 invoiceItemList.add(invoiceItem);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return invoiceItemList;
 
     }
@@ -311,7 +311,7 @@ public class ReadDataFromDB {
                 invoiceList.add(invoice);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return invoiceList;
 
     }
@@ -341,7 +341,7 @@ public class ReadDataFromDB {
                 userList.add(user);
             } while (cursor.moveToNext());
         }
-// return contact list
+// return1 contact list
         return userList;
 
         }
@@ -377,7 +377,7 @@ public class ReadDataFromDB {
                     userList.add(user);
                 } while (cursor.moveToNext());
             }
-// return contact list
+// return1 contact list
             return userList;
 
         }

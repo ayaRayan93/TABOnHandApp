@@ -1,8 +1,6 @@
-package com.hadeya.tabonhandapp.activities.start;
+package com.hadeya.tabonhandapp.activities.transaction;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -12,26 +10,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.hadeya.tabonhandapp.R;
-import com.hadeya.tabonhandapp.store.CustomerContentProvider;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 
 /**
- * Created by AyaAli on 20/03/2018.
+ * Created by AyaAli on 27/03/2018.
  */
 
-public class MainTopicsActivity  extends AppCompatActivity {
+public class TransactionMain  extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity2_1main_topic);
+        setContentView(R.layout.activity9_transaction_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,32 +42,39 @@ public class MainTopicsActivity  extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-       // navigationView.setBackgroundResource(R.color.customColor);
-       // navigationView.setItemTextColor(getColorStateList(11));
+        // navigationView.setBackgroundResource(R.color.customColor);
+        // navigationView.setItemTextColor(getColorStateList(11));
         // navigationView.setNavigationItemSelectedListener(this);
 
         //CustomerContentProvider c=new CustomerContentProvider(this);
 
-        DataBaseHelper dataBaseHelper=new DataBaseHelper(this);
-        WriteDataToDB.mdatabase=dataBaseHelper;
-        downloadData();
-        Button btn=(Button)findViewById(R.id.btn_BasicData);
+        Button btn=(Button)findViewById(R.id.btn_addInvoice);
         btn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent main = new Intent("MainActivity");
+                Intent main = new Intent("AddInvoice");
                 startActivity(main);
             }
         });
-        Button btn1=(Button)findViewById(R.id.btn_transaction);
+        Button btn1=(Button)findViewById(R.id.btn_transfer);
         btn1.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent main = new Intent("TransactionMain");
+                Intent main = new Intent("Transfer");
+                startActivity(main);
+            }
+        });
+        Button btn2=(Button)findViewById(R.id.btn_receipt);
+        btn2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent main = new Intent("Receipt");
                 startActivity(main);
             }
         });

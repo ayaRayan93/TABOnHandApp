@@ -86,7 +86,7 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
-        //return dataSet;
+        //return1 dataSet;
     }
     public static void storeClassification()
     {
@@ -122,7 +122,7 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
-       // return dataClass;
+       // return1 dataClass;
     }
     public static void storeArea()
     {
@@ -158,7 +158,7 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
-       // return dataArea;
+       // return1 dataArea;
     }
     public static void storeCustomerInvoice()
     {
@@ -194,7 +194,7 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
-        // return dataArea;
+        // return1 dataArea;
     }
 
     public static void StoreItems()
@@ -267,7 +267,7 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
-        // return dataArea;
+        // return1 dataArea;
     }
 
     public static void addCustomer(Customer customer)

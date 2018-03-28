@@ -19,5 +19,5 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/activity5_add_customer_content" />
+    <include layout="@layout/activity12_receipt_content" />
 </android.support.design.widget.CoordinatorLayout>
