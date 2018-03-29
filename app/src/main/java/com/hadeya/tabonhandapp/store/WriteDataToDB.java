@@ -12,6 +12,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hadeya.tabonhandapp.json.Parser;
@@ -26,8 +28,14 @@ import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,9 +45,11 @@ import java.util.Map;
 public class WriteDataToDB {
 
     public static DataBaseHelper mdatabase;
+
     public static void downloadData()
     {
         //basic data
+       // mdatabase.resetDataBase();
         storeCustomer("13007");
         storeClassification();
         storeArea();
@@ -275,7 +285,7 @@ public class WriteDataToDB {
 
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
+        //values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
         values.put(CustomerTable.CustName, customer.getCustName());
         values.put(CustomerTable.StreetAra,customer.getStreetAra());
         values.put(CustomerTable.Classification,customer.getClassification());
@@ -544,7 +554,9 @@ public class WriteDataToDB {
 
     public static void uploade(Context context, String repCode)
     {
-        String[] projection={CustomerTable.CustomerCode,
+        mdatabase=new DataBaseHelper(context);
+        List<Customer> customerList=new ArrayList<>();
+        String[] projection={//CustomerTable.CustomerCode,
                 CustomerTable.CustName,
                 CustomerTable.StreetAra,
                 CustomerTable.Classification,
@@ -556,7 +568,7 @@ public class WriteDataToDB {
         };
 
 // Select All Query
-        String selectQuery = "SELECT * FROM " + CustomerTable.CustomerTable+"where Flag=0 and SalesRepCode="+repCode;
+        String selectQuery = "SELECT * FROM " + CustomerTable.CustomerTable+" where Flag=0 ";//and SalesRepCode="+repCode;
         CustomerContentProvider  movieContentProvider=new CustomerContentProvider( WriteDataToDB.mdatabase);
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = movieContentProvider.query(CustomerContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
@@ -564,20 +576,23 @@ public class WriteDataToDB {
         if (cursor.moveToFirst()) {
             do {
                 Customer customer = new Customer();
-                customer.setCustomerCode(cursor.getString(0));
-                customer.setCustName(cursor.getString(1));
-                customer.setStreetAra(cursor.getString(2));
-                customer.setClassification(cursor.getString(3));
-                customer.setPersonToConnect(cursor.getString(4));
-                customer.setTel(cursor.getString(5));
-                customer.setTAXID(cursor.getString(6));
-                customer.setSaleAreaCode(cursor.getString(7));
-                customer.setFlag(cursor.getString(8));
+                //customer.setCustomerCode(cursor.getString(0));
+                customer.setCustName(cursor.getString(0));
+                customer.setStreetAra(cursor.getString(1));
+                customer.setClassification(cursor.getString(2));
+                customer.setPersonToConnect(cursor.getString(3));
+                customer.setTel(cursor.getString(4));
+                customer.setTAXID(cursor.getString(5));
+                customer.setSaleAreaCode(cursor.getString(6));
+                customer.setFlag(cursor.getString(7));
 // Adding contact to list
-                uploadCustomer(customer,context,repCode);
-                updateDB(customer.getCustomerCode());
+                customerList.add(customer);
+               // uploadCustomer(customer,context,repCode);
+
             } while (cursor.moveToNext());
         }
+        uploadCustomers(customerList,context,repCode);
+
 
 
     }
@@ -600,7 +615,7 @@ public class WriteDataToDB {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("CustomerCode",customer.getCustomerCode());
+                //params.put("CustomerCode",customer.getCustomerCode());
                 params.put("CustName",customer.getCustName());
                 params.put("CustomerNameLat",customer.getCustomerNameLat());
                 params.put("StreetAra",customer.getStreetAra());
@@ -626,12 +641,64 @@ public class WriteDataToDB {
             }
         };
         queue.add(sr);
+
     }
 
-    public static void  updateDB(String custCode)
+    public static void uploadCustomers(List<Customer> customerList,final Context context,String repCode)
     {
-        String query="update customer set Flag=1 where CustomerCode="+custCode;
-        mdatabase.db.execSQL(query);
+        try {
+        JSONArray jsonArray = new JSONArray();
+        for (int i=0; i < customerList.size(); i++) {
+
+            JSONObject myJsonObject = new JSONObject();
+            myJsonObject.put("CustName",customerList.get(i).getCustName());
+            myJsonObject.put("CustomerNameLat",customerList.get(i).getCustomerNameLat());
+            myJsonObject.put("StreetAra",customerList.get(i).getStreetAra());
+            myJsonObject.put("Classification",customerList.get(i).getClassification());
+            myJsonObject.put("PersonToConnect",customerList.get(i).getPersonToConnect());
+            myJsonObject.put("Tel",customerList.get(i).getTel());
+            myJsonObject.put("TAXID",customerList.get(i).getTAXID());
+            myJsonObject.put("SaleAreaCode",customerList.get(i).getSaleAreaCode());
+            myJsonObject.put("Notes",customerList.get(i).getNotes());
+            myJsonObject.put("SalesRepCode",customerList.get(i).getSalesRepCode());
+            myJsonObject.put("CodeList",customerList.get(i).getCodeList());
+            myJsonObject.put("NotActive",customerList.get(i).getNotActive());
+            jsonArray.put(myJsonObject);
+
+            }
+
+            String url="http://toh.hadeya.net/api/TOHCustomers/AddTOHCustomers/"+repCode;
+            JSONObject JsonObject = new JSONObject();
+            JsonObject.put("",jsonArray);
+            RequestQueue queue = Volley.newRequestQueue(context);
+            JsonArrayRequest jobReq = new JsonArrayRequest(Request.Method.POST, url, jsonArray,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray jsonObject) {
+                            Toast.makeText(context, "Uploaded Done"+jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                            //update local
+                            updateDB(context);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(context, "Uploaded fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            queue.add(jobReq);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void  updateDB(Context context )
+    {
+        DataBaseHelper dataBaseHelper=new DataBaseHelper(context);
+        SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
+        String query="update customer set Flag=1 where Flag=0";
+        db.execSQL(query);
     }
 
 }

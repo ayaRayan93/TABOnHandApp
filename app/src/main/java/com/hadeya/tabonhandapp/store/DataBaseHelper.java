@@ -37,7 +37,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     }
+public static   void resetDataBase(SQLiteDatabase db)
+{
+    String clearDBQuery = "DELETE FROM "+AreaTable.AreaTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+ClassificationTable.ClassificationTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+CustomerTable.CustomerTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+CustomerInvoiceTable.CustomerInvoiceTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+InvoiceTable.InvoiceTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+InvoiceItemTable.InvoiceItemTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+ItemTable.ItemTable;
+    db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+ItemInvoiceTable.ItemInvoiceTable;
+    db.execSQL(clearDBQuery);
 
+}
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         CustomerTable.onUpgrade(db,oldVersion,newVersion);

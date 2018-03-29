@@ -36,7 +36,7 @@ import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 public class AddNewCustomer extends AppCompatActivity {
 
-    @BindView(R.id.Code)EditText Code;
+  //  @BindView(R.id.Code)EditText Code;
     @BindView(R.id.Name)EditText Name;
     @BindView(R.id.Address)EditText Address;
     @BindView(R.id.ContactPerson)EditText ContactPerson;
@@ -108,7 +108,7 @@ public class AddNewCustomer extends AppCompatActivity {
     }
     public void addNewCustomer()
     {
-        String code=Code.getText().toString();
+       // String code=Code.getText().toString();
         String name=Name.getText().toString();
         String address=Address.getText().toString();
         String contactPerson=ContactPerson.getText().toString();
@@ -116,11 +116,11 @@ public class AddNewCustomer extends AppCompatActivity {
         String taxNumber=TaxNumber.getText().toString();
         String classification=spinnerMap.get(spinnerClassification.getSelectedItemPosition());
         String area=spinnerMapArea.get(spinnerArea.getSelectedItemPosition());
-        Customer newCustomer=new Customer(code,name,address,classification,contactPerson,mobile,taxNumber,area);
+        Customer newCustomer=new Customer(name,address,classification,contactPerson,mobile,taxNumber,area);
 
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CustomerTable.CustomerCode, newCustomer.getCustomerCode());
+       // values.put(CustomerTable.CustomerCode, newCustomer.getCustomerCode());
         values.put(CustomerTable.CustName, newCustomer.getCustName());
         values.put(CustomerTable.StreetAra,newCustomer.getStreetAra());
         values.put(CustomerTable.Classification,newCustomer.getClassification());

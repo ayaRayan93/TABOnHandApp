@@ -14,8 +14,8 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String customerCode, String custName, String streetAra, String classification, String personToConnect, String tel, String TAXID, String saleAreaCode) {
-        CustomerCode = customerCode;
+    public Customer(String custName, String streetAra, String classification, String personToConnect, String tel, String TAXID, String saleAreaCode) {
+       // CustomerCode = customerCode;
         CustName = custName;
         StreetAra = streetAra;
         Classification = classification;

@@ -2,6 +2,7 @@ package com.hadeya.tabonhandapp.activities.customers;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -25,12 +26,15 @@ import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.store.CustomerContentProvider;
 import com.hadeya.tabonhandapp.store.CustomerTable;
+import com.hadeya.tabonhandapp.store.DataBaseHelper;
+import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
+import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
@@ -83,8 +87,14 @@ public class CustomerMainActivity extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadData();
+
                 uploade(getBaseContext(),"13007");
+
+                DataBaseHelper dataBaseHelper=new DataBaseHelper(getBaseContext());
+                SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
+                 resetDataBase(sqlDB);
+                downloadData();
+
             }
         });
 
@@ -178,7 +188,7 @@ public class CustomerMainActivity extends AppCompatActivity {
 
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
+       // values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
         values.put(CustomerTable.CustName, customer.getCustName());
         values.put(CustomerTable.StreetAra,customer.getStreetAra());
         values.put(CustomerTable.Classification,customer.getClassification());

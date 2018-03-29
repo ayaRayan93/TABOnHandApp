@@ -41,7 +41,7 @@ public class ReadDataFromDB {
     //basic data
     public static List<Customer> getAllCustomerForSalesPerson(Context context)
     {
-        String[] projection={CustomerTable.CustomerCode,
+        String[] projection={//CustomerTable.CustomerCode,
                 CustomerTable.CustName,
                 CustomerTable.StreetAra,
                 CustomerTable.Classification,
@@ -62,15 +62,15 @@ public class ReadDataFromDB {
         if (cursor.moveToFirst()) {
             do {
                 Customer customer = new Customer();
-                customer.setCustomerCode(cursor.getString(0));
-                customer.setCustName(cursor.getString(1));
-                customer.setStreetAra(cursor.getString(2));
-                customer.setClassification(cursor.getString(3));
-                customer.setPersonToConnect(cursor.getString(4));
-                customer.setTel(cursor.getString(5));
-                customer.setTAXID(cursor.getString(6));
-                customer.setSaleAreaCode(cursor.getString(7));
-                customer.setFlag(cursor.getString(8));
+               // customer.setCustomerCode(cursor.getString(0));
+                customer.setCustName(cursor.getString(0));
+                customer.setStreetAra(cursor.getString(1));
+                customer.setClassification(cursor.getString(2));
+                customer.setPersonToConnect(cursor.getString(3));
+                customer.setTel(cursor.getString(4));
+                customer.setTAXID(cursor.getString(5));
+                customer.setSaleAreaCode(cursor.getString(6));
+                customer.setFlag(cursor.getString(7));
 // Adding contact to list
                 customerList.add(customer);
             } while (cursor.moveToNext());
