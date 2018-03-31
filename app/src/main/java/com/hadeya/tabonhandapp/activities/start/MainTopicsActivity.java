@@ -19,6 +19,7 @@ import com.hadeya.tabonhandapp.store.CustomerContentProvider;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
+import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 
 /**
@@ -54,6 +55,8 @@ public class MainTopicsActivity  extends AppCompatActivity {
 
         DataBaseHelper dataBaseHelper=new DataBaseHelper(this);
         WriteDataToDB.mdatabase=dataBaseHelper;
+        SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
+        resetDataBase(sqlDB);
         downloadData();
         Button btn=(Button)findViewById(R.id.btn_BasicData);
         btn.setOnClickListener(new View.OnClickListener()

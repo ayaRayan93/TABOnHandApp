@@ -131,8 +131,8 @@ public class AddNewCustomer extends AppCompatActivity {
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        CustomerContentProvider moviesContentProvider=new CustomerContentProvider(this);
-        moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
+        CustomerContentProvider CustomersContentProvider=new CustomerContentProvider(this);
+        CustomersContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
 
     }
 

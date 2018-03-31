@@ -99,6 +99,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         });
 
 
+
         dataSet = new ArrayList<>();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
@@ -109,8 +110,8 @@ public class CustomerMainActivity extends AppCompatActivity {
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
         //noinspection ResourceAsColor
         mSwipeRefreshLayout.setColorScheme(
-                R.color.colorPrimaryDark, R.color.colorAccent,
-                R.color.colorAccent, R.color.colorPrimaryDark);
+                R.color.colorPrimaryDark, R.color.thirdColor,
+                R.color.thirdColor, R.color.colorPrimaryDark);
 
 
         mLayoutManager = new GridLayoutManager(this,1);
@@ -121,7 +122,16 @@ public class CustomerMainActivity extends AppCompatActivity {
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-        final EditText search=(EditText)findViewById(R.id.search);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+                    initiateRefresh(flag);
+
+            }
+        });
+        final EditText search=(EditText)findViewById(R.id.searchCustomers);
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -142,6 +152,8 @@ public class CustomerMainActivity extends AppCompatActivity {
         initiateRefresh(flag);
         //insertCustomersTolocalDB(dataSet);
     }
+
+
 
     private void filter(String text) {
         //new array list that will hold the filtered data
@@ -164,8 +176,8 @@ public class CustomerMainActivity extends AppCompatActivity {
     public  void initiateRefresh(int i)
     {
 
-        List<Customer> dataSet1= getAllCustomerForSalesPerson(this);
-        itemAdapter.filterList(dataSet1);
+        dataSet= getAllCustomerForSalesPerson(this);
+        itemAdapter.filterList(dataSet);
         onRefreshComplete();
 
     }

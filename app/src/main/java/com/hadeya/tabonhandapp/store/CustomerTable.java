@@ -10,7 +10,7 @@ public class CustomerTable {
     // Contacts table name
     public static final String CustomerTable ="customer" ;
     // Customer Table Columns names
-  //  public static final String CustomerCode ="CustomerCode" ;
+    public static final String ID ="ID" ;
     public static final String CustName ="CustName" ;
     public static final String StreetAra="StreetAra" ;
     public static final String Classification="classification" ;
@@ -22,12 +22,12 @@ public class CustomerTable {
     public static final String Flag="Flag" ;
 
     public static String CREATE_Database_TABLE = "CREATE TABLE " + CustomerTable + "("
-            //+ CustomerCode + " TEXT PRIMARY KEY,"
+            + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             +CustName+" TEXT,"
             +StreetAra+" TEXT,"
             +Classification+" TEXT,"
             +PersonToConnect+" TEXT,"
-            + Tel + " TEXT PRIMARY KEY,"
+            + Tel + " TEXT ,"
             + TAXID + " TEXT,"
             + SalesRepCode + " TEXT,"
             + Flag + " TEXT,"

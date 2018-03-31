@@ -90,7 +90,16 @@ public class CustomerInvoices extends AppCompatActivity {
         {
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        final EditText search=(EditText)findViewById(R.id.search);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+                initiateRefresh();
+
+            }
+        });
+        final EditText search=(EditText)findViewById(R.id.searchCustomerInvoice);
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,7 +117,7 @@ public class CustomerInvoices extends AppCompatActivity {
             }
         });
 
-        initiateRefresh(1);
+        initiateRefresh();
         //insertCustomersTolocalDB(dataSet);
     }
 
@@ -130,12 +139,17 @@ public class CustomerInvoices extends AppCompatActivity {
 
 
 
-    public  void initiateRefresh(int i)
+    public  void initiateRefresh()
     {
 
-        List<CustomerInvoice> dataSet1= getAllCustomerInvoice(this);
-        itemAdapter.filterList(dataSet1);
+        dataSet= getAllCustomerInvoice(this);
+        itemAdapter.filterList(dataSet);
+        onRefreshComplete();
 
+    }
+    private void onRefreshComplete()
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
 
     }
 }

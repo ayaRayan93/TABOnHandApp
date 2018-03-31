@@ -556,7 +556,7 @@ public class WriteDataToDB {
     {
         mdatabase=new DataBaseHelper(context);
         List<Customer> customerList=new ArrayList<>();
-        String[] projection={//CustomerTable.CustomerCode,
+        String[] projection={CustomerTable.ID,
                 CustomerTable.CustName,
                 CustomerTable.StreetAra,
                 CustomerTable.Classification,
@@ -577,14 +577,14 @@ public class WriteDataToDB {
             do {
                 Customer customer = new Customer();
                 //customer.setCustomerCode(cursor.getString(0));
-                customer.setCustName(cursor.getString(0));
-                customer.setStreetAra(cursor.getString(1));
-                customer.setClassification(cursor.getString(2));
-                customer.setPersonToConnect(cursor.getString(3));
-                customer.setTel(cursor.getString(4));
-                customer.setTAXID(cursor.getString(5));
-                customer.setSaleAreaCode(cursor.getString(6));
-                customer.setFlag(cursor.getString(7));
+                customer.setCustName(cursor.getString(1));
+                customer.setStreetAra(cursor.getString(2));
+                customer.setClassification(cursor.getString(3));
+                customer.setPersonToConnect(cursor.getString(4));
+                customer.setTel(cursor.getString(5));
+                customer.setTAXID(cursor.getString(6));
+                customer.setSaleAreaCode(cursor.getString(7));
+                customer.setFlag(cursor.getString(8));
 // Adding contact to list
                 customerList.add(customer);
                // uploadCustomer(customer,context,repCode);
@@ -660,16 +660,15 @@ public class WriteDataToDB {
             myJsonObject.put("TAXID",customerList.get(i).getTAXID());
             myJsonObject.put("SaleAreaCode",customerList.get(i).getSaleAreaCode());
             myJsonObject.put("Notes",customerList.get(i).getNotes());
-            myJsonObject.put("SalesRepCode",customerList.get(i).getSalesRepCode());
+            myJsonObject.put("SalesRepCode","13007");//ccustomerList.get(i).getSalesRepCode()+"*");
             myJsonObject.put("CodeList",customerList.get(i).getCodeList());
-            myJsonObject.put("NotActive",customerList.get(i).getNotActive());
+            myJsonObject.put("NotActive","false");//ccustomerList.get(i).getNotActive()+"*");
             jsonArray.put(myJsonObject);
 
             }
 
             String url="http://toh.hadeya.net/api/TOHCustomers/AddTOHCustomers/"+repCode;
-            JSONObject JsonObject = new JSONObject();
-            JsonObject.put("",jsonArray);
+
             RequestQueue queue = Volley.newRequestQueue(context);
             JsonArrayRequest jobReq = new JsonArrayRequest(Request.Method.POST, url, jsonArray,
                     new Response.Listener<JSONArray>() {
