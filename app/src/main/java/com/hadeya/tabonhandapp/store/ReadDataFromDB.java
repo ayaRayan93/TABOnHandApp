@@ -315,18 +315,20 @@ public class ReadDataFromDB {
         return invoiceList;
 
     }
-    public static List<User> getUser(String name,String pass)
+    public static List<User> LoginLocalUser(String name,String pass)
     {
         try {
 
-        String[] projection={UserTable.RepCode,
+        String[] projection={
                 UserTable.UserName,
                 UserTable.UserPassword,
+                UserTable.RepCode,
+                UserTable.LoginStatus,
         };
 
         List<User> userList = new ArrayList<>();
 // Select All Query
-        String selectQuery = "SELECT * FROM " + UserTable.UserTable+" where UserName="+name+"and UserPassword="+pass;
+        String selectQuery = "SELECT * FROM " + UserTable.UserTable;//ayaya+" where UserName='"+name+"' and UserPassword='"+pass+"'";
         UserContentProvider  userContentProvider=new UserContentProvider( WriteDataToDB.mdatabase);
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = userContentProvider.query(UserContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
@@ -336,7 +338,7 @@ public class ReadDataFromDB {
                 User user = new User();
                 user.setRepCodId(cursor.getString(0));
                 user.setUserName(cursor.getString(1));
-                user.setPassword(cursor.getString(1));
+                user.setPassword(cursor.getString(2));
 // Adding contact to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -351,7 +353,7 @@ public class ReadDataFromDB {
         }
 
     }
-    public static List<User> getUser()
+    public static List<User> getLoginUser()
     {
         try {
 
@@ -362,7 +364,7 @@ public class ReadDataFromDB {
 
             List<User> userList = new ArrayList<>();
 // Select All Query
-            String selectQuery = "SELECT * FROM " + UserTable.UserTable;
+            String selectQuery = "SELECT * FROM " + UserTable.UserTable+" where LoginStatus=1";
             UserContentProvider  userContentProvider=new UserContentProvider( WriteDataToDB.mdatabase);
             //SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = userContentProvider.query(UserContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
@@ -387,7 +389,20 @@ public class ReadDataFromDB {
         }
 
     }
+    public static void logout()
+    {
+        try {
 
+            String updateQuery = "update user set LoginStatus=0 where LoginStatus=1";
+            WriteDataToDB.mdatabase.db.execSQL(updateQuery);
+
+        }
+        catch(Exception e)
+        {
+
+        }
+
+    }
 
 
 }

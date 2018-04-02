@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.models.User;
+import com.hadeya.tabonhandapp.store.DataBaseHelper;
+import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import org.json.JSONObject;
 
@@ -29,8 +31,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.List;
 
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getUser;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.LoginLocalUser;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.StoreUser;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.addUser;
 
 public class LoginActivity extends Activity
@@ -63,10 +68,23 @@ public class LoginActivity extends Activity
                 password = Password.getText().toString();
             try {
 
-                 // PostUser postUser = new PostUser();
-                 // postUser.execute();
-                Intent main = new Intent("MainTopicsActivity");
-                startActivity(main);
+                DataBaseHelper dataBaseHelper=new DataBaseHelper(getBaseContext());
+                WriteDataToDB.mdatabase=dataBaseHelper;
+               /*User user=new User();
+                user.setRepCodId("11");
+                user.setPassword("123");
+                user.setUserName("aya");
+                addUser(user);*/
+                List<User> list=LoginLocalUser(userName,password);
+              if(list!=null)
+              {
+                  Intent main = new Intent("MainTopicsActivity");
+                  startActivity(main);
+              }
+              else
+              {
+                  StoreUser(userName,password);
+              }
 
             }
             catch(Exception e)
@@ -77,91 +95,7 @@ public class LoginActivity extends Activity
         });
     }
 
-    class PostUser extends AsyncTask<Object, Object, String>
-    {
-        @Override
-        protected String doInBackground(Object... params) {
-            String url = "http://toh.hadeya.net/Account/Login";
-            InputStream inputStream = null;
-            JSONObject json = null;
-            JSONObject jsonObject = null;
-            HttpURLConnection httpcon;
-            try {
-                json = new JSONObject();
-                json.put("UserName", userName);
-                json.put("UserPassword", password);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            data = json.toString();
 
-            try {
-//Connect
-                httpcon = (HttpURLConnection) ((new URL(url).openConnection()));
-                httpcon.setDoOutput(true);
-                httpcon.setRequestProperty("Content-Type", "application/json");
-                httpcon.setRequestProperty("Accept", "application/json");
-                httpcon.setRequestMethod("POST");
-                httpcon.connect();
-
-//Write
-                OutputStream os = httpcon.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write(String.valueOf(data));
-                writer.close();
-                os.close();
-
-               // InputStream response1 = httpcon.getInputStream();
-                //status = httpcon.getResponseCode();
-
-//Read
-                BufferedReader br = new BufferedReader(new InputStreamReader(httpcon.getInputStream(), "UTF-8"));
-
-                String line = null;
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                br.close();
-                result = sb.toString();
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(context, "UserName or Password incorrect", Toast.LENGTH_SHORT).show();
-            }
-            return result;
-        }
-        @Override
-        protected void onPostExecute(String s) {
-            try
-            {
-                JSONObject json = new JSONObject(result);
-
-                RepCodeId = json.getInt("RepCodId");
-                for (int i = 0 ; i <json.length();i++)
-                {
-                    LoggedUserName = json.getJSONObject("TohUser").getString("UserName");
-                    LoggedPassword = json.getJSONObject("TohUser").getString("UserPassword");
-                    LoggedUserId = json.getJSONObject("TohUser").getInt("Id");
-                }
-
-                User user = new User();
-                user.setRepCodId(String.valueOf(LoggedUserId));
-                user.setUserName(LoggedUserName);
-                user.setPassword(LoggedPassword);
-
-                //dataSet.add(customer);
-                addUser(user);
-                startActivity(new Intent(LoginActivity.this ,  MainActivity.class));
-                LoginActivity.this.finish();
-            } catch (Exception e) {
-            }
-        }
-    }
 
 
 }

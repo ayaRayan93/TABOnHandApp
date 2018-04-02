@@ -35,6 +35,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         InvoiceTable.onCreate(db);
         InvoiceItemTable.onCreate(db);
 
+        //
+        UserTable.onCreate(db);
 
     }
 public static   void resetDataBase(SQLiteDatabase db)
@@ -55,7 +57,8 @@ public static   void resetDataBase(SQLiteDatabase db)
     db.execSQL(clearDBQuery);
     clearDBQuery = "DELETE FROM "+ItemInvoiceTable.ItemInvoiceTable;
     db.execSQL(clearDBQuery);
-
+    clearDBQuery = "DELETE FROM "+UserTable.UserTable;
+    db.execSQL(clearDBQuery);
 }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -65,6 +68,7 @@ public static   void resetDataBase(SQLiteDatabase db)
         ItemTable.onUpgrade(db,oldVersion,newVersion);
         CustomerInvoiceTable.onUpgrade(db,oldVersion,newVersion);
         ItemInvoiceTable.onUpgrade(db,oldVersion,newVersion);
+        UserTable.onUpgrade(db,oldVersion,newVersion);
 
         InvoiceTable.onUpgrade(db,oldVersion,newVersion);
         InvoiceItemTable.onUpgrade(db,oldVersion,newVersion);

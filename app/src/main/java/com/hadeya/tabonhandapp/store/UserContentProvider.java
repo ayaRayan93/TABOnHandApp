@@ -28,7 +28,7 @@ public class UserContentProvider extends ContentProvider {
     }
     public UserContentProvider(Context context) {
         this.context = context;
-        //database = new DataBaseHelper(context);
+        database = new DataBaseHelper(context);
     }
 
     private static final int TODOS = 12;

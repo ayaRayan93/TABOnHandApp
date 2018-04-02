@@ -449,7 +449,8 @@ public class WriteDataToDB {
         AppController.getInstance().addToRequestQueue(strReq);
 
     }
-    public static void StoreUser()
+    //store new user
+    public static void StoreUser(String name,String pass)
     {
         // final List<Customer> dataSet=new ArrayList<>();
         String Url="http://toh.hadeya.net/api/Account";
@@ -537,15 +538,15 @@ public class WriteDataToDB {
 
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.UserName, user.getUserName());
         values.put(UserTable.UserPassword, user.getPassword());
+        values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.LoginStatus, "1");
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        AreaContentProvider areaContentProvider=new AreaContentProvider(mdatabase);
-        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
+        UserContentProvider userContentProvider=new UserContentProvider(mdatabase);
+        userContentProvider.insert(UserContentProvider.CONTENT_URI_Add,values);
 
     }
 
