@@ -1,6 +1,8 @@
 package com.hadeya.tabonhandapp.activities.customers;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.hadeya.tabonhandapp.R;
@@ -29,12 +32,13 @@ import butterknife.BindView;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerInvoice;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomerInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 /**
  * Created by AyaAli on 21/03/2018.
  */
 
-public class CustomerInvoices extends AppCompatActivity {
+public class CustomerInvoices extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.recyclerViewInvoiceCustomer)
     RecyclerView mRecyclerView;
@@ -66,7 +70,7 @@ public class CustomerInvoices extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         dataSet = new ArrayList<>();
@@ -151,5 +155,20 @@ public class CustomerInvoices extends AppCompatActivity {
     {
         mSwipeRefreshLayout.setRefreshing(false);
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
+
+            break;
+        }
+        return true;
     }
 }

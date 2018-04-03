@@ -87,7 +87,11 @@ public class MainTopicsActivity  extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
+            {
                 logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
 
                 break;
         }

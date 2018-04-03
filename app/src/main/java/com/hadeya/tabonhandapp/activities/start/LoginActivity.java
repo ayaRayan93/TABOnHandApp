@@ -80,6 +80,7 @@ public class LoginActivity extends Activity
               {
                   Intent main = new Intent("MainTopicsActivity");
                   startActivity(main);
+                  finish();
               }
               else
               {
@@ -87,6 +88,7 @@ public class LoginActivity extends Activity
                       StoreUser(userName,password);
                       Intent main = new Intent("MainTopicsActivity");
                       startActivity(main);
+                      finish();
                   }
                   catch (Exception e)
                   {}

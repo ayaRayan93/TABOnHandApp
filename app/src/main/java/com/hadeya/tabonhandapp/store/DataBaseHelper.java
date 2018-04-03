@@ -34,7 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //
         InvoiceTable.onCreate(db);
         InvoiceItemTable.onCreate(db);
-
+        ReceiptTable.onCreate(db);
         //
         UserTable.onCreate(db);
 

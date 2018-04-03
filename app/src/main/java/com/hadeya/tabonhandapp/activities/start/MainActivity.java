@@ -3,11 +3,13 @@ package com.hadeya.tabonhandapp.activities.start;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,7 +18,9 @@ import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.customers.CustomerMainActivity;
 import com.hadeya.tabonhandapp.activities.items.ItemsActivity;
 
-public class MainActivity extends AppCompatActivity
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 
 {
     Button btn_customers , btn_items;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-       // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
     }
     public void SetUp()
     {
@@ -63,4 +67,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
+
+            break;
+        }
+        return true;
+    }
 }

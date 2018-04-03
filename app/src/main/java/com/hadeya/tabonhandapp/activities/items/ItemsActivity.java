@@ -1,7 +1,9 @@
 package com.hadeya.tabonhandapp.activities.items;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.EditText;
 
@@ -29,13 +32,14 @@ import butterknife.BindView;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.StoreItems;
 
 /**
  * Created by AyaAli on 19/03/2018.
  */
 
-public class ItemsActivity extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.recyclerViewItem)
     RecyclerView mRecyclerView;
@@ -67,7 +71,7 @@ public class ItemsActivity extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         dataSet = new ArrayList<>();
@@ -152,5 +156,20 @@ public class ItemsActivity extends AppCompatActivity {
     {
         mSwipeRefreshLayout.setRefreshing(false);
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
+
+            break;
+        }
+        return true;
     }
 }

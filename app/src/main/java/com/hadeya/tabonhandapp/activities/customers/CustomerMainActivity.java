@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,10 +38,11 @@ import butterknife.BindView;
 
 import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
-public class CustomerMainActivity extends AppCompatActivity {
+public class CustomerMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -72,7 +75,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //downloadData();//for first time do load to database
         ImageButton AddNew=(ImageButton)findViewById(R.id.AddNew);
@@ -214,5 +217,20 @@ public class CustomerMainActivity extends AppCompatActivity {
         CustomerContentProvider moviesContentProvider=new CustomerContentProvider(this);
         moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
+
+            break;
+        }
+        return true;
     }
 }
