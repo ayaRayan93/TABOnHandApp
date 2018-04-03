@@ -452,27 +452,27 @@ public class WriteDataToDB {
     //store new user
     public static void StoreUser(String name,String pass)
     {
+        try {
         // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/Account";
+        JSONObject myJsonObject = new JSONObject();
+
+            myJsonObject.put("UserName",name);
+            myJsonObject.put("UserPassword",pass);
+
+        String Url="http://toh.hadeya.net/api/Account/Login";
 
 
         /////////////connection//////////
-        StringRequest strReq = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>()
+        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST, Url,myJsonObject ,new Response.Listener<JSONObject>()
         {
             @Override
-            public void onResponse(String response)
+            public void onResponse(JSONObject jsonObject)
             {
-                Log.d("response", response);
-              /*  if (dataSet != null){
-                    dataSet.clear();
-
-                }*/
-                Iterator iterator = Parser.parseStringToJson(response).iterator();
-                while (iterator.hasNext()){
-                    User user = (User) iterator.next();
-                    //dataSet.add(customer);
+              String response=jsonObject.toString();
+                User user  = Parser.parseUser(response);
+                   //dataSet.add(customer);
                     addUser(user);
-                }
+
             }
         }, new Response.ErrorListener() {
 
@@ -485,6 +485,9 @@ public class WriteDataToDB {
 
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

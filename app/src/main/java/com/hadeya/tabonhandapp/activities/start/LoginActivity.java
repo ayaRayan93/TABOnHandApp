@@ -83,7 +83,13 @@ public class LoginActivity extends Activity
               }
               else
               {
-                  StoreUser(userName,password);
+                  try {
+                      StoreUser(userName,password);
+                      Intent main = new Intent("MainTopicsActivity");
+                      startActivity(main);
+                  }
+                  catch (Exception e)
+                  {}
               }
 
             }
