@@ -159,7 +159,7 @@
                         android:background="#fff"
                         android:textColor="@color/textColor1"
                         android:hint="Notes"
-                        android:id="@+id/Mobile"
+                        android:id="@+id/notes"
                         />
                 </LinearLayout>
                 <LinearLayout

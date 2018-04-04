@@ -37,7 +37,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     }
-public static   void resetDataBase(SQLiteDatabase db)
+
+public static  void resetDataBase(SQLiteDatabase db)
 {
     String clearDBQuery = "DELETE FROM "+AreaTable.AreaTable;
     db.execSQL(clearDBQuery);

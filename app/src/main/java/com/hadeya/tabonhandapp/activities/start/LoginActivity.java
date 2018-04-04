@@ -156,8 +156,10 @@ public class LoginActivity extends Activity
 
                 //dataSet.add(customer);
                 addUser(user);
-                startActivity(new Intent(LoginActivity.this ,  MainActivity.class));
-                LoginActivity.this.finish();
+                    startActivity(new Intent(LoginActivity.this ,  MainActivity.class));
+                    LoginActivity.this.finish();
+
+
             } catch (Exception e) {
             }
         }

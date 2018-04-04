@@ -6,7 +6,21 @@ package com.hadeya.tabonhandapp.models;
 
 public class Invoice {
 
-    String Id,InvoiceTypeId,InvoiceNo,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
+    String Id,InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
+
+    public Invoice() {
+    }
+
+    public Invoice(String invoiceTypeId, String invoiceNo, String InvoiceDate, String custmerId, String payementTypeId, String notes, String refNO, String repCodeId) {
+        InvoiceTypeId = invoiceTypeId;
+        InvoiceNo = invoiceNo;
+        InvoiceDate=InvoiceDate;
+        CustmerId = custmerId;
+        PayementTypeId = payementTypeId;
+        Notes = notes;
+        RefNO = refNO;
+        RepCodeId = repCodeId;
+    }
 
     public String getId() {
         return Id;
@@ -30,6 +44,14 @@ public class Invoice {
 
     public void setInvoiceNo(String invoiceNo) {
         InvoiceNo = invoiceNo;
+    }
+
+    public String getInvoiceDate() {
+        return InvoiceDate;
+    }
+
+    public void setInvoiceDate(String invoiceDate) {
+        InvoiceDate = invoiceDate;
     }
 
     public String getCustmerId() {

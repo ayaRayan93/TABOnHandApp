@@ -2,6 +2,7 @@ package com.hadeya.tabonhandapp.store;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -10,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 /**
  * Created by AyaAli on 16/03/2018.
@@ -29,11 +31,11 @@ public class InvoiceContentProvider extends ContentProvider {
     }
     public InvoiceContentProvider(Context context) {
         this.context = context;
-        //database = new DataBaseHelper(context);
+        database = new DataBaseHelper(context);
     }
 
-    private static final int TODOS = 12;
-    private static final int TODO_ID = 22;
+    public static final int TODOS = 12;
+    public static final int TODO_ID = 22;
 
     private static final String AUTHORITY = "com.example.ayaali.customers.store";
 
@@ -58,16 +60,16 @@ public class InvoiceContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         database = new DataBaseHelper(context);
-        //database = CustomerContentProvider.database;
         return false;
     }
 
-    @Nullable
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // Uisng SQLiteQueryBuilder instead of query() method
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-
+        SQLiteDatabase sqlDB=database.getReadableDatabase();
+        Cursor cursor;
         // check if the caller has requested a column which does not exists
         // checkColumns(projection);
 
@@ -77,18 +79,24 @@ public class InvoiceContentProvider extends ContentProvider {
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
             case TODOS:
-
+                if (TextUtils.isEmpty(sortOrder))
+                    sortOrder = "_ID ASC";
+                cursor=sqlDB.query(InvoiceTable.InvoiceTable,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             case TODO_ID:
+                selection = InvoiceTable.Id + "=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor=sqlDB.query(InvoiceTable.InvoiceTable,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             default:
+                cursor=null;
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
 
-        SQLiteDatabase db = database.getWritableDatabase();
+
         // Cursor cursor = queryBuilder.query(db, projection, selection,
         //       selectionArgs, null, null, sortOrder);
-        Cursor cursor = db.rawQuery(selection, null);
+       // Cursor cursor = sqlDB.rawQuery(selection, null);
         // make sure that potential listeners are getting notified
 //        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
@@ -101,7 +109,6 @@ public class InvoiceContentProvider extends ContentProvider {
         return null;
     }
 
-    @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         int uriType = sURIMatcher.match(uri);

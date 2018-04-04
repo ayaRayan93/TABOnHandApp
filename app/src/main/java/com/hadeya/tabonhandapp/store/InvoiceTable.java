@@ -11,9 +11,10 @@ public class InvoiceTable {
     // Contacts table name
     public static final String InvoiceTable ="invoice" ;
     // Customer Table Columns names
-    public static final String Id ="Id" ;
+    public static final String Id ="Id AUTOINCREMENT NOT NULL" ;
     public static final String InvoiceTypeId ="InvoiceTypeId" ;
     public static final String InvoiceNo ="InvoiceNo" ;
+    public static final String InvoiceDate ="InvoiceDate" ;
     public static final String CustmerId ="CustmerId" ;
     public static final String PayementTypeId ="PayementTypeId" ;
     public static final String Notes ="Notes" ;
@@ -24,6 +25,7 @@ public class InvoiceTable {
             + Id + " TEXT PRIMARY KEY,"
             + InvoiceTypeId + " TEXT,"
             + InvoiceNo + " TEXT,"
+            + InvoiceDate + " TEXT,"
             + CustmerId + " TEXT,"
             + PayementTypeId + " TEXT,"
             + RefNO + " TEXT,"

@@ -2,6 +2,7 @@ package com.hadeya.tabonhandapp.store;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -49,9 +50,9 @@ public class CustomerContentProvider extends ContentProvider {
             + "/customer";
 
 
-    private static final UriMatcher sURIMatcher = new UriMatcher(
-            UriMatcher.NO_MATCH);
-    static {
+    private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    static
+    {
         sURIMatcher.addURI(AUTHORITY, BASE_PATH, TODOS);
         sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", TODO_ID);
     }
@@ -60,7 +61,7 @@ public class CustomerContentProvider extends ContentProvider {
     public boolean onCreate() {
         database = new DataBaseHelper(context);
 
-        return false;
+        return true;
     }
 
     @Nullable
@@ -74,22 +75,29 @@ public class CustomerContentProvider extends ContentProvider {
 
         // Set the table
         queryBuilder.setTables(CustomerTable.CustomerTable);
-
+       // SQLiteDatabase sqlDB=database.getReadableDatabase();
+       // Cursor cursor;
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
             case TODOS:
-
+             /*   if (TextUtils.isEmpty(sortOrder))
+                    sortOrder = "_ID ASC";
+                cursor=sqlDB.query(CustomerTable.CustomerTable,projection,selection,selectionArgs,null,null,sortOrder);*/
                 break;
             case TODO_ID:
+                /*selection = CustomerTable.ID + "=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor=sqlDB.query(CustomerTable.CustomerTable,projection,selection,selectionArgs,null,null,sortOrder);*/
                 break;
             default:
+               // cursor=null;
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
 
-        SQLiteDatabase db = database.getWritableDatabase();
+          SQLiteDatabase db = database.getWritableDatabase();
         // Cursor cursor = queryBuilder.query(db, projection, selection,
         //       selectionArgs, null, null, sortOrder);
-        Cursor cursor = db.rawQuery(selection, null);
+         Cursor cursor = db.rawQuery(selection, null);
         // make sure that potential listeners are getting notified
 //        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 

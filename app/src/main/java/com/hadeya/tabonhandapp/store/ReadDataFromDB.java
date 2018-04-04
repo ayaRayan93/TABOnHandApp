@@ -49,7 +49,7 @@ public class ReadDataFromDB {
                 CustomerTable.Tel,
                 CustomerTable.TAXID,
                 CustomerTable.SaleAreaCode,
-                CustomerTable.Flag,
+                CustomerTable.Flag
         };
 
         List<Customer> customerList = new ArrayList<>();

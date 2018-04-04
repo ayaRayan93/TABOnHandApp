@@ -13,7 +13,6 @@
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activities.start.StarterActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -32,26 +31,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.start.MainTopicsActivity"
+        <activity
+            android:name=".activities.start.MainTopicsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="MainTopicsActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activities.start.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-        <intent-filter>
-            <action android:name="MainActivity" />
+            <intent-filter>
+                <action android:name="MainActivity" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
-
-
         <activity
             android:name=".activities.customers.CustomerMainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -79,63 +76,61 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activities.items.ItemsActivity"
+        <activity
+            android:name=".activities.items.ItemsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="ItemsActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activities.items.ItemsInvoices"
+        <activity
+            android:name=".activities.items.ItemsInvoices"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="ItemsInvoices" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-
-
-        <activity android:name=".activities.transaction.TransactionMain"
+        <activity
+            android:name=".activities.transaction.TransactionMain"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="TransactionMain" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activities.transaction.Receipt"
+        <activity
+            android:name=".activities.transaction.Receipt"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="Receipt" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activities.transaction.invoices.AddInvoice"
+        <activity
+            android:name=".activities.transaction.invoices.AddInvoice"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="AddInvoice" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activities.transaction.transfer.Transfer"
+        <activity
+            android:name=".activities.transaction.transfer.Transfer"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="Transfer" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
+
     </application>
 
 </manifest>
