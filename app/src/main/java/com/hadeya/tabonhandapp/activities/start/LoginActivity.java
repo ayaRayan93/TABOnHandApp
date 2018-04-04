@@ -75,7 +75,7 @@ public class LoginActivity extends Activity
                 user.setPassword("123");
                 user.setUserName("aya");
                 addUser(user);*/
-               if(userName!=""&&password!="") {
+               if(!userName.isEmpty()&&!password.isEmpty()) {
                    List<User> list = LoginLocalUser(userName, password);
                    if (list != null) {
                        Intent main = new Intent("MainTopicsActivity");
@@ -90,6 +90,10 @@ public class LoginActivity extends Activity
                        } catch (Exception e) {
                        }
                    }
+               }
+               else
+               {
+                   Toast.makeText(context, "Enter UserName and Password ", Toast.LENGTH_SHORT).show();
                }
                 }
                 catch(Exception e)
