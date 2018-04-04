@@ -100,6 +100,9 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         public void onClick (View v){
         addNewInvoice();
         Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
+        Intent main = new Intent("AddItemsInvoice");
+       // main.putExtra("searchWord",searchResult);
+        startActivity(main);
     }
     }
 
@@ -137,7 +140,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     for(int i = 0;i<allCustomers.size();i++)
 
     {
-        spinnerCustomersMap.put(i, allCustomers.get(i).getID());
+        spinnerCustomersMap.put(i, allCustomers.get(i).getId());
         customersArray[i] = allCustomers.get(i).getCustName();
     }
 

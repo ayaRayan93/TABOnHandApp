@@ -103,10 +103,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".activities.transaction.AddReceipt"
-
+        <activity
+            android:name=".activities.transaction.AddReceipt"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="Receipt" />
@@ -132,7 +130,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.transaction.invoices.AddItemsInvoice">
+            <intent-filter>
+                <action android:name="AddItemsInvoice" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.transaction.invoices.InvoiceItemsList"></activity>
     </application>
 
 </manifest>

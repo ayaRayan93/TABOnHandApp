@@ -45,7 +45,7 @@ public class AddReceipt extends AppCompatActivity implements NavigationView.OnNa
     @BindView(R.id.receiptno)EditText receiptno;
     @BindView(R.id.receiptDate)EditText receiptDate;
     @BindView(R.id.value3)EditText value3;
-    @BindView(R.id.notes)EditText Notes;
+    @BindView(R.id.Notes)EditText Notes;
     @BindView(R.id.refno)EditText refno;
 
 
@@ -90,15 +90,15 @@ public class AddReceipt extends AppCompatActivity implements NavigationView.OnNa
         });
 
 
-       // dataClass= getAllCustomerClassification();
+        // dataClass= getAllCustomerClassification();
 
         String[] spinnerArray = new String[2];
         spinnerMapType = new HashMap<Integer, String>();
 
-            spinnerMapType.put(0,"1");
-            spinnerArray[0] = "Check";
-            spinnerMapType.put(1,"2");
-            spinnerArray[1] = "Cash";
+        spinnerMapType.put(0,"1");
+        spinnerArray[0] = "Check";
+        spinnerMapType.put(1,"2");
+        spinnerArray[1] = "Cash";
 
         ArrayAdapter<String> adapter =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -110,7 +110,7 @@ public class AddReceipt extends AppCompatActivity implements NavigationView.OnNa
         spinnerMapCustomer = new HashMap<Integer, String>();
         for (int i = 0; i < dataCustomer.size(); i++)
         {
-            spinnerMapCustomer.put(i,dataCustomer.get(i).getID());
+            spinnerMapCustomer.put(i,dataCustomer.get(i).getId());
             spinnerArrayArea[i] = dataCustomer.get(i).getCustName();
         }
         ArrayAdapter<String>  adapter1 =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, spinnerArrayArea);
@@ -121,7 +121,7 @@ public class AddReceipt extends AppCompatActivity implements NavigationView.OnNa
     public void addNewReceipt()
     {
         // String code=Code.getText().toString();
-       Receipt receipt=new Receipt();
+        Receipt receipt=new Receipt();
         receipt.setRecNo(receiptno.getText().toString());
         receipt.setRecDate(receiptDate.getText().toString());
         receipt.setRecieptTypeId(spinnerMapType.get(type.getSelectedItemPosition()));

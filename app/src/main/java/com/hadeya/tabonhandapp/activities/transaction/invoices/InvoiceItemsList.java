@@ -3,6 +3,8 @@ package com.hadeya.tabonhandapp.activities.transaction.invoices;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.hadeya.tabonhandapp.R;
+
 public class InvoiceItemsList extends AppCompatActivity {
 
     @Override

@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/activity14_add_item_to_invoice"
+        layout="@layout/activity15_invoice_items_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
