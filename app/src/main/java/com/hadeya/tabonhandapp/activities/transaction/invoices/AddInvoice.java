@@ -100,7 +100,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         public void onClick (View v){
         addNewInvoice();
         Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
-        Intent main = new Intent("AddItemsInvoice");
+        Intent main = new Intent("InvoiceItemsList");
        // main.putExtra("searchWord",searchResult);
         startActivity(main);
     }

@@ -75,25 +75,22 @@ public class LoginActivity extends Activity
                 user.setPassword("123");
                 user.setUserName("aya");
                 addUser(user);*/
-                    List<User> list=LoginLocalUser(userName,password);
-                    if(list!=null)
-                    {
-                        Intent main = new Intent("MainTopicsActivity");
-                        startActivity(main);
-                        finish();
-                    }
-                    else
-                    {
-                        try {
-                            StoreUser(userName,password);
-                            Intent main = new Intent("MainTopicsActivity");
-                            startActivity(main);
-                            finish();
-                        }
-                        catch (Exception e)
-                        {}
-                    }
-
+               if(userName!=""&&password!="") {
+                   List<User> list = LoginLocalUser(userName, password);
+                   if (list != null) {
+                       Intent main = new Intent("MainTopicsActivity");
+                       startActivity(main);
+                       finish();
+                   } else {
+                       try {
+                           StoreUser(userName, password);
+                           Intent main = new Intent("MainTopicsActivity");
+                           startActivity(main);
+                           finish();
+                       } catch (Exception e) {
+                       }
+                   }
+               }
                 }
                 catch(Exception e)
                 {

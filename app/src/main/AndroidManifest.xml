@@ -130,14 +130,30 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.transaction.invoices.AddItemsInvoice">
+        <activity android:name=".activities.transaction.invoices.AddItemsInvoice"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="AddItemsInvoice" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.transaction.invoices.InvoiceItemsList"></activity>
+        <activity android:name=".activities.transaction.invoices.InvoiceItemsList"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="InvoiceItemsList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.transaction.invoices.ItemList"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="ItemList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
