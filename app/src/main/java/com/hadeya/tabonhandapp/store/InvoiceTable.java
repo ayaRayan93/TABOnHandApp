@@ -11,7 +11,7 @@ public class InvoiceTable {
     // Contacts table name
     public static final String InvoiceTable ="invoice" ;
     // Customer Table Columns names
-    public static final String Id ="Id AUTOINCREMENT NOT NULL" ;
+    public static final String Id ="Id" ;
     public static final String InvoiceTypeId ="InvoiceTypeId" ;
     public static final String InvoiceNo ="InvoiceNo" ;
     public static final String InvoiceDate ="InvoiceDate" ;
@@ -22,7 +22,7 @@ public class InvoiceTable {
     public static final String RepCodeId ="RepCodeId" ;
 
     public static String CREATE_Database_TABLE = "CREATE TABLE " + InvoiceTable + "("
-            + Id + " TEXT PRIMARY KEY,"
+            + Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + InvoiceTypeId + " TEXT,"
             + InvoiceNo + " TEXT,"
             + InvoiceDate + " TEXT,"

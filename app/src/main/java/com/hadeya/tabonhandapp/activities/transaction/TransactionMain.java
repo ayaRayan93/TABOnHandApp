@@ -2,12 +2,14 @@ package com.hadeya.tabonhandapp.activities.transaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,13 +17,14 @@ import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 
 /**
  * Created by AyaAli on 27/03/2018.
  */
 
-public class TransactionMain  extends AppCompatActivity {
+public class TransactionMain  extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     @Override
@@ -44,7 +47,7 @@ public class TransactionMain  extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         // navigationView.setBackgroundResource(R.color.customColor);
         // navigationView.setItemTextColor(getColorStateList(11));
-        // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //CustomerContentProvider c=new CustomerContentProvider(this);
 
@@ -78,5 +81,20 @@ public class TransactionMain  extends AppCompatActivity {
                 startActivity(main);
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
+
+            break;
+        }
+        return true;
     }
 }

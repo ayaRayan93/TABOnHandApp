@@ -449,29 +449,30 @@ public class WriteDataToDB {
         AppController.getInstance().addToRequestQueue(strReq);
 
     }
-    public static void StoreUser()
+    //store new user
+    public static void StoreUser(String name,String pass)
     {
+        try {
         // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/Account";
+        JSONObject myJsonObject = new JSONObject();
+
+            myJsonObject.put("UserName",name);
+            myJsonObject.put("UserPassword",pass);
+
+        String Url="http://toh.hadeya.net/api/Account/Login";
 
 
         /////////////connection//////////
-        StringRequest strReq = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>()
+        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST, Url,myJsonObject ,new Response.Listener<JSONObject>()
         {
             @Override
-            public void onResponse(String response)
+            public void onResponse(JSONObject jsonObject)
             {
-                Log.d("response", response);
-              /*  if (dataSet != null){
-                    dataSet.clear();
-
-                }*/
-                Iterator iterator = Parser.parseStringToJson(response).iterator();
-                while (iterator.hasNext()){
-                    User user = (User) iterator.next();
-                    //dataSet.add(customer);
+              String response=jsonObject.toString();
+                User user  = Parser.parseUser(response);
+                   //dataSet.add(customer);
                     addUser(user);
-                }
+
             }
         }, new Response.ErrorListener() {
 
@@ -484,6 +485,9 @@ public class WriteDataToDB {
 
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -537,15 +541,15 @@ public class WriteDataToDB {
 
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.UserName, user.getUserName());
         values.put(UserTable.UserPassword, user.getPassword());
+        values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.LoginStatus, "1");
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
-        AreaContentProvider areaContentProvider=new AreaContentProvider(mdatabase);
-        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
+        UserContentProvider userContentProvider=new UserContentProvider(mdatabase);
+        userContentProvider.insert(UserContentProvider.CONTENT_URI_Add,values);
 
     }
 

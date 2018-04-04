@@ -103,8 +103,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.transaction.Receipt"
+
+
+        <activity android:name=".activities.transaction.AddReceipt"
+
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="Receipt" />

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.hadeya.tabonhandapp.R;
 
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getUser;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 
 public class StarterActivity extends AppCompatActivity {
 
@@ -27,15 +27,14 @@ public class StarterActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 finally {
-                    if(getUser()==null) {
-                        Intent main = new Intent("login");
+                    if(getLoginUser()!=null) {
+                        Intent main = new Intent("MainTopicsActivity");
                         startActivity(main);
                     }
                     else
                     {
-                        Intent main = new Intent("MainActivity");
+                        Intent main = new Intent("login");
                         startActivity(main);
-
                     }
                 }
             }

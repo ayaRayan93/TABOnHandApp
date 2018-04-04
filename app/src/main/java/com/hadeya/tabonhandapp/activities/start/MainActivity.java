@@ -3,11 +3,13 @@ package com.hadeya.tabonhandapp.activities.start;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,7 +18,9 @@ import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.customers.CustomerMainActivity;
 import com.hadeya.tabonhandapp.activities.items.ItemsActivity;
 
-public class MainActivity extends AppCompatActivity
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 
 {
     Button btn_customers , btn_items;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-       // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
     }
     public void SetUp()
     {
@@ -46,8 +50,8 @@ public class MainActivity extends AppCompatActivity
         btn_customers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startActivity(new Intent(MainActivity.this,CustomerMainActivity.class));
-               // MainActivity.this.finish();
+                startActivity(new Intent(MainActivity.this,CustomerMainActivity.class));
+                // MainActivity.this.finish();
             }
         });
 
@@ -56,23 +60,25 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,ItemsActivity.class));
-               // MainActivity.this.finish();
+                // MainActivity.this.finish();
             }
         });
 
 
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            this.finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     @Override
-    public void onBackPressed()
-    { MainActivity.this.finish(); }
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
+            }
+
+            break;
+        }
+        return true;
+    }
 }

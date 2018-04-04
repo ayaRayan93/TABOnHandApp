@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.hadeya.tabonhandapp.store.UserTable.UserName;
+
 /**
  * Created by AyaAli on 05/03/2018.
  */
@@ -352,29 +354,25 @@ public class Parser {
     }
 
 
-    public static List<User> parseUser(String data) {
-        List<User> modelUser;
+    public static User parseUser(String data) {
+        User modelUser;
 
         try {
-            JSONArray jsonArray = new JSONArray(data);
-            modelUser = new ArrayList<>();
+            JSONObject jsonObject = new JSONObject(data);
+            String RepCodId = jsonObject.optString("RepCodId");
+            JSONArray jsonArray=jsonObject.optJSONArray("TohUser");
 
+            modelUser = new User();
+            modelUser.setRepCodId(RepCodId);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
-                String RepCodId = employeeJsonObject.optString("RepCodId");
                 String UserName =employeeJsonObject.optString("UserName");
-                String Password =employeeJsonObject.optString("Password");
-
-                User user = new User();
-                user.setRepCodId(RepCodId);
-                user.setUserName(UserName);
-                user.setPassword(Password);
-
-                modelUser.add(user);
-
-
-
+                String Password =employeeJsonObject.optString("UserPassword");
+                modelUser.setUserName(UserName);
+                modelUser.setPassword(Password);
             }
+
+
 
             return modelUser;
 

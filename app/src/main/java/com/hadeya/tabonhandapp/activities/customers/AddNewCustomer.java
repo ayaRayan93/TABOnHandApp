@@ -1,12 +1,15 @@
 package com.hadeya.tabonhandapp.activities.customers;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,9 +35,10 @@ import butterknife.ButterKnife;
 
 ;import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerArea;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerClassification;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
-public class AddNewCustomer extends AppCompatActivity {
+public class AddNewCustomer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
   //  @BindView(R.id.Code)EditText Code;
     @BindView(R.id.Name)EditText Name;
@@ -67,7 +71,7 @@ public class AddNewCustomer extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
        ButterKnife.bind(this);
         Button addCustomer=(Button)findViewById(R.id.save);
@@ -137,4 +141,19 @@ public class AddNewCustomer extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+          switch (item.getItemId()) {
+                case R.id.logout:
+                {
+                    logout();
+                    Intent main = new Intent("login");
+                    startActivity(main);
+                }
+
+                break;
+            }
+            return true;
+
+    }
 }

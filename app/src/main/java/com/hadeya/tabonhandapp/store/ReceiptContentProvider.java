@@ -12,37 +12,41 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 /**
- * Created by AyaAli on 15/03/2018.
+ * Created by AyaAli on 03/04/2018.
  */
 
-public class UserContentProvider extends ContentProvider {
+public class ReceiptContentProvider extends ContentProvider {
     // database
-    private DataBaseHelper database;//=CustomerContentProvider.database;
+    DataBaseHelper database;
     private Context context;
     // used for the UriMacher
-    public UserContentProvider() {
-
-    }
-    public UserContentProvider(DataBaseHelper database) {
+    public ReceiptContentProvider(DataBaseHelper database) {
         this.database=database;
     }
-    public UserContentProvider(Context context) {
+
+    public ReceiptContentProvider() {
+
+    }
+    public ReceiptContentProvider(Context context) {
         this.context = context;
         database = new DataBaseHelper(context);
     }
 
-    private static final int TODOS = 12;
-    private static final int TODO_ID = 22;
+    private static final int TODOS = 10;
+    private static final int TODO_ID = 20;
 
     private static final String AUTHORITY = "com.example.ayaali.customers.store";
 
-    private static final String BASE_PATH = "user";
+    private static final String BASE_PATH = "receipts";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
             + "/" + BASE_PATH);
-    public static final Uri CONTENT_URI_Add = Uri.parse("content://" + AUTHORITY
+    public static final Uri CONTENT_URI_add = Uri.parse("content://" + AUTHORITY
             + "/add");
-    public static final Uri CONTENT_URI_logout = Uri.parse("content://" + AUTHORITY
-            + "/logout");
+    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+            + "/customers";
+    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
+            + "/customer";
+
 
     private static final UriMatcher sURIMatcher = new UriMatcher(
             UriMatcher.NO_MATCH);
@@ -54,7 +58,7 @@ public class UserContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         database = new DataBaseHelper(context);
-        //database = CustomerContentProvider.database;
+
         return false;
     }
 
@@ -68,7 +72,7 @@ public class UserContentProvider extends ContentProvider {
         // checkColumns(projection);
 
         // Set the table
-        queryBuilder.setTables(UserTable.UserTable);
+        queryBuilder.setTables(ReceiptTable.ReceiptTable);
 
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
@@ -104,7 +108,7 @@ public class UserContentProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         long id = 0;
         try {
-            id = sqlDB.insert(UserTable.UserTable, null, values);
+            id = sqlDB.insert(ReceiptTable.ReceiptTable, null, values);
         }
         catch(Exception e){
             throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -120,6 +124,10 @@ public class UserContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = database.getWritableDatabase();
+
+        int updateCount = db.update(CustomerTable.CustomerTable, values, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return updateCount;
     }
 }

@@ -5,7 +5,9 @@ package com.hadeya.tabonhandapp.models;
  */
 
 public class Customer {
+
     String ID,Flag,CustomerCode,CustName,CustomerNameLat,StreetAra,Classification,PersonToConnect,Tel,TAXID,SaleAreaCode,Notes,SalesRepCode,CodeList,NotActive;
+
 
     public String getCustomerCode() {
         return CustomerCode;
@@ -24,6 +26,7 @@ public class Customer {
         this.TAXID = TAXID;
         SaleAreaCode = saleAreaCode;
     }
+
 
     public String getID() {
         return ID;

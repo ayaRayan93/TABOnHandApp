@@ -177,7 +177,7 @@
                         android:background="#fff"
                         android:textColor="@color/textColor1"
                         android:hint="Notes"
-                        android:id="@+id/Mobile"
+                        android:id="@+id/Notes"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -216,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_background"
                     android:text="Save"
-                    android:id="@+id/save"
+                    android:id="@+id/saveReceipt"
                     android:textColor="#fff"
                     />
             </LinearLayout>

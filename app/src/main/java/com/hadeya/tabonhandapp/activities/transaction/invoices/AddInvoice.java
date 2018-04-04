@@ -3,19 +3,26 @@ package com.hadeya.tabonhandapp.activities.transaction.invoices;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+
+import android.content.Intent;
+
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import android.view.MenuItem;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.customers.AddNewCustomer;
@@ -36,11 +43,16 @@ import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerClassification;
 
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+
 /**
  * Created by AyaAli on 28/03/2018.
  */
 
-public class AddInvoice extends AppCompatActivity {
+
+
+public class AddInvoice extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     @BindView(R.id.invoicetno)EditText InvoiceNo;
     @BindView(R.id.invoiceDate)EditText InvoiceDate;
     @BindView(R.id.notes)EditText Notes;
@@ -50,9 +62,13 @@ public class AddInvoice extends AppCompatActivity {
     @BindView(R.id.customer)Spinner spinnerCustomers;
 
     Invoice newInvoice;
-    HashMap<Integer,String> spinnerCustomersMap;
-    HashMap<Integer,String> spinnerMapType;
-    HashMap<Integer,String> spinnerMapInvoiceType;
+    HashMap<Integer, String> spinnerCustomersMap;
+    HashMap<Integer, String> spinnerMapType;
+    HashMap<Integer, String> spinnerMapInvoiceType;
+
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +76,6 @@ public class AddInvoice extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -73,59 +88,78 @@ public class AddInvoice extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         // navigationView.setBackgroundResource(R.color.customColor);
         // navigationView.setItemTextColor(getColorStateList(11));
-        // navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
+    ButterKnife.bind(this);
+    Button addInvoice = (Button) findViewById(R.id.save);
+    addInvoice.setOnClickListener(new View.OnClickListener()
 
-        ButterKnife.bind(this);
-        Button addInvoice=(Button)findViewById(R.id.save);
-        addInvoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewInvoice();
-                Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
+    {
+        @Override
+        public void onClick (View v){
+        addNewInvoice();
+        Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
+    }
+    }
+
+    );
+
+    String[] spinnerArrayType = new String[2];
+    spinnerMapType=new HashMap<Integer, String>();
+
+    spinnerMapType.put(0,"1");
+    spinnerArrayType[0]="Check";
+    spinnerMapType.put(1,"2");
+    spinnerArrayType[1]="Cash";
+
+    ArrayAdapter<String> adapterT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayType);
+    adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    type.setAdapter(adapterT);
+
+    String[] spinnerArrayInvoicType = new String[2];
+    spinnerMapInvoiceType=new HashMap<Integer, String>();
+
+    spinnerMapInvoiceType.put(0,"1");
+    spinnerArrayInvoicType[0]="Check";
+    spinnerMapInvoiceType.put(1,"2");
+    spinnerArrayInvoicType[1]="Cash";
+
+    ArrayAdapter<String> adapterInvoiceT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayInvoicType);
+    adapterInvoiceT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    invoiceType.setAdapter(adapterInvoiceT);
+
+
+    //List<Customer>allCustomers= selectAllCustomers();
+    List<Customer> allCustomers = ReadDataFromDB.getAllCustomerForSalesPerson(this);
+    String[] customersArray = new String[allCustomers.size()];
+    spinnerCustomersMap=new HashMap<Integer, String>();
+    for(int i = 0;i<allCustomers.size();i++)
+
+    {
+        spinnerCustomersMap.put(i, allCustomers.get(i).getID());
+        customersArray[i] = allCustomers.get(i).getCustName();
+    }
+
+    ArrayAdapter<String> adapterC = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, customersArray);
+    adapterC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    spinnerCustomers.setAdapter(adapterC);
+
+
+}
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+            {
+                logout();
+                Intent main = new Intent("login");
+                startActivity(main);
             }
-        });
 
-        String[] spinnerArrayType = new String[2];
-        spinnerMapType = new HashMap<Integer, String>();
-
-        spinnerMapType.put(0,"1");
-        spinnerArrayType[0] = "Check";
-        spinnerMapType.put(1,"2");
-        spinnerArrayType[1] = "Cash";
-
-        ArrayAdapter<String> adapterT =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, spinnerArrayType);
-        adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        type.setAdapter(adapterT);
-
-        String[] spinnerArrayInvoicType = new String[2];
-        spinnerMapInvoiceType = new HashMap<Integer, String>();
-
-        spinnerMapInvoiceType.put(0,"1");
-        spinnerArrayInvoicType[0] = "Check";
-        spinnerMapInvoiceType.put(1,"2");
-        spinnerArrayInvoicType[1] = "Cash";
-
-        ArrayAdapter<String> adapterInvoiceT =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, spinnerArrayInvoicType);
-        adapterInvoiceT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        invoiceType.setAdapter(adapterInvoiceT);
-
-
-        //List<Customer>allCustomers= selectAllCustomers();
-        List<Customer>allCustomers= ReadDataFromDB.getAllCustomerForSalesPerson(this);
-        String[] customersArray = new String[allCustomers.size()];
-        spinnerCustomersMap = new HashMap<Integer, String>();
-        for (int i = 0; i < allCustomers.size(); i++)
-        {
-            spinnerCustomersMap.put(i,allCustomers.get(i).getID());
-            customersArray[i] = allCustomers.get(i).getCustName();
+            break;
         }
-
-        ArrayAdapter<String> adapterC =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, customersArray);
-        adapterC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCustomers.setAdapter(adapterC);
-
+        return true;
 
     }
 
@@ -156,3 +190,4 @@ public class AddInvoice extends AppCompatActivity {
 
 
 }
+
