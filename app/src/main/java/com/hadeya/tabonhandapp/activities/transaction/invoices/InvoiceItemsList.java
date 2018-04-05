@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
 
+import butterknife.ButterKnife;
+
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 public class InvoiceItemsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,6 +54,21 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
                                       }
 
         );
+
+        ButterKnife.bind(this);
+        Button saveInvoice = (Button) findViewById(R.id.save);
+        saveInvoice.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick (View v){
+                Intent main = new Intent("PrintInvoice");
+                startActivity(main);
+            }
+        }
+
+        );
+
     }
 
     @Override

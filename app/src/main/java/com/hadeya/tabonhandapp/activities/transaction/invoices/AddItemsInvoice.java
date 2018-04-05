@@ -24,7 +24,7 @@ public class AddItemsInvoice extends AppCompatActivity {
         {
             @Override
             public void onClick (View v){
-                Intent main = new Intent("PrintInvoice");
+                Intent main = new Intent("ItemList");
                 startActivity(main);
             }
         }
