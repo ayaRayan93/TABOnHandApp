@@ -157,7 +157,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.transaction.invoices.PrintInvoice">
+        <activity android:name=".activities.transaction.invoices.PrintInvoice"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="PrintInvoice" />
 

@@ -15,6 +15,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.hadeya.tabonhandapp.R;
@@ -98,6 +100,16 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
 
             }
         });
+        Button back=(Button)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent main = new Intent("InvoiceItemsList");
+                // main.putExtra("searchWord",searchResult);
+                startActivity(main);
+            }
+        });
+
         final EditText search=(EditText)findViewById(R.id.searchItem);
         search.addTextChangedListener(new TextWatcher() {
             @Override

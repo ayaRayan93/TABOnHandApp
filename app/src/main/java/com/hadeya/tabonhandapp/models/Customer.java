@@ -1,13 +1,46 @@
 package com.hadeya.tabonhandapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by AyaAli on 05/03/2018.
  */
 
-public class Customer {
+public class Customer implements Parcelable{
 
     String id, Flag,CustomerCode,CustName,CustomerNameLat,StreetAra,Classification,PersonToConnect,Tel,TAXID,SaleAreaCode,Notes,SalesRepCode,CodeList,NotActive;
 
+
+    protected Customer(Parcel in) {
+        id = in.readString();
+        Flag = in.readString();
+        CustomerCode = in.readString();
+        CustName = in.readString();
+        CustomerNameLat = in.readString();
+        StreetAra = in.readString();
+        Classification = in.readString();
+        PersonToConnect = in.readString();
+        Tel = in.readString();
+        TAXID = in.readString();
+        SaleAreaCode = in.readString();
+        Notes = in.readString();
+        SalesRepCode = in.readString();
+        CodeList = in.readString();
+        NotActive = in.readString();
+    }
+
+    public static final Creator<Customer> CREATOR = new Creator<Customer>() {
+        @Override
+        public Customer createFromParcel(Parcel in) {
+            return new Customer(in);
+        }
+
+        @Override
+        public Customer[] newArray(int size) {
+            return new Customer[size];
+        }
+    };
 
     public String getCustomerCode() {
         return CustomerCode;
@@ -142,5 +175,29 @@ public class Customer {
 
     public void setNotActive(String notActive) {
         NotActive = notActive;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(Flag);
+        dest.writeString(CustomerCode);
+        dest.writeString(CustName);
+        dest.writeString(CustomerNameLat);
+        dest.writeString(StreetAra);
+        dest.writeString(Classification);
+        dest.writeString(PersonToConnect);
+        dest.writeString(Tel);
+        dest.writeString(TAXID);
+        dest.writeString(SaleAreaCode);
+        dest.writeString(Notes);
+        dest.writeString(SalesRepCode);
+        dest.writeString(CodeList);
+        dest.writeString(NotActive);
     }
 }

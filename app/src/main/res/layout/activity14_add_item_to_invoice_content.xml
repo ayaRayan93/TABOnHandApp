@@ -186,7 +186,9 @@
         </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="12"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -356,25 +358,24 @@
             android:orientation="horizontal"
             >
             <Button
-
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_background"
-                android:text="Add Item"
-                android:id="@+id/additem"
-                android:textColor="#fff"
-                android:layout_margin="5dp"
-                />
-            <Button
                 android:layout_margin="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background"
-                android:text="Save"
+                android:text="Add and New"
                 android:id="@+id/save"
                 android:textColor="#fff"
+                />
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="Add and Close"
+                android:id="@+id/close"
+                android:textColor="#fff"
+                android:layout_margin="5dp"
                 />
         </LinearLayout>
     </LinearLayout>

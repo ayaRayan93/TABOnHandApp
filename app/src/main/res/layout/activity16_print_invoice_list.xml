@@ -9,6 +9,6 @@
         android:id="@+id/recyclerViewItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem= "@layout/activity16_print_invoice"/>
+        tools:listitem= "@layout/activity15_item"/>
 
 </android.support.v4.widget.SwipeRefreshLayout>

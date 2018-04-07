@@ -98,10 +98,11 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     {
         @Override
         public void onClick (View v){
-        addNewInvoice();
+       // addNewInvoice();
+        Invoice invoice= getNewInvoice();
         Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
         Intent main = new Intent("InvoiceItemsList");
-       // main.putExtra("searchWord",searchResult);
+        main.putExtra("invoice",invoice);
         startActivity(main);
     }
     }
@@ -166,6 +167,20 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
 
     }
 
+    public Invoice getNewInvoice()
+    {
+
+        String invoiceNo=InvoiceNo.getText().toString();
+        String invoiceDate=InvoiceDate.getText().toString();
+        String notes=Notes.getText().toString();
+        String refNo=RefNo.getText().toString();
+        newInvoice=new Invoice("",invoiceNo,invoiceDate,"","",notes,refNo,"");
+        newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
+        newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
+        newInvoice.setCustmerId(spinnerCustomersMap.get(spinnerCustomers.getSelectedItemPosition()));
+
+        return newInvoice;
+    }
     public void addNewInvoice()
     {
         String invoiceNo=InvoiceNo.getText().toString();

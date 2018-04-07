@@ -1,13 +1,44 @@
 package com.hadeya.tabonhandapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by AyaAli on 16/03/2018.
  */
 
-public class InvoiceItem {
+public class InvoiceItem implements Parcelable{
 
 
     String Id,InvoiceId,ItemCode,ItemName,Quantity,Tax,ExpityDate,Price,DiscountPercent,DiscountAmount;
+
+    protected InvoiceItem(Parcel in) {
+        Id = in.readString();
+        InvoiceId = in.readString();
+        ItemCode = in.readString();
+        ItemName = in.readString();
+        Quantity = in.readString();
+        Tax = in.readString();
+        ExpityDate = in.readString();
+        Price = in.readString();
+        DiscountPercent = in.readString();
+        DiscountAmount = in.readString();
+    }
+
+    public InvoiceItem() {
+    }
+
+    public static final Creator<InvoiceItem> CREATOR = new Creator<InvoiceItem>() {
+        @Override
+        public InvoiceItem createFromParcel(Parcel in) {
+            return new InvoiceItem(in);
+        }
+
+        @Override
+        public InvoiceItem[] newArray(int size) {
+            return new InvoiceItem[size];
+        }
+    };
 
     public String getId() {
         return Id;
@@ -87,5 +118,24 @@ public class InvoiceItem {
 
     public void setDiscountAmount(String discountAmount) {
         DiscountAmount = discountAmount;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Id);
+        dest.writeString(InvoiceId);
+        dest.writeString(ItemCode);
+        dest.writeString(ItemName);
+        dest.writeString(Quantity);
+        dest.writeString(Tax);
+        dest.writeString(ExpityDate);
+        dest.writeString(Price);
+        dest.writeString(DiscountPercent);
+        dest.writeString(DiscountAmount);
     }
 }

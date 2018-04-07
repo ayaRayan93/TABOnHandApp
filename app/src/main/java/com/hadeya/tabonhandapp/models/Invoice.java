@@ -1,12 +1,61 @@
 package com.hadeya.tabonhandapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by AyaAli on 16/03/2018.
  */
 
-public class Invoice {
+public class Invoice implements Parcelable {
 
-    String Id,InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
+
+    String  Id;
+    String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
+    Customer customer;
+    InvoiceItem []invoiceItems;
+
+    protected Invoice(Parcel in) {
+        Id = in.readString();
+        InvoiceTypeId = in.readString();
+        InvoiceNo = in.readString();
+        InvoiceDate = in.readString();
+        CustmerId = in.readString();
+        PayementTypeId = in.readString();
+        Notes = in.readString();
+        RefNO = in.readString();
+        RepCodeId = in.readString();
+        customer = in.readParcelable(Customer.class.getClassLoader());
+        invoiceItems = in.createTypedArray(InvoiceItem.CREATOR);
+    }
+
+    public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {
+        @Override
+        public Invoice createFromParcel(Parcel in) {
+            return new Invoice(in);
+        }
+
+        @Override
+        public Invoice[] newArray(int size) {
+            return new Invoice[size];
+        }
+    };
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public InvoiceItem[] getInvoiceItems() {
+        return invoiceItems;
+    }
+
+    public void setInvoiceItems(InvoiceItem[] invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
 
     public Invoice() {
     }
@@ -20,6 +69,7 @@ public class Invoice {
         Notes = notes;
         RefNO = refNO;
         RepCodeId = repCodeId;
+
     }
 
     public String getId() {
@@ -92,5 +142,27 @@ public class Invoice {
 
     public void setRepCodeId(String repCodeId) {
         RepCodeId = repCodeId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeString(Id);
+        dest.writeString(InvoiceTypeId);
+        dest.writeString(InvoiceNo);
+        dest.writeString(InvoiceDate);
+        dest.writeString(CustmerId);
+        dest.writeString(PayementTypeId);
+        dest.writeString(Notes);
+        dest.writeString(RefNO);
+        dest.writeString(RepCodeId);
+        dest.writeParcelable(customer,flags);
+        dest.writeParcelableArray(invoiceItems,flags);
+
     }
 }
