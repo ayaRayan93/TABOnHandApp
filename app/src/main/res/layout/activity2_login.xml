@@ -31,8 +31,7 @@
 
                     <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="50dp"
                         android:weightSum="10"
                         android:orientation="horizontal"
                         android:background="@drawable/edittextstyl"
@@ -65,8 +64,7 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="50dp"
                         android:weightSum="10"
                         android:orientation="horizontal"
                         android:background="@drawable/edittextstyl"
@@ -98,71 +96,18 @@
                             />
 
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_marginTop="10dp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:layout_margin="10dp"
-                        android:padding="10dp"
-                        android:orientation="vertical"
-                        android:weightSum="2"
 
-                        >
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/str_remember_me"
-                            android:textColor="@color/textColor1"
-                            android:textStyle="bold"
-                            android:padding="5dp"
-                            android:textSize="14sp"
-                            android:layout_weight="1"
-                            />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:weightSum="10"
-                            android:orientation="horizontal"
-                            android:layout_margin="0dp"
-                            android:gravity="center_vertical"
-                            android:layout_weight="1"
-                            >
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/u"
-                                android:layout_weight="1"
-                                android:padding="5dp"
-                                />
-
-                            <TextView
-                                android:id="@+id/tv_forget"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="Forget Password ?"
-                                android:textColor="@color/textColor1"
-                                android:textStyle="bold"
-                                android:layout_weight="9"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="5dp"
-                                android:paddingLeft="5dp"
-                                />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
                     <Button
                         android:id="@+id/btnLogin"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="50dp"
                         android:background="@drawable/button_background"
                         android:text="LOG IN"
                         android:textSize="20sp"
                         android:textColor="#ffff"
                         android:layout_gravity="center"
                         android:gravity="center"
+                        android:layout_marginTop="10dp"
                         android:padding="10dp">
                     </Button>
 

@@ -48,6 +48,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/edittextstyl"
                     android:textSize="20dp"
+                    android:spinnerMode="dialog"
                     android:hint="Select Invoice Type"
                     android:textColor="@color/customColor"
                     android:layout_margin="5dp"
