@@ -68,7 +68,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/invoiceNo"
+                    android:id="@+id/invoiceNo1"
                     android:textAllCaps="false"
                     android:textColor="@color/textColor1"
                     android:textSize="20sp"
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/customerName"
+                    android:id="@+id/customerName1"
                     android:textAllCaps="false"
                     android:textColor="@color/textColor1"
                     android:textSize="20sp"
@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/itemName"
+                        android:id="@+id/itemName1"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="20sp"
@@ -155,7 +155,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/itemCode"
+                        android:id="@+id/itemCode1"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="20sp"
@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/price"
+                        android:id="@+id/price1"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="20sp"

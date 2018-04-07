@@ -11,16 +11,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
+import com.hadeya.tabonhandapp.models.Invoice;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 public class InvoiceItemsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    Invoice invoice;
+    @BindView(R.id.invoiceNo)TextView invoiceNo;
+    @BindView(R.id.customerName)TextView customerName;
+    @BindView(R.id.date)TextView date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,18 +47,26 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        ButterKnife.bind(this);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            invoice = extras.getParcelable("invoice");
+            invoiceNo.setText(invoice.getInvoiceNo());
+            customerName.setText(invoice.getCustomer().getCustName());
+            date.setText(invoice.getInvoiceDate());
+        }
+
         Button additem = (Button) findViewById(R.id.additem);
         additem.setOnClickListener(new View.OnClickListener()
-
-                                      {
-                                          @Override
-                                          public void onClick (View v){
+        {
+          @Override
+          public void onClick (View v){
 
           Intent main = new Intent("ItemList");
-          // main.putExtra("searchWord",searchResult);
+          main.putExtra("invoice",invoice);
           startActivity(main);
-                                          }
-                                      }
+          }
+        }
 
         );
 

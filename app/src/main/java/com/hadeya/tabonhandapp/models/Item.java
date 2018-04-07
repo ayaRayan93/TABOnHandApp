@@ -1,10 +1,13 @@
 package com.hadeya.tabonhandapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mohamed shaban on 09/03/2018.
  */
 
-public class Item
+public class Item implements Parcelable
 {
 
     private String UnitCode;
@@ -14,6 +17,31 @@ public class Item
     private String TaxSet;
     private String SelPrice1Default;
     private String NotActive;
+
+    public Item() {
+    }
+
+    protected Item(Parcel in) {
+        UnitCode = in.readString();
+        ItemName = in.readString();
+        ItemNameLat = in.readString();
+        ItemCode = in.readString();
+        TaxSet = in.readString();
+        SelPrice1Default = in.readString();
+        NotActive = in.readString();
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public String getNotActive() {
         return NotActive;
@@ -56,5 +84,21 @@ public class Item
 
     public void setUnitCode(String unitCode) {
         UnitCode = unitCode;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(UnitCode);
+        dest.writeString(ItemName);
+        dest.writeString(ItemNameLat);
+        dest.writeString(ItemCode);
+        dest.writeString(TaxSet);
+        dest.writeString(SelPrice1Default);
+        dest.writeString(NotActive);
     }
 }

@@ -65,7 +65,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     HashMap<Integer, String> spinnerCustomersMap;
     HashMap<Integer, String> spinnerMapType;
     HashMap<Integer, String> spinnerMapInvoiceType;
-
+    List<Customer> allCustomers;
 
 
 
@@ -99,7 +99,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         @Override
         public void onClick (View v){
        // addNewInvoice();
-        Invoice invoice= getNewInvoice();
+        Invoice invoice= getNewInvoice(allCustomers);
         Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
         Intent main = new Intent("InvoiceItemsList");
         main.putExtra("invoice",invoice);
@@ -135,7 +135,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
 
 
     //List<Customer>allCustomers= selectAllCustomers();
-    List<Customer> allCustomers = ReadDataFromDB.getAllCustomerForSalesPerson(this);
+     allCustomers = ReadDataFromDB.getAllCustomerForSalesPerson(this);
     String[] customersArray = new String[allCustomers.size()];
     spinnerCustomersMap=new HashMap<Integer, String>();
     for(int i = 0;i<allCustomers.size();i++)
@@ -167,17 +167,24 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
 
     }
 
-    public Invoice getNewInvoice()
+    public Invoice getNewInvoice(List<Customer> allCustomers)
     {
 
         String invoiceNo=InvoiceNo.getText().toString();
         String invoiceDate=InvoiceDate.getText().toString();
         String notes=Notes.getText().toString();
         String refNo=RefNo.getText().toString();
-        newInvoice=new Invoice("",invoiceNo,invoiceDate,"","",notes,refNo,"");
+
+        newInvoice=new Invoice();
+        newInvoice.setInvoiceNo(invoiceNo);
+        newInvoice.setInvoiceDate(invoiceDate);
+        newInvoice.setNotes(notes);
+        newInvoice.setRefNO(refNo);
         newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
         newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
         newInvoice.setCustmerId(spinnerCustomersMap.get(spinnerCustomers.getSelectedItemPosition()));
+        Customer customer=allCustomers.get(spinnerCustomers.getSelectedItemPosition());
+        newInvoice.setCustomer(customer);
 
         return newInvoice;
     }

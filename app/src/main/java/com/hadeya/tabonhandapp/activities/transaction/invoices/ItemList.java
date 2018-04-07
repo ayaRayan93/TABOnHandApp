@@ -22,6 +22,7 @@ import android.widget.EditText;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.ItemsAdapter;
 import com.hadeya.tabonhandapp.adapters.transactionItemAdapter;
+import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.Item;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
     protected transactionItemAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected List<Item> dataSet;
+    Invoice invoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +71,17 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            invoice = extras.getParcelable("invoice");
+        }
 
         dataSet = new ArrayList<>();
         // dataSet=getAllItems(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTransactionItem);
         mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshTransactionItem);
        mRecyclerView.setHasFixedSize(true);
-        itemAdapter = new transactionItemAdapter(this,dataSet);
+        itemAdapter = new transactionItemAdapter(this,dataSet,invoice);
         mRecyclerView.setAdapter(itemAdapter);
 
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
@@ -100,12 +106,13 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
 
             }
         });
+
         Button back=(Button)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent main = new Intent("InvoiceItemsList");
-                // main.putExtra("searchWord",searchResult);
+                main.putExtra("invoice",invoice);
                 startActivity(main);
             }
         });

@@ -10,7 +10,9 @@ import android.os.Parcelable;
 public class InvoiceItem implements Parcelable{
 
 
-    String Id,InvoiceId,ItemCode,ItemName,Quantity,Tax,ExpityDate,Price,DiscountPercent,DiscountAmount;
+    String Id,InvoiceId,ItemCode,ItemName,Quantity,Tax,ExpityDate,Price,DiscountPercent,DiscountAmount,Net;
+
+
 
     protected InvoiceItem(Parcel in) {
         Id = in.readString();
@@ -23,6 +25,7 @@ public class InvoiceItem implements Parcelable{
         Price = in.readString();
         DiscountPercent = in.readString();
         DiscountAmount = in.readString();
+        Net=in.readString();
     }
 
     public InvoiceItem() {
@@ -40,6 +43,13 @@ public class InvoiceItem implements Parcelable{
         }
     };
 
+    public String getNet() {
+        return Net;
+    }
+
+    public void setNet(String net) {
+        Net = net;
+    }
     public String getId() {
         return Id;
     }
@@ -137,5 +147,6 @@ public class InvoiceItem implements Parcelable{
         dest.writeString(Price);
         dest.writeString(DiscountPercent);
         dest.writeString(DiscountAmount);
+        dest.writeString(Net);
     }
 }

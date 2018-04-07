@@ -62,7 +62,7 @@ public class ReadDataFromDB {
         if (cursor.moveToFirst()) {
             do {
                 Customer customer = new Customer();
-               // customer.setCustomerCode(cursor.getString(0));
+                customer.setId(cursor.getString(0));
                 customer.setCustName(cursor.getString(1));
                 customer.setStreetAra(cursor.getString(2));
                 customer.setClassification(cursor.getString(3));
