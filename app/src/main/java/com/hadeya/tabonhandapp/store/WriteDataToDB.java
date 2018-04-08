@@ -2,6 +2,7 @@ package com.hadeya.tabonhandapp.store;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -450,7 +451,7 @@ public class WriteDataToDB {
 
     }
     //store new user
-    public static void StoreUser(String name,String pass)
+    public static void StoreUser(String name, String pass)
     {
         try {
         // final List<Customer> dataSet=new ArrayList<>();
@@ -480,6 +481,7 @@ public class WriteDataToDB {
             public void onErrorResponse(VolleyError error) {
                 // Stop the refreshing indicator
                 Log.d("response", error.toString());
+
             }
         });
 
