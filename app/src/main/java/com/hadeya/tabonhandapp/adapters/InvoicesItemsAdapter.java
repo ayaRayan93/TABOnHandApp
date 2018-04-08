@@ -35,13 +35,14 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
     public  class ViewHolder extends RecyclerView.ViewHolder
     {
         @BindView(R.id.itemName)TextView itemName;
-        //@BindView(R.id.itemCode)TextView itemCode;
-        //@BindView(R.id.taxSet)TextView taxSet;
+        @BindView(R.id.itemCode)TextView itemCode;
+        @BindView(R.id.tax)TextView tax;
+        @BindView(R.id.stock)TextView stock;// stock
         @BindView(R.id.price)TextView price;
         @BindView(R.id.value)TextView value;
         @BindView(R.id.qty)TextView qty;
-        //@BindView(R.id.discount)TextView discount;
-        //@BindView(R.id.tax)TextView tax;
+        @BindView(R.id.discount)TextView discount;
+        @BindView(R.id.net)TextView net;
         //@BindView(R.id.net)TextView net;
 
         public ViewHolder(View v)
@@ -76,12 +77,49 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
             this.value = value;
         }
 
+        public TextView getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(TextView discount) {
+            this.discount = discount;
+        }
+
+        public TextView getStock() {
+            return stock;
+        }
+
+        public void setStock(TextView stock) {
+            this.stock = stock;
+        }
+        public TextView getTax() {
+        return tax;
+       }
+
+        public void setTax(TextView tax) {
+            this.tax = tax;
+        }
+
+
         public TextView getQty() {
             return qty;
         }
 
         public void setQty(TextView qty) {
             this.qty = qty;
+        }
+
+        public void setItemCode(TextView itemCode) {
+            this.itemCode = itemCode;
+        }
+        public TextView getItemCode() {
+            return itemCode;
+        }
+        public void setNet(TextView net) {
+            this.net = net;
+        }
+        public TextView getNet() {
+            return net;
         }
 
     }
@@ -104,7 +142,12 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
           //  holder.getItemName().setText(DataSet.get(position).getInvoiceNo());
             holder.getPrice().setText(DataSet.get(position).getPrice());
            // holder.getValue2().setText(DataSet.get(position).getValue());
+            holder.getItemName().setText(DataSet.get(position).getItemName());
+            holder.getItemCode().setText(DataSet.get(position).getItemCode());
+            holder.getDiscount().setText(DataSet.get(position).getDiscountAmount());
             holder.getQty().setText(DataSet.get(position).getQuantity());
+            holder.getTax().setText(DataSet.get(position).getTax());
+            holder.getNet().setText(DataSet.get(position).getNet());
         }
     }
 
