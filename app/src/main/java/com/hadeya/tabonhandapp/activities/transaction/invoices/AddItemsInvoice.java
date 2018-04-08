@@ -83,7 +83,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 ItemsListData.itemsListData.add(getItemInvoice());
                 ItemsListData.itemsList.add(invoiceItem);
                 //invoice=null;
-                invoiceItem=null;
+               // invoiceItem=null;
                 startActivity(main);
             }
         }
