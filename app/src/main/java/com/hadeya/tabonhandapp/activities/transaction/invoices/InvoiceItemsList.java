@@ -131,6 +131,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick (View v){
                 Intent main = new Intent("PrintInvoice");
+                main.putExtra("invoice",invoice);
                 startActivity(main);
             }
         }
