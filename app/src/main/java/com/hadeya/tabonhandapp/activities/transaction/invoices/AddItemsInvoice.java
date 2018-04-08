@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
+import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
@@ -61,18 +62,6 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
         ButterKnife.bind(this);
-        Button saveInvoice = (Button) findViewById(R.id.save);
-        saveInvoice.setOnClickListener(new View.OnClickListener()
-
-        {
-            @Override
-            public void onClick (View v){
-                Intent main = new Intent("ItemList");
-                startActivity(main);
-            }
-        }
-
-        );
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             invoice = extras.getParcelable("invoice");
@@ -84,12 +73,32 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             price.setText(invoiceItem.getSelPrice1Default());
         }
 
+        Button saveInvoice = (Button) findViewById(R.id.save);
+        saveInvoice.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v){
+                Intent main = new Intent("ItemList");
+                ItemsListData.invoice=invoice;
+                ItemsListData.itemsListData.add(getItemInvoice());
+                ItemsListData.itemsList.add(invoiceItem);
+                //invoice=null;
+                invoiceItem=null;
+                startActivity(main);
+            }
+        }
+
+        );
+
 
         Button close=(Button)findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent main = new Intent("InvoiceItemsList");
+                ItemsListData.invoice=invoice;
+                ItemsListData.itemsListData.add(getItemInvoice());
+                ItemsListData.itemsList.add(invoiceItem);
                  main.putExtra("invoice",invoice);
                 startActivity(main);
             }
