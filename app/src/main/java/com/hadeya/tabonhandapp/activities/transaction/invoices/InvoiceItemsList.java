@@ -71,8 +71,6 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
 
         dataSet = new ArrayList<>();
         dataSet= ItemsListData.itemsListData;
-        //dataSet= ReadDataFromDB.getItemInvoices(this);
-       // ButterKnife.bind(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewItem13);
         mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshItem13);
         mRecyclerView.setHasFixedSize(true);

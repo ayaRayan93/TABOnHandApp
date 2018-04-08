@@ -82,8 +82,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 ItemsListData.invoice=invoice;
                 ItemsListData.itemsListData.add(getItemInvoice());
                 ItemsListData.itemsList.add(invoiceItem);
-                //invoice=null;
-               // invoiceItem=null;
+                main.putExtra("invoice",invoice);
                 startActivity(main);
             }
         }
@@ -99,7 +98,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 ItemsListData.invoice=invoice;
                 ItemsListData.itemsListData.add(getItemInvoice());
                 ItemsListData.itemsList.add(invoiceItem);
-                 main.putExtra("invoice",invoice);
+                main.putExtra("invoice",invoice);
                 startActivity(main);
             }
         });
