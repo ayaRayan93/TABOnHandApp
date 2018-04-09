@@ -79,7 +79,46 @@ public class ReadDataFromDB {
         return customerList;
 
     }
+    public static Customer getCustomer(Context context,String customerId)
+    {
+        String[] projection={CustomerTable.ID,
+                CustomerTable.CustName,
+                CustomerTable.StreetAra,
+                CustomerTable.Classification,
+                CustomerTable.PersonToConnect,
+                CustomerTable.Tel,
+                CustomerTable.TAXID,
+                CustomerTable.SaleAreaCode,
+                CustomerTable.Flag
+        };
 
+        List<Customer> customerList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + CustomerTable.CustomerTable;//+" where ID="+customerId;
+        CustomerContentProvider  movieContentProvider=new CustomerContentProvider( WriteDataToDB.mdatabase);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = movieContentProvider.query(CustomerContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Customer customer = new Customer();
+                customer.setId(cursor.getString(0));
+                customer.setCustName(cursor.getString(1));
+                customer.setStreetAra(cursor.getString(2));
+                customer.setClassification(cursor.getString(3));
+                customer.setPersonToConnect(cursor.getString(4));
+                customer.setTel(cursor.getString(5));
+                customer.setTAXID(cursor.getString(6));
+                customer.setSaleAreaCode(cursor.getString(7));
+                customer.setFlag(cursor.getString(8));
+// Adding contact to list
+                customerList.add(customer);
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return customerList.get(0);
+
+    }
     public static List<Classification> getAllCustomerClassification()
     {
         String[] projection={ClassificationTable.ClassificationId,
@@ -233,7 +272,6 @@ public class ReadDataFromDB {
         return ItemInvoiceList;
 
     }
-
     //
     public static List<InvoiceItem> getItemInvoices(Context context)
     {
@@ -277,7 +315,49 @@ public class ReadDataFromDB {
         return invoiceItemList;
 
     }
-    public static List<Invoice> getCustomerInvoices(Context context)
+    public static List<InvoiceItem> getItemInvoice(Context context,String invoiceId)
+    {
+        String[] projection={InvoiceItemTable.Id,
+                InvoiceItemTable.InvoiceId,
+                InvoiceItemTable.ItemCode,
+                InvoiceItemTable.ItemName,
+                InvoiceItemTable.Quantity,
+                InvoiceItemTable.Tax,
+                InvoiceItemTable.ExpityDate,
+                InvoiceItemTable.Price,
+                InvoiceItemTable.DiscountPercent,
+                InvoiceItemTable.DiscountAmount,
+        };
+
+        List<InvoiceItem> invoiceItemList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + InvoiceItemTable.InvoiceItemTable+" where Id="+invoiceId;
+        InvoiceItemContentProvider  itemInvoiceContentProvider=new InvoiceItemContentProvider( WriteDataToDB.mdatabase);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = itemInvoiceContentProvider.query(InvoiceItemContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InvoiceItem invoiceItem = new InvoiceItem();
+                invoiceItem.setId(cursor.getString(0));
+                invoiceItem.setInvoiceId(cursor.getString(1));
+                invoiceItem.setItemCode(cursor.getString(2));
+                invoiceItem.setItemName(cursor.getString(3));
+                invoiceItem.setQuantity(cursor.getString(4));
+                invoiceItem.setTax(cursor.getString(5));
+                invoiceItem.setExpityDate(cursor.getString(6));
+                invoiceItem.setPrice(cursor.getString(7));
+                invoiceItem.setDiscountPercent(cursor.getString(8));
+                invoiceItem.setDiscountAmount(cursor.getString(9));
+// Adding contact to list
+                invoiceItemList.add(invoiceItem);
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return invoiceItemList;
+
+    }
+    public static List<Invoice> getInvoices(Context context,String RepCodeId)
     {
         String[] projection={InvoiceTable.Id,
                 InvoiceTable.InvoiceTypeId,
@@ -291,7 +371,7 @@ public class ReadDataFromDB {
 
         List<Invoice> invoiceList = new ArrayList<>();
 // Select All Query
-        String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable;
+        String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable;//+" where RepCodeId="+RepCodeId;
         InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider( WriteDataToDB.mdatabase);
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = invoiceContentProvider.query(InvoiceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
@@ -327,6 +407,7 @@ public class ReadDataFromDB {
         };
 
         List<User> userList = new ArrayList<>();
+            userList=null;
 // Select All Query
         String selectQuery = "SELECT * FROM " + UserTable.UserTable;//ayaya+" where UserName='"+name+"' and UserPassword='"+pass+"'";
         UserContentProvider  userContentProvider=new UserContentProvider( WriteDataToDB.mdatabase);

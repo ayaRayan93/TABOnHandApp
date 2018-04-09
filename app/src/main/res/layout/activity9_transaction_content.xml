@@ -20,22 +20,26 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:orientation="horizontal"
             android:weightSum="10"
             android:layout_margin="5dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/transaction"/>
+
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
                 android:text="Transaction"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
                 android:textSize="20sp"
                 android:textColor="@color/textColor"
-                android:layout_marginLeft="5sp"
-                android:layout_marginTop="5dp"
+                />
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/cloud"
+                android:id="@+id/updateInvoice"
                 />
         </LinearLayout>
         <LinearLayout

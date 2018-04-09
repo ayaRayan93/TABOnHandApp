@@ -68,35 +68,28 @@ public class InvoiceContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // Uisng SQLiteQueryBuilder instead of query() method
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        SQLiteDatabase sqlDB=database.getReadableDatabase();
-        Cursor cursor;
+
         // check if the caller has requested a column which does not exists
         // checkColumns(projection);
 
         // Set the table
-        queryBuilder.setTables(InvoiceTable.InvoiceTable);
+        queryBuilder.setTables(ReceiptTable.ReceiptTable);
 
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
             case TODOS:
-                if (TextUtils.isEmpty(sortOrder))
-                    sortOrder = "_ID ASC";
-                cursor=sqlDB.query(InvoiceTable.InvoiceTable,projection,selection,selectionArgs,null,null,sortOrder);
+
                 break;
             case TODO_ID:
-                selection = InvoiceTable.Id + "=?";
-                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor=sqlDB.query(InvoiceTable.InvoiceTable,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             default:
-                cursor=null;
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
 
-
+        SQLiteDatabase db = database.getWritableDatabase();
         // Cursor cursor = queryBuilder.query(db, projection, selection,
         //       selectionArgs, null, null, sortOrder);
-       // Cursor cursor = sqlDB.rawQuery(selection, null);
+        Cursor cursor = db.rawQuery(selection, null);
         // make sure that potential listeners are getting notified
 //        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 

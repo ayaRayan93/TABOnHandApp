@@ -2,6 +2,13 @@ package com.hadeya.tabonhandapp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by AyaAli on 16/03/2018.
@@ -13,7 +20,7 @@ public class Invoice implements Parcelable {
     String  Id;
     String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
     Customer customer;
-    InvoiceItem []invoiceItems;
+    List<InvoiceItem> invoiceItems;
 
     protected Invoice(Parcel in) {
         Id = in.readString();
@@ -26,7 +33,7 @@ public class Invoice implements Parcelable {
         RefNO = in.readString();
         RepCodeId = in.readString();
         customer = in.readParcelable(Customer.class.getClassLoader());
-        invoiceItems = in.createTypedArray(InvoiceItem.CREATOR);
+        invoiceItems = in.createTypedArrayList(InvoiceItem.CREATOR);
     }
 
     public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {
@@ -49,15 +56,16 @@ public class Invoice implements Parcelable {
         this.customer = customer;
     }
 
-    public InvoiceItem[] getInvoiceItems() {
+    public List<InvoiceItem> getInvoiceItems() {
         return invoiceItems;
     }
 
-    public void setInvoiceItems(InvoiceItem[] invoiceItems) {
+    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
     }
 
     public Invoice() {
+        invoiceItems=new ArrayList<>();
     }
 
     public Invoice(String invoiceTypeId, String invoiceNo, String InvoiceDate, String custmerId, String payementTypeId, String notes, String refNO, String repCodeId) {
@@ -162,7 +170,7 @@ public class Invoice implements Parcelable {
         dest.writeString(RefNO);
         dest.writeString(RepCodeId);
         dest.writeParcelable(customer,flags);
-        dest.writeParcelableArray(invoiceItems,flags);
+        dest.writeList(invoiceItems);
 
     }
 }

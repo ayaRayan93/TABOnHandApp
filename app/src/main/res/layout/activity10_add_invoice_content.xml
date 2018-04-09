@@ -43,17 +43,35 @@
                 android:layout_weight="10"
 
                 >
-                <Spinner android:id="@+id/invoiceType"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/edittextstyl"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    >
+                <Spinner android:id="@+id/invoiceType"
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
+                    android:layout_height="40dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:backgroundTint="@color/white"
                     android:textSize="20dp"
                     android:spinnerMode="dialog"
                     android:hint="Select Invoice Type"
                     android:textColor="@color/customColor"
                     android:layout_margin="5dp"
                     >
+
                 </Spinner>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/arrow"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,7 +109,7 @@
                     android:weightSum="10"
                     android:layout_margin="5dp"
                     >
-                    <ImageView
+                    <ImageButton
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
@@ -100,6 +118,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginLeft="15dp"
+                        android:id="@+id/invoiceButtonDate"
                         />
                     <EditText
                         android:layout_width="0dp"
@@ -113,27 +132,60 @@
                         />
                 </LinearLayout>
 
-                <Spinner android:id="@+id/customer"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
                     android:background="@drawable/edittextstyl"
+                    >
+                <Spinner android:id="@+id/customer"
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
+                    android:layout_height="40dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:backgroundTint="@color/white"
                     android:textSize="20dp"
                     android:hint="Select Customer"
                     android:textColor="@color/customColor"
                     android:layout_margin="5dp"
                     >
                 </Spinner>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/arrow"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    />
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:background="@drawable/edittextstyl"
+                >
                 <Spinner android:id="@+id/type"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
                     android:layout_height="40dp"
-                    android:background="@drawable/edittextstyl"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:backgroundTint="@color/white"
                     android:textSize="20dp"
                     android:hint="Select Type (Check/Cash)"
                     android:textColor="@color/customColor"
                     android:layout_margin="5dp"
                     >
                 </Spinner>
-
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/arrow"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

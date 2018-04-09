@@ -1,5 +1,7 @@
 package com.hadeya.tabonhandapp.activities.transaction.invoices;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,14 +20,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import android.view.MenuItem;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.customers.AddNewCustomer;
+import com.hadeya.tabonhandapp.app.spinnerAdapter;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.store.CustomerContentProvider;
@@ -35,6 +41,7 @@ import com.hadeya.tabonhandapp.store.InvoiceTable;
 import com.hadeya.tabonhandapp.store.ReadDataFromDB;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,6 +67,12 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     @BindView(R.id.type)Spinner type;
     @BindView(R.id.invoiceType)Spinner invoiceType;
     @BindView(R.id.customer)Spinner spinnerCustomers;
+
+    @BindView(R.id.invoiceButtonDate)ImageButton invoiceButtonDate;
+
+    private int year;
+    private int month;
+    private int day;
 
     Invoice newInvoice;
     HashMap<Integer, String> spinnerCustomersMap;
@@ -92,6 +105,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
 
 
     ButterKnife.bind(this);
+
     Button addInvoice = (Button) findViewById(R.id.save);
     addInvoice.setOnClickListener(new View.OnClickListener()
 
@@ -117,9 +131,11 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     spinnerMapType.put(1,"2");
     spinnerArrayType[1]="Cash";
 
-    ArrayAdapter<String> adapterT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayType);
-    adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    type.setAdapter(adapterT);
+        spinnerAdapter adapter = new spinnerAdapter(AddInvoice.this, android.R.layout.simple_list_item_1);
+        adapter.addAll(spinnerArrayType);
+        adapter.add("Select Payment Type");
+        type.setAdapter(adapter);
+        type.setSelection(adapter.getCount());
 
     String[] spinnerArrayInvoicType = new String[2];
     spinnerMapInvoiceType=new HashMap<Integer, String>();
@@ -129,9 +145,14 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     spinnerMapInvoiceType.put(1,"2");
     spinnerArrayInvoicType[1]="Cash";
 
-    ArrayAdapter<String> adapterInvoiceT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayInvoicType);
+   /* ArrayAdapter<String> adapterInvoiceT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayInvoicType);
     adapterInvoiceT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    invoiceType.setAdapter(adapterInvoiceT);
+    invoiceType.setAdapter(adapterInvoiceT);*/
+        spinnerAdapter adapter1 = new spinnerAdapter(AddInvoice.this, android.R.layout.simple_list_item_1);
+        adapter1.addAll(spinnerArrayInvoicType);
+        adapter1.add("Select Invoice Type");
+        invoiceType.setAdapter(adapter1);
+        invoiceType.setSelection(adapter1.getCount());
 
 
     //List<Customer>allCustomers= selectAllCustomers();
@@ -145,12 +166,67 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         customersArray[i] = allCustomers.get(i).getCustName();
     }
 
-    ArrayAdapter<String> adapterC = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, customersArray);
-    adapterC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    spinnerCustomers.setAdapter(adapterC);
+        spinnerAdapter adapterc = new spinnerAdapter(AddInvoice.this, android.R.layout.simple_list_item_1);
+        adapterc.addAll(customersArray);
+        adapterc.add("Select Customer");
+        spinnerCustomers.setAdapter(adapterc);
+        spinnerCustomers.setSelection(adapterc.getCount());
 
-
+        setCurrentDateOnView();
+        invoiceButtonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(1);
+            }
+        });
 }
+    public void setCurrentDateOnView() {
+
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        InvoiceDate.setText(new StringBuilder()
+                // Month is 0 based, just add 1
+                .append(month + 1).append("-").append(day).append("-")
+                .append(year).append(" "));
+
+        // set current date into datepicker
+        // dpResult.init(year, month, day, null);
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+
+        return new DatePickerDialog(this, datePickerListener,
+                        year, month,day);
+
+
+    }
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+
+            // set selected date into textview
+            InvoiceDate.setText(new StringBuilder().append(month + 1)
+                    .append("-").append(day).append("-").append(year)
+                    .append(" "));
+
+            // set selected date into datepicker also
+            // dpResult.init(year, month, day, null);
+
+        }
+    };
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

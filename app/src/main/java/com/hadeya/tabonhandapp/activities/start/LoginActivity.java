@@ -83,11 +83,10 @@ public class LoginActivity extends Activity
                        finish();
                    } else {
                        try {
-                           StoreUser(userName, password);
-                           Intent main = new Intent("MainTopicsActivity");
-                           startActivity(main);
-                           finish();
+                           StoreUser(userName, password,context, LoginActivity.this);
+
                        } catch (Exception e) {
+                           Toast.makeText(context, "UserName or Password incorrect", Toast.LENGTH_SHORT).show();
                        }
                    }
                }

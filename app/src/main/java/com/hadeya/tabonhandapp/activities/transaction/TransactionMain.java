@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
@@ -19,6 +21,7 @@ import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploadInvoice;
 
 /**
  * Created by AyaAli on 27/03/2018.
@@ -50,6 +53,24 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
 
         //CustomerContentProvider c=new CustomerContentProvider(this);
+
+        ImageButton updateInvoice=(ImageButton)findViewById(R.id.updateInvoice);
+        updateInvoice.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+               try {
+
+                    uploadInvoice(getBaseContext(), "13007");
+                   Toast.makeText(TransactionMain.this, "Upload Done", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(TransactionMain.this, "There is no invoice to uploade", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         Button btn=(Button)findViewById(R.id.btn_addInvoice);
         btn.setOnClickListener(new View.OnClickListener()

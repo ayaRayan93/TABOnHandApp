@@ -1,5 +1,7 @@
 package com.hadeya.tabonhandapp.activities.transaction.invoices;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,15 +13,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
+import com.hadeya.tabonhandapp.app.spinnerAdapter;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.Item;
+
+import java.util.Calendar;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,13 +47,19 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
     @BindView(R.id.itemCode1)TextView itemCode;
     @BindView(R.id.price1)TextView price;
 
-    @BindView(R.id.discount)TextView discount;
-    @BindView(R.id.qty)TextView qty;
-    @BindView(R.id.tax)TextView tax;
-    @BindView(R.id.date)TextView date;
+    @BindView(R.id.discount)EditText discount;
+    @BindView(R.id.qty)EditText qty;
+    @BindView(R.id.tax)EditText tax;
     @BindView(R.id.net)TextView net;
 
-
+    @BindView(R.id.itemInvoicDate)
+    EditText date;
+    @BindView(R.id.itemInvoicButtoneDate)ImageButton itemInvoicButtoneDate;
+     @BindView(R.id.discountType)Spinner DiscountType;
+    HashMap<Integer, String> spinnerMapType;
+    private int year;
+    private int month;
+    private int day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +78,23 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
         ButterKnife.bind(this);
+
+
+        String[] spinnerArrayType = new String[2];
+        spinnerMapType=new HashMap<Integer, String>();
+
+        spinnerMapType.put(0,"1");
+        spinnerArrayType[0]="Value";
+        spinnerMapType.put(1,"2");
+        spinnerArrayType[1]="Percent";
+
+        spinnerAdapter adapter = new spinnerAdapter(AddItemsInvoice.this, android.R.layout.simple_list_item_1);
+        adapter.addAll(spinnerArrayType);
+        adapter.add("Select Discount Type");
+        DiscountType.setAdapter(adapter);
+        DiscountType.setSelection(adapter.getCount());
+
+        setCurrentDateOnView();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             invoice = extras.getParcelable("invoice");
@@ -73,7 +106,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             price.setText(invoiceItem.getSelPrice1Default());
         }
 
-        Button saveInvoice = (Button) findViewById(R.id.save);
+        Button saveInvoice = (Button) findViewById(R.id.addAddNew);
         saveInvoice.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -82,15 +115,15 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 ItemsListData.invoice=invoice;
                 ItemsListData.itemsListData.add(getItemInvoice());
                 ItemsListData.itemsList.add(invoiceItem);
+                //aya
+                invoice.getInvoiceItems().add(getItemInvoice());
                 main.putExtra("invoice",invoice);
                 startActivity(main);
             }
         }
-
         );
 
-
-        Button close=(Button)findViewById(R.id.close);
+        Button close=(Button)findViewById(R.id.addAndclose);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,12 +131,20 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 ItemsListData.invoice=invoice;
                 ItemsListData.itemsListData.add(getItemInvoice());
                 ItemsListData.itemsList.add(invoiceItem);
+                //aya
+                invoice.getInvoiceItems().add(getItemInvoice());
                 main.putExtra("invoice",invoice);
                 startActivity(main);
             }
         });
 
 
+        itemInvoicButtoneDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(1);
+            }
+        });
     }
 
     public InvoiceItem getItemInvoice()
@@ -129,6 +170,54 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
         return invoiceItem;
 
     }
+
+    public void setCurrentDateOnView() {
+
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        date.setText(new StringBuilder()
+                // Month is 0 based, just add 1
+                .append(month + 1).append("-").append(day).append("-")
+                .append(year).append(" "));
+
+        // set current date into datepicker
+        // dpResult.init(year, month, day, null);
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+
+        return new DatePickerDialog(this, datePickerListener,
+                year, month,day);
+
+
+    }
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+
+            // set selected date into textview
+            date.setText(new StringBuilder().append(month + 1)
+                    .append("-").append(day).append("-").append(year)
+                    .append(" "));
+
+            // set selected date into datepicker also
+            // dpResult.init(year, month, day, null);
+
+        }
+    };
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

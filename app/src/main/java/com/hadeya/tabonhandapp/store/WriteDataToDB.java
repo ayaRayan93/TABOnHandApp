@@ -5,18 +5,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.hadeya.tabonhandapp.activities.start.LoginActivity;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
@@ -38,6 +43,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomer;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getInvoices;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoice;
 
 /**
  * Created by AyaAli on 09/03/2018.
@@ -377,7 +386,7 @@ public class WriteDataToDB {
         ItemInvoiceContentProvider itemInvoiceContentProvider=new ItemInvoiceContentProvider(mdatabase);
         itemInvoiceContentProvider.insert(ItemInvoiceContentProvider.CONTENT_URI_add,values);
     }
-    //
+    //invoices
     public static void StoreInvoices()
     {
         // final List<Customer> dataSet=new ArrayList<>();
@@ -450,55 +459,13 @@ public class WriteDataToDB {
         AppController.getInstance().addToRequestQueue(strReq);
 
     }
-    //store new user
-    public static void StoreUser(String name, String pass)
+    public static void StoreInvoiceLocal(Invoice invoice)
     {
-        try {
-        // final List<Customer> dataSet=new ArrayList<>();
-        JSONObject myJsonObject = new JSONObject();
-
-            myJsonObject.put("UserName",name);
-            myJsonObject.put("UserPassword",pass);
-
-        String Url="http://toh.hadeya.net/api/Account/Login";
-
-
-        /////////////connection//////////
-        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST, Url,myJsonObject ,new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject jsonObject)
-            {
-              String response=jsonObject.toString();
-                User user  = Parser.parseUser(response);
-                   //dataSet.add(customer);
-                    addUser(user);
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Stop the refreshing indicator
-                Log.d("response", error.toString());
-
-            }
-        });
-
-        // Adding request to volley request queue
-        AppController.getInstance().addToRequestQueue(strReq);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        addInvoice(invoice);
+        for (int i=0;i<invoice.getInvoiceItems().size();i++)
+        addInvoiceItem(invoice.getInvoiceItems().get(i));
 
     }
-
-
-    //
-
-
-
-    //
     public static void addInvoice(Invoice invoice)
     {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -537,6 +504,91 @@ public class WriteDataToDB {
         InvoiceItemContentProvider invoiceItemContentProvider=new InvoiceItemContentProvider(mdatabase);
         invoiceItemContentProvider.insert(InvoiceItemContentProvider.CONTENT_URI_add,values);
     }
+    public static void  uploadInvoice(final Context context, String RepCodeId)
+    {
+        Customer customer;
+        List<InvoiceItem> invoiceItems=new ArrayList<>();
+        List<Invoice> invoiceList=getInvoices(context,RepCodeId);
+        for(int i=0;i<invoiceList.size();i++) {
+            customer=getCustomer(context,invoiceList.get(i).getCustmerId());
+            invoiceItems=getItemInvoice(context,invoiceList.get(i).getId());
+            invoiceList.get(i).setCustomer(customer);
+            invoiceList.get(i).setInvoiceItems(invoiceItems);
+        }
+
+            String url="http://toh.hadeya.net/api/TOHInvoices/addTOHInvoice/"+RepCodeId;
+
+            JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VolleyLog.v("Response:%n %s", response.toString(4));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.e("Error: ", error.getMessage());
+                }
+            });
+
+
+    }
+
+    //store new user
+    public static void StoreUser(final String name, String pass, final Context context, final LoginActivity login) {
+        try {
+        // final List<Customer> dataSet=new ArrayList<>();
+        JSONObject myJsonObject = new JSONObject();
+
+            myJsonObject.put("UserName",name);
+            myJsonObject.put("UserPassword",pass);
+
+        String Url="http://toh.hadeya.net/api/Account/Login";
+
+
+        /////////////connection//////////
+        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST, Url,myJsonObject ,new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject jsonObject)
+            {
+              String response=jsonObject.toString();
+                User user  = Parser.parseUser(response);
+                   //dataSet.add(customer);
+                    addUser(user);
+
+                Intent main = new Intent("MainTopicsActivity");
+                context.startActivity(main);
+                login.finish();
+                //finish();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+                Toast.makeText(context, "UserName or Password incorrect", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+    //
+
+    //
 
     public static void addUser(User user)
     {
@@ -554,8 +606,6 @@ public class WriteDataToDB {
         userContentProvider.insert(UserContentProvider.CONTENT_URI_Add,values);
 
     }
-
-
     //upload
 
     public static void uploade(Context context, String repCode)
@@ -600,53 +650,6 @@ public class WriteDataToDB {
         uploadCustomers(customerList,context,repCode);
 
 
-
-    }
-
-    public static void uploadCustomer(final Customer customer, final Context context, String repCode)
-    {
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest sr = new StringRequest(Request.Method.POST,"http://toh.hadeya.net/api/TOHCustomers/addTOHCustomer/"+repCode, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(context, "Uploaded Done", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Uploaded Fail", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                //params.put("CustomerCode",customer.getCustomerCode());
-                params.put("CustName",customer.getCustName());
-                params.put("CustomerNameLat",customer.getCustomerNameLat());
-                params.put("StreetAra",customer.getStreetAra());
-                params.put("Classification",customer.getClassification());
-                params.put("PersonToConnect",customer.getPersonToConnect());
-                params.put("Tel",customer.getTel());
-                params.put("TAXID",customer.getTAXID());
-                params.put("SaleAreaCode",customer.getSaleAreaCode());
-                params.put("Notes",customer.getNotes());
-                params.put("SalesRepCode",customer.getSalesRepCode());
-                params.put("CodeList",customer.getCodeList());
-                params.put("NotActive",customer.getNotes());
-
-
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-        queue.add(sr);
 
     }
 

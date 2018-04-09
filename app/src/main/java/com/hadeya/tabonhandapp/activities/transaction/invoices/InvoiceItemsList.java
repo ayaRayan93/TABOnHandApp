@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.StoreInvoiceLocal;
 
 public class InvoiceItemsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -78,7 +79,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
         mRecyclerView.setAdapter(itemAdapter);
 
         mSwipeRefreshLayout.setColorScheme(
-                R.color.colorPrimaryDark, R.color.colorAccent,
+                R.color.colorPrimary, R.color.colorAccent,
                 R.color.colorAccent, R.color.colorPrimaryDark);
 
 
@@ -124,12 +125,15 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
         );
 
         ButterKnife.bind(this);
-        Button saveInvoice = (Button) findViewById(R.id.save);
+        Button saveInvoice = (Button) findViewById(R.id.saveItem);
         saveInvoice.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick (View v){
+
+                //save to local database
+                StoreInvoiceLocal(invoice);
                 Intent main = new Intent("PrintInvoice");
                 main.putExtra("invoice",invoice);
                 startActivity(main);

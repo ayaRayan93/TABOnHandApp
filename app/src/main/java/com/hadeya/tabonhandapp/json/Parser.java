@@ -360,19 +360,14 @@ public class Parser {
         try {
             JSONObject jsonObject = new JSONObject(data);
             String RepCodId = jsonObject.optString("RepCodId");
-            JSONArray jsonArray=jsonObject.optJSONArray("TohUser");
 
             modelUser = new User();
             modelUser.setRepCodId(RepCodId);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
-                String UserName =employeeJsonObject.optString("UserName");
-                String Password =employeeJsonObject.optString("UserPassword");
-                modelUser.setUserName(UserName);
-                modelUser.setPassword(Password);
-            }
-
-
+            JSONObject employeeJsonObject = jsonObject.optJSONObject("TohUser");
+            String UserName =employeeJsonObject.optString("UserName");
+            String Password =employeeJsonObject.optString("UserPassword");
+            modelUser.setUserName(UserName);
+            modelUser.setPassword(Password);
 
             return modelUser;
 

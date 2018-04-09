@@ -30,7 +30,6 @@ import java.util.List;
 import butterknife.BindView;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerInvoice;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomerInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
