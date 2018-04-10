@@ -69,7 +69,7 @@ public class CustomerContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // Uisng SQLiteQueryBuilder instead of query() method
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-
+        SQLiteDatabase db = database.getReadableDatabase();
         // check if the caller has requested a column which does not exists
         // checkColumns(projection);
 
@@ -94,7 +94,7 @@ public class CustomerContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
 
-          SQLiteDatabase db = database.getWritableDatabase();
+
         // Cursor cursor = queryBuilder.query(db, projection, selection,
         //       selectionArgs, null, null, sortOrder);
          Cursor cursor = db.rawQuery(selection, null);

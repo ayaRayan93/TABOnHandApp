@@ -1,6 +1,8 @@
 package com.hadeya.tabonhandapp.activities.transaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,7 +36,7 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity9_transaction_main);
-
+        Context mContext=this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,7 +64,12 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
             {
                try {
 
-                    uploadInvoice(getBaseContext(), "13007");
+                   uploadInvoice(getBaseContext(), "13007");
+                   Context mContext=getApplicationContext();
+                   DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
+                   WriteDataToDB.mdatabase=dataBaseHelper;
+                   SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
+                   DataBaseHelper.resetDataBase(sqlDB);
                    Toast.makeText(TransactionMain.this, "Upload Done", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e)
@@ -71,6 +78,7 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
                 }
             }
         });
+
 
         Button btn=(Button)findViewById(R.id.btn_addInvoice);
         btn.setOnClickListener(new View.OnClickListener()

@@ -94,7 +94,7 @@ public class ReadDataFromDB {
 
         List<Customer> customerList = new ArrayList<>();
 // Select All Query
-        String selectQuery = "SELECT * FROM " + CustomerTable.CustomerTable;//+" where ID="+customerId;
+        String selectQuery = "SELECT * FROM " + CustomerTable.CustomerTable+" where ID="+customerId;
         CustomerContentProvider  movieContentProvider=new CustomerContentProvider( WriteDataToDB.mdatabase);
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = movieContentProvider.query(CustomerContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
@@ -331,7 +331,7 @@ public class ReadDataFromDB {
 
         List<InvoiceItem> invoiceItemList = new ArrayList<>();
 // Select All Query
-        String selectQuery = "SELECT * FROM " + InvoiceItemTable.InvoiceItemTable+" where Id="+invoiceId;
+        String selectQuery = "SELECT * FROM " + InvoiceItemTable.InvoiceItemTable+" where InvoiceId="+invoiceId;
         InvoiceItemContentProvider  itemInvoiceContentProvider=new InvoiceItemContentProvider( WriteDataToDB.mdatabase);
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = itemInvoiceContentProvider.query(InvoiceItemContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
@@ -339,16 +339,20 @@ public class ReadDataFromDB {
         if (cursor.moveToFirst()) {
             do {
                 InvoiceItem invoiceItem = new InvoiceItem();
-                invoiceItem.setId(cursor.getString(0));
-                invoiceItem.setInvoiceId(cursor.getString(1));
-                invoiceItem.setItemCode(cursor.getString(2));
-                invoiceItem.setItemName(cursor.getString(3));
-                invoiceItem.setQuantity(cursor.getString(4));
-                invoiceItem.setTax(cursor.getString(5));
-                invoiceItem.setExpityDate(cursor.getString(6));
-                invoiceItem.setPrice(cursor.getString(7));
-                invoiceItem.setDiscountPercent(cursor.getString(8));
-                invoiceItem.setDiscountAmount(cursor.getString(9));
+                invoiceItem.setId(cursor.getString(0));//id
+                invoiceItem.setInvoiceId(cursor.getString(1));//invoiceid
+                String s=cursor.getString(2);
+              //  invoiceItem.setItemCode(cursor.getString(2));
+
+                invoiceItem.setItemCode(cursor.getString(3));//itemcode
+                invoiceItem.setItemName(cursor.getString(4));//itemname
+                invoiceItem.setQuantity(cursor.getString(5));//qty
+                invoiceItem.setTax(cursor.getString(6));//tax
+                invoiceItem.setExpityDate(cursor.getString(7));//date
+                invoiceItem.setPrice(cursor.getString(8));
+                invoiceItem.setDiscountAmount(cursor.getString(9));//amountper
+                String s2=cursor.getString(9);
+                invoiceItem.setDiscountPercent(cursor.getString(9));
 // Adding contact to list
                 invoiceItemList.add(invoiceItem);
             } while (cursor.moveToNext());
@@ -382,11 +386,14 @@ public class ReadDataFromDB {
                 invoice.setId(cursor.getString(0));
                 invoice.setInvoiceTypeId(cursor.getString(1));
                 invoice.setInvoiceNo(cursor.getString(2));
-                invoice.setCustmerId(cursor.getString(3));
-                invoice.setPayementTypeId(cursor.getString(4));
-                invoice.setNotes(cursor.getString(5));
+                invoice.setInvoiceDate(cursor.getString(3));
+                invoice.setCustmerId(cursor.getString(4));
+                invoice.setPayementTypeId(cursor.getString(5));
+               // invoice.setNotes(cursor.getString(5));
+                invoice.setNotes(cursor.getString(7));
                 invoice.setRefNO(cursor.getString(6));
-                invoice.setRepCodeId(cursor.getString(7));
+              //  invoice.setRepCodeId(cursor.getString(7));
+                invoice.setRepCodeId(cursor.getString(8));
 // Adding contact to list
                 invoiceList.add(invoice);
             } while (cursor.moveToNext());
