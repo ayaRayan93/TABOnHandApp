@@ -72,8 +72,8 @@ public class WriteDataToDB {
         StoreItems();
         storeItemInvoice();
 
-        StoreInvoiceItems();
-        StoreInvoices();
+       // StoreInvoiceItems();
+       // StoreInvoices();
     }
 
     public static void storeCustomer(String repCode)

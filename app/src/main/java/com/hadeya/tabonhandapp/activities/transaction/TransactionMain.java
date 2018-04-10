@@ -36,7 +36,7 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity9_transaction_main);
-        Context mContext=this;
+        final Context mContext=this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,7 +65,6 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
                try {
 
                    uploadInvoice(getBaseContext(), "13007");
-                   Context mContext=getApplicationContext();
                    DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
                    WriteDataToDB.mdatabase=dataBaseHelper;
                    SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();

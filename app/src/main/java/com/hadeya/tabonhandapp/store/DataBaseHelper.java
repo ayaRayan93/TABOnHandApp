@@ -61,6 +61,7 @@ public static  void resetDataBase(SQLiteDatabase db)
     clearDBQuery = "DELETE FROM "+UserTable.UserTable;
     db.execSQL(clearDBQuery);
 }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         CustomerTable.onUpgrade(db,oldVersion,newVersion);
