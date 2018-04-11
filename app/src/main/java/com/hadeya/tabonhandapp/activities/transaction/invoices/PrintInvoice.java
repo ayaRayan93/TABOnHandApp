@@ -106,8 +106,10 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent main = new Intent("TransactionMain");
                 // main.putExtra("searchWord",searchResult);
+
                 startActivity(main);
                 finish();
             }

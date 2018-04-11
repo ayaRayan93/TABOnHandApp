@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.items.ItemsInvoices;
 import com.hadeya.tabonhandapp.activities.transaction.invoices.AddItemsInvoice;
+import com.hadeya.tabonhandapp.activities.transaction.invoices.ItemList;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.Item;
 
@@ -31,12 +32,14 @@ public class transactionItemAdapter extends RecyclerView.Adapter<transactionItem
     private List<Item> DataSet;
     private static Context context;
     Invoice invoice;
+    ItemList itemList;
 
-    public transactionItemAdapter(Context cont, List<Item> dataSet,Invoice invoice)
+    public transactionItemAdapter(Context cont, List<Item> dataSet,Invoice invoice,ItemList itemList)
     {
         context=cont;
         DataSet = dataSet;
         this.invoice=invoice;
+        this.itemList=itemList;
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder
@@ -58,6 +61,7 @@ public class transactionItemAdapter extends RecyclerView.Adapter<transactionItem
                     intent.putExtra("item", DataSet.get(getPosition()));
                     intent.putExtra("invoice",invoice);
                     context2.startActivity(intent);
+                    itemList.finish();
 
                 }
             });
