@@ -123,6 +123,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
           Intent main = new Intent("ItemList");
           main.putExtra("invoice",invoice);
           startActivity(main);
+              finish();
           }
         }
 
@@ -141,6 +142,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
                 Intent main = new Intent("PrintInvoice");
                 main.putExtra("invoice",invoice);
                 startActivity(main);
+                finish();
             }
         }
 

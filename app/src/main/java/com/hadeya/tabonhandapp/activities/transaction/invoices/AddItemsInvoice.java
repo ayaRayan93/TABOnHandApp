@@ -121,6 +121,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 invoice.getInvoiceItems().add(getItemInvoice());
                 main.putExtra("invoice",invoice);
                 startActivity(main);
+                finish();
             }
         }
         );
@@ -137,6 +138,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 invoice.invoiceItems.add(getItemInvoice());
                 main.putExtra("invoice",invoice);
                 startActivity(main);
+                finish();
             }
         });
 

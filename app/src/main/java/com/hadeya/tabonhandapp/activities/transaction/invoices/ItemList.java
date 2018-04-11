@@ -81,7 +81,7 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTransactionItem);
         mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshTransactionItem);
        mRecyclerView.setHasFixedSize(true);
-        itemAdapter = new transactionItemAdapter(this,dataSet,invoice);
+        itemAdapter = new transactionItemAdapter(this,dataSet,invoice,this);
         mRecyclerView.setAdapter(itemAdapter);
 
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids

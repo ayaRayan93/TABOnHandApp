@@ -124,6 +124,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
                 Intent main = new Intent("InvoiceItemsList");
                 main.putExtra("invoice",invoice);
                 startActivity(main);
+                finish();
             }
             catch (Exception e)
             {
