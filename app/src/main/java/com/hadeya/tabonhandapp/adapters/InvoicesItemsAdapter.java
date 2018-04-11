@@ -1,6 +1,7 @@
 package com.hadeya.tabonhandapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
+import com.hadeya.tabonhandapp.activities.transaction.invoices.AddItemsInvoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 
@@ -16,6 +18,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by shaimaa Derbaz on 08/04/2018.
@@ -25,11 +29,18 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
 
     private List<InvoiceItem> DataSet;
     private static Context context;
+    private InvoicesItemsAdapterListener mInvoicesAdapterListener;
+    public interface InvoicesItemsAdapterListener {
+        void onDeleteButtonClicked (int id);
+
+    }
 
     public InvoicesItemsAdapter(Context cont, List<InvoiceItem> dataSet)
     {
         context=cont;
         DataSet = dataSet;
+        if (context instanceof InvoicesItemsAdapterListener)
+            mInvoicesAdapterListener = (InvoicesItemsAdapterListener) context;
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder
@@ -46,6 +57,15 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
         public ViewHolder(View v)
         {
             super(v);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Element " + getPosition() + " clicked.");
+                    if(mInvoicesAdapterListener != null)
+                        mInvoicesAdapterListener.onDeleteButtonClicked(getPosition());
+
+                }
+            });
 
             ButterKnife.bind(this,v);
 

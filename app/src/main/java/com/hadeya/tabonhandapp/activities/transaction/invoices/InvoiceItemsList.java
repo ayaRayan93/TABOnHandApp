@@ -37,7 +37,7 @@ import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.StoreInvoiceLocal;
 
-public class InvoiceItemsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class InvoiceItemsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , InvoicesItemsAdapter.InvoicesItemsAdapterListener {
 
     Invoice invoice;
     @BindView(R.id.invoiceNo)TextView invoiceNo;
@@ -188,5 +188,13 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
             break;
         }
         return true;
+    }
+
+    @Override
+    public void onDeleteButtonClicked (int id)
+    {
+        dataSet.remove(id);
+        itemAdapter.notifyItemRemoved(id);
+        itemAdapter.notifyItemRangeChanged(id,dataSet.size());
     }
 }
