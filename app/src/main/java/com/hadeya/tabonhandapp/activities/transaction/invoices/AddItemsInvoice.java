@@ -246,18 +246,20 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
         double Net = ( (Price * Qty) - Discount ) + ( ( (Price * Qty) - Discount ) * Tax );
         if(DiscountType.getSelectedItemPosition()==0)
         {
-            Net = ( (Price * Qty) - Discount ) + ( ( (Price * Qty) - Discount ) * Tax );
+            Net = ( (Price * Qty) - Discount ) + ( ( (Price * Qty) - Discount ) * (Tax/100) );
         }
         else
         {
             if(Discount<=100) {
-                Net = ((Price * Qty) - ((Price * Qty) * Discount)) + (((Price * Qty) - Discount) * Tax);
+                double Net_without_TAX = ( (Price * Qty) - ((Price * Qty) * Discount/100) );
+                Net = (Net_without_TAX) + (Net_without_TAX* (Tax/100));
             }
             else
             {
                 Toast.makeText(this, "Iscount must be less than 100", Toast.LENGTH_SHORT).show();
                 discount.setText("0");
-                Net = ((Price * Qty) - ((Price * Qty) * 0)) + (((Price * Qty) - 0) * Tax);
+                double Net_without_TAX = ( (Price * Qty) - ((Price * Qty) * Discount/100) );
+                Net = (Net_without_TAX) + (Net_without_TAX* 0);
             }
         }
         net.setText(Net+"");

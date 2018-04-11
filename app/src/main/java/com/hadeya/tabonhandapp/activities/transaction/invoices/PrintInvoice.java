@@ -109,6 +109,7 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
                 Intent main = new Intent("TransactionMain");
                 // main.putExtra("searchWord",searchResult);
                 startActivity(main);
+                finish();
             }
         });
     }

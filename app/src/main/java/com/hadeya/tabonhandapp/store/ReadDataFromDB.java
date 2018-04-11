@@ -344,15 +344,15 @@ public class ReadDataFromDB {
                 String s=cursor.getString(2);
               //  invoiceItem.setItemCode(cursor.getString(2));
 
-                invoiceItem.setItemCode(cursor.getString(3));//itemcode
-                invoiceItem.setItemName(cursor.getString(4));//itemname
-                invoiceItem.setQuantity(cursor.getString(5));//qty
-                invoiceItem.setTax(cursor.getString(6));//tax
-                invoiceItem.setExpityDate(cursor.getString(7));//date
-                invoiceItem.setPrice(cursor.getString(8));
+                invoiceItem.setItemCode(cursor.getString(2));//itemcode
+                invoiceItem.setItemName(cursor.getString(3));//itemname0
+                invoiceItem.setQuantity(cursor.getString(4));//qty
+                invoiceItem.setTax(cursor.getString(5));//tax0
+                invoiceItem.setExpityDate(cursor.getString(6));//date0
+                invoiceItem.setPrice(cursor.getString(7));//0
                 invoiceItem.setDiscountAmount(cursor.getString(9));//amountper
                 String s2=cursor.getString(9);
-                invoiceItem.setDiscountPercent(cursor.getString(9));
+                invoiceItem.setDiscountPercent(cursor.getString(8));
 // Adding contact to list
                 invoiceItemList.add(invoiceItem);
             } while (cursor.moveToNext());
