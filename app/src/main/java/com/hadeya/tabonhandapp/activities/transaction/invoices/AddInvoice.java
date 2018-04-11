@@ -31,6 +31,7 @@ import android.view.MenuItem;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.customers.AddNewCustomer;
+import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.app.spinnerAdapter;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.Invoice;
@@ -113,11 +114,21 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         @Override
         public void onClick (View v){
        // addNewInvoice();
-        Invoice invoice= getNewInvoice(allCustomers);
-        Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
-        Intent main = new Intent("InvoiceItemsList");
-        main.putExtra("invoice",invoice);
-        startActivity(main);
+            try {
+
+               // ItemsListData.invoice=null;
+                ItemsListData.itemsList.clear();
+                ItemsListData.itemsListData.clear();
+                Invoice invoice= getNewInvoice(allCustomers);
+                Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
+                Intent main = new Intent("InvoiceItemsList");
+                main.putExtra("invoice",invoice);
+                startActivity(main);
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(AddInvoice.this, "Enter Required Data", Toast.LENGTH_SHORT).show();
+            }
     }
     }
 

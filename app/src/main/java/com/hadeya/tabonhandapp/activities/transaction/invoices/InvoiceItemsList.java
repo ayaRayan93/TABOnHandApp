@@ -43,6 +43,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
     @BindView(R.id.invoiceNo)TextView invoiceNo;
     @BindView(R.id.customerName)TextView customerName;
     @BindView(R.id.date)TextView date;
+    @BindView(R.id.total)TextView total;
     @BindView(R.id.recyclerViewItem13)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshItem13)
@@ -108,6 +109,9 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
             invoiceNo.setText(invoice.getInvoiceNo());
             customerName.setText(invoice.getCustomer().getCustName());
             date.setText(invoice.getInvoiceDate());
+            //dataSet.clear();
+            initiateRefresh();
+            calTotal();
         }
 
         Button additem = (Button) findViewById(R.id.additem);
@@ -151,6 +155,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
     {
 
         dataSet= ItemsListData.itemsListData;
+        //dataSet=invoice.getInvoiceItems();
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
 
@@ -161,6 +166,15 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
 
     }
 
+    public void calTotal()
+    {
+        double totalv=0;
+        for (int i=0;i<ItemsListData.itemsListData.size();i++)
+        {
+            totalv+=Double.parseDouble(ItemsListData.itemsListData.get(i).getNet());
+        }
+        total.setText(totalv+"");
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

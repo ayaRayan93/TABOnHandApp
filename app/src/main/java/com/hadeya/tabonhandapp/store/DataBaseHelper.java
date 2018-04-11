@@ -61,7 +61,15 @@ public static  void resetDataBase(SQLiteDatabase db)
     clearDBQuery = "DELETE FROM "+UserTable.UserTable;
     db.execSQL(clearDBQuery);
 }
+    public static  void resetInvoice(SQLiteDatabase db)
+    {
 
+        String clearDBQuery = "DELETE FROM "+InvoiceTable.InvoiceTable;
+        db.execSQL(clearDBQuery);
+        clearDBQuery = "DELETE FROM "+InvoiceItemTable.InvoiceItemTable;
+        db.execSQL(clearDBQuery);
+
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         CustomerTable.onUpgrade(db,oldVersion,newVersion);

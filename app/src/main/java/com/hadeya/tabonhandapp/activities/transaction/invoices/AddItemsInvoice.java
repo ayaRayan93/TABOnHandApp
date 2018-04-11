@@ -10,8 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -79,7 +82,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
 
         ButterKnife.bind(this);
 
-
+        calNet();
         String[] spinnerArrayType = new String[2];
         spinnerMapType=new HashMap<Integer, String>();
 
@@ -88,11 +91,9 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
         spinnerMapType.put(1,"2");
         spinnerArrayType[1]="Percent";
 
-        spinnerAdapter adapter = new spinnerAdapter(AddItemsInvoice.this, android.R.layout.simple_list_item_1);
-        adapter.addAll(spinnerArrayType);
-        adapter.add("Select Discount Type");
-        DiscountType.setAdapter(adapter);
-        DiscountType.setSelection(adapter.getCount());
+         ArrayAdapter<String> adapterInvoiceT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayType);
+    adapterInvoiceT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        DiscountType.setAdapter(adapterInvoiceT);
 
         setCurrentDateOnView();
         Bundle extras = getIntent().getExtras();
@@ -104,6 +105,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             itemName.setText(invoiceItem.getItemName());
             itemCode.setText(invoiceItem.getItemCode());
             price.setText(invoiceItem.getSelPrice1Default());
+            calNet();
         }
 
         Button saveInvoice = (Button) findViewById(R.id.addAddNew);
@@ -132,7 +134,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 ItemsListData.itemsListData.add(getItemInvoice());
                 ItemsListData.itemsList.add(invoiceItem);
                 //aya
-                invoice.getInvoiceItems().add(getItemInvoice());
+                invoice.invoiceItems.add(getItemInvoice());
                 main.putExtra("invoice",invoice);
                 startActivity(main);
             }
@@ -145,27 +147,143 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
                 showDialog(1);
             }
         });
+        price.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+
+
+                    calNet();
+                }
+                catch (Exception e)
+                {}
+            }
+        });
+        discount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+
+
+                    calNet();
+                }
+                catch (Exception e)
+                {}
+            }
+        });
+        qty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+
+
+                    calNet();
+                }
+                catch (Exception e)
+                {}
+            }
+        });
+        tax.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+
+
+                    calNet();
+                }
+                catch (Exception e)
+                {}
+            }
+        });
     }
 
+    public void calNet()
+    {
+        double Price = Double.parseDouble(price.getText().toString());
+        double Discount = Double.parseDouble(discount.getText().toString());
+        double Tax = Double.parseDouble(tax.getText().toString());
+        int Qty = Integer.parseInt(qty.getText().toString());
+        double Net = ( (Price * Qty) - Discount ) + ( ( (Price * Qty) - Discount ) * Tax );
+        if(DiscountType.getSelectedItemPosition()==0)
+        {
+            Net = ( (Price * Qty) - Discount ) + ( ( (Price * Qty) - Discount ) * Tax );
+        }
+        else
+        {
+            if(Discount<=100) {
+                Net = ((Price * Qty) - ((Price * Qty) * Discount)) + (((Price * Qty) - Discount) * Tax);
+            }
+            else
+            {
+                Toast.makeText(this, "Iscount must be less than 100", Toast.LENGTH_SHORT).show();
+                discount.setText("0");
+                Net = ((Price * Qty) - ((Price * Qty) * 0)) + (((Price * Qty) - 0) * Tax);
+            }
+        }
+        net.setText(Net+"");
+
+    }
     public InvoiceItem getItemInvoice()
     {
-
 
         InvoiceItem invoiceItem=new InvoiceItem();
         invoiceItem.setItemName(itemName.getText().toString());
         invoiceItem.setItemCode(itemCode.getText().toString());
         invoiceItem.setPrice(price.getText().toString());
-        invoiceItem.setDiscountAmount(discount.getText().toString());
+        if(DiscountType.getSelectedItemPosition()==0)
+        {
+            invoiceItem.setDiscountAmount(discount.getText().toString());
+        }
+        else
+        {
+            invoiceItem.setDiscountPercent(discount.getText().toString());
+        }
+
         invoiceItem.setQuantity(qty.getText().toString());
         invoiceItem.setTax(tax.getText().toString());
         invoiceItem.setExpityDate(date.getText().toString());
-        double price1=Double.parseDouble(price.getText().toString());
-        double dis=Double.parseDouble(discount.getText().toString());
-        double tax1=Double.parseDouble(tax.getText().toString());
-        int quantity1=Integer.parseInt(qty.getText().toString());
-        double net1=((price1*quantity1)-dis)*tax1;
-        invoiceItem.setNet(String.valueOf(net1));
-        net.setText(net1+"");
+        calNet();
+        invoiceItem.setNet(net.getText().toString());
 
         return invoiceItem;
 

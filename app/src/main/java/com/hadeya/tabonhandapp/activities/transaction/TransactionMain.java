@@ -68,7 +68,7 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
                    DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
                    WriteDataToDB.mdatabase=dataBaseHelper;
                    SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
-                   DataBaseHelper.resetDataBase(sqlDB);
+                   DataBaseHelper.resetInvoice(sqlDB);
                    Toast.makeText(TransactionMain.this, "Upload Done", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e)

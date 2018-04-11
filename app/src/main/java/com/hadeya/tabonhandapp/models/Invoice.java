@@ -20,7 +20,7 @@ public class Invoice implements Parcelable {
     String  Id;
     String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
     Customer customer;
-    List<InvoiceItem> invoiceItems;
+    public List<InvoiceItem> invoiceItems;
 
     protected Invoice(Parcel in) {
         Id = in.readString();

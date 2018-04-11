@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hadeya.tabonhandapp.activities.start.LoginActivity;
+import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
@@ -72,8 +73,8 @@ public class WriteDataToDB {
         StoreItems();
         storeItemInvoice();
 
-       // StoreInvoiceItems();
-       // StoreInvoices();
+        //StoreInvoiceItems();
+        //StoreInvoices();
     }
 
     public static void storeCustomer(String repCode)
@@ -468,8 +469,10 @@ public class WriteDataToDB {
     {
         long id=addInvoiceWithID(invoice);
         invoice.setId(id+"");
-        for (int i=0;i<invoice.getInvoiceItems().size();i++)
-            addInvoiceItemWithInvoice(invoice.getInvoiceItems().get(i),invoice);
+        //for (int i=0;i<invoice.getInvoiceItems().size();i++)
+          //  addInvoiceItemWithInvoice(invoice.getInvoiceItems().get(i),invoice);
+        for (int i = 0; i< ItemsListData.itemsListData.size(); i++)
+          addInvoiceItemWithInvoice(ItemsListData.itemsListData.get(i),invoice);
 
     }
     public static void addInvoice(Invoice invoice)
@@ -565,8 +568,9 @@ public class WriteDataToDB {
         }
         JSONObject totalData =new JSONObject();
         JSONArray jsonArrayInvoices = new JSONArray();
-        JSONObject myJsonObjectInvoice = new JSONObject();
+       // JSONObject myJsonObjectInvoice = new JSONObject();
         for (int j = 0; j < invoiceList.size(); j++){
+            JSONObject myJsonObjectInvoice = new JSONObject();
             try {
                 int inId=0;
                 try
@@ -708,11 +712,11 @@ public class WriteDataToDB {
 
                 myJsonObjectInvoice.put("TOHCustomer",customerObj);
                 JSONArray jsonArrayItems = new JSONArray();
-                for (int i = 0; i < invoiceItems.size(); i++) {
+                for (int i = 0; i < invoiceList.get(j).invoiceItems.size(); i++) {
                     int itId=0;
                     try
                     {
-                        itId=Integer.parseInt(invoiceItems.get(i).getId());
+                        itId=Integer.parseInt(invoiceList.get(j).invoiceItems.get(i).getId());
                     }catch (Exception e)
                     {
                         itId=0;
@@ -720,7 +724,7 @@ public class WriteDataToDB {
                     int invId=0;
                     try
                     {
-                        invId=Integer.parseInt(invoiceItems.get(i).getInvoiceId());
+                        invId=Integer.parseInt(invoiceList.get(j).invoiceItems.get(i).getInvoiceId());
                     }catch (Exception e)
                     {
                         invId=0;
@@ -728,7 +732,7 @@ public class WriteDataToDB {
                     int qt=1;
                     try
                     {
-                        qt=Integer.parseInt(invoiceItems.get(i).getQuantity());
+                        qt=Integer.parseInt(invoiceList.get(j).invoiceItems.get(i).getQuantity());
                     }catch (Exception e)
                     {
                         qt=1;
@@ -736,7 +740,7 @@ public class WriteDataToDB {
                     int tx=0;
                     try
                     {
-                        tx=Integer.parseInt( invoiceItems.get(i).getTax());
+                        tx=Integer.parseInt( invoiceList.get(j).invoiceItems.get(i).getTax());
                     }catch (Exception e)
                     {
                         tx=0;
@@ -745,7 +749,7 @@ public class WriteDataToDB {
                     double prc=1;
                     try
                     {
-                        prc=Double.parseDouble(invoiceItems.get(i).getPrice());
+                        prc=Double.parseDouble(invoiceList.get(j).invoiceItems.get(i).getPrice());
                     }catch (Exception e)
                     {
                         prc=1;
@@ -753,7 +757,7 @@ public class WriteDataToDB {
                     double dicPer=0;
                     try
                     {
-                        dicPer=Double.parseDouble(invoiceItems.get(i).getDiscountPercent());
+                        dicPer=Double.parseDouble(invoiceList.get(j).invoiceItems.get(i).getDiscountPercent());
                     }catch (Exception e)
                     {
                         dicPer=0;
@@ -761,19 +765,19 @@ public class WriteDataToDB {
                     double dicAmt=0;
                     try
                     {
-                        dicAmt=Double.parseDouble(invoiceItems.get(i).getDiscountAmount());
+                        dicAmt=Double.parseDouble(invoiceList.get(j).invoiceItems.get(i).getDiscountAmount());
                     }catch (Exception e)
                     {
                         dicAmt=0;
                     }
-                    String itemcode=invoiceItems.get(i).getItemCode();
+                    String itemcode=invoiceList.get(j).invoiceItems.get(i).getItemCode();
                     if(itemcode==null||itemcode.isEmpty())
                         itemcode="";
-                    String itemname=invoiceItems.get(i).getItemName();
+                    String itemname=invoiceList.get(j).invoiceItems.get(i).getItemName();
                     if(itemname==null||itemname.isEmpty())
                         itemname="";
 
-                    String expdate= invoiceItems.get(i).getExpityDate();
+                    String expdate= invoiceList.get(j).invoiceItems.get(i).getExpityDate();
                     SimpleDateFormat sm2 = new SimpleDateFormat("yyyy-MM-dd");
                     String strDateExp = sm2.format(new Date().getTime());
                   //  Date dt = sm.parse(strDate);

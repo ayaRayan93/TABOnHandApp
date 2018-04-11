@@ -14,21 +14,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.InvoicesItemsAdapter;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
+import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 public class PrintInvoice extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    Invoice invoice;
+    @BindView(R.id.invoiceNo)TextView invoiceNo;
+    @BindView(R.id.customerName)TextView customerName;
+    @BindView(R.id.date)TextView date;
+    @BindView(R.id.totalPrint)TextView totalPrint;
     @BindView(R.id.recyclerViewItem13)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshItem13)
@@ -83,8 +91,17 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
 
             }
         });
+        ButterKnife.bind(this);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            invoice = extras.getParcelable("invoice");
+            invoiceNo.setText(invoice.getInvoiceNo());
+            customerName.setText(invoice.getCustomer().getCustName());
+            date.setText(invoice.getInvoiceDate());
 
-
+            initiateRefresh();
+            calTotal();
+        }
         Button exit=(Button)findViewById(R.id.exit);
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +118,7 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
     {
 
         dataSet= ItemsListData.itemsListData;
+        //dataSet=invoice.getInvoiceItems();
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
 
@@ -109,6 +127,15 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
     {
         mSwipeRefreshLayout.setRefreshing(false);
 
+    }
+    public void calTotal()
+    {
+        double totalv=0;
+        for (int i=0;i<ItemsListData.itemsListData.size();i++)
+        {
+            totalv+=Double.parseDouble(ItemsListData.itemsListData.get(i).getNet());
+        }
+        totalPrint.setText(totalv+"");
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

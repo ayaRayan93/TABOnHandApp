@@ -37,9 +37,7 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
         @BindView(R.id.itemName)TextView itemName;
         @BindView(R.id.itemCode)TextView itemCode;
         @BindView(R.id.tax)TextView tax;
-        @BindView(R.id.stock)TextView stock;// stock
         @BindView(R.id.price)TextView price;
-        @BindView(R.id.value)TextView value;
         @BindView(R.id.qty)TextView qty;
         @BindView(R.id.discount)TextView discount;
         @BindView(R.id.net)TextView net;
@@ -69,13 +67,7 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
             this.price = price;
         }
 
-        public TextView getValue() {
-            return value;
-        }
 
-        public void setValue2(TextView value2) {
-            this.value = value;
-        }
 
         public TextView getDiscount() {
             return discount;
@@ -85,13 +77,7 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
             this.discount = discount;
         }
 
-        public TextView getStock() {
-            return stock;
-        }
 
-        public void setStock(TextView stock) {
-            this.stock = stock;
-        }
         public TextView getTax() {
         return tax;
        }
