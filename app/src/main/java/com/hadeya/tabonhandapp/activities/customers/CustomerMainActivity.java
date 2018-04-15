@@ -38,6 +38,7 @@ import butterknife.BindView;
 
 import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
@@ -96,7 +97,7 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
                 DataBaseHelper dataBaseHelper=new DataBaseHelper(getBaseContext());
                 SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
                  resetDataBase(sqlDB);
-                downloadData();
+                downloadData(getBaseContext());
 
             }
         });
@@ -179,7 +180,7 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
     public  void initiateRefresh(int i)
     {
 
-        dataSet= getAllCustomerForSalesPerson(this);
+        dataSet= getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
 

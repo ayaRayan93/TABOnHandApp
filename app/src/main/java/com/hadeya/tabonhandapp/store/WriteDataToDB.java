@@ -50,9 +50,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomer;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoice;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 
 /**
  * Created by AyaAli on 09/03/2018.
@@ -61,23 +64,29 @@ import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoice;
 public class WriteDataToDB {
 
     public static DataBaseHelper mdatabase;
-
-    public static void downloadData()
+    static List<Customer> list;
+    static List<Item> listItems;
+    public static void downloadData(Context context)
     {
-        //basic data
+        //basicAuthorize data
        // mdatabase.resetDataBase();
-        storeCustomer("13007");
+
+        storeCustomer(getLoginUser().get(0).getRepCodId());
+
+
         storeClassification();
         storeArea();
-        storeCustomerInvoice();
+
         StoreItems();
-        storeItemInvoice();
+
+
+
 
         //StoreInvoiceItems();
         //StoreInvoices();
     }
 
-    public static void storeCustomer(String repCode)
+    public static void storeCustomer(final String repCode)
     {
       // final List<Customer> dataSet=new ArrayList<>();
         String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/"+repCode;
@@ -97,7 +106,7 @@ public class WriteDataToDB {
                 while (iterator.hasNext()){
                     Customer customer = (Customer) iterator.next();
                     //dataSet.add(customer);
-                    addCustomer(customer);
+                    addCustomer(customer,repCode);
                 }
             }
         }, new Response.ErrorListener() {
@@ -186,10 +195,10 @@ public class WriteDataToDB {
 
        // return1 dataArea;
     }
-    public static void storeCustomerInvoice()
+    public static void storeCustomerInvoice(String repCode,final String CustomerID)
     {
         //final List<Area> dataArea=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHInvoices/CustomerTOHInvoices/13007?CustomerId=11";
+        String Url="http://toh.hadeya.net/api/TOHInvoices/CustomerTOHInvoices/"+repCode+"?CustomerId="+CustomerID;
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -205,7 +214,7 @@ public class WriteDataToDB {
                 while (iterator.hasNext()){
                     CustomerInvoice customerInvoice = (CustomerInvoice) iterator.next();
                     // dataArea.add(movie);
-                    addCustomerInvoice(customerInvoice);
+                    addCustomerInvoice(customerInvoice,CustomerID);
                 }
 
             }
@@ -259,10 +268,10 @@ public class WriteDataToDB {
         AppController.getInstance().addToRequestQueue(strReq);
 
     }
-    public static void storeItemInvoice()
+    public static void storeItemInvoice(String repCode ,final String ItemCode)
     {
         //final List<Area> dataArea=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHInvoices/ItemTOHInvoices/13007?itemCode=1";
+        String Url="http://toh.hadeya.net/api/TOHInvoices/ItemTOHInvoices/"+repCode+"?itemCode="+ItemCode;
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -278,7 +287,7 @@ public class WriteDataToDB {
                 while (iterator.hasNext()){
                     ItemInvoice itemInvoice = (ItemInvoice) iterator.next();
                     // dataArea.add(movie);
-                    addItemInvoice(itemInvoice);
+                    addItemInvoice(itemInvoice,ItemCode);
                 }
 
             }
@@ -296,7 +305,7 @@ public class WriteDataToDB {
         // return1 dataArea;
     }
 
-    public static void addCustomer(Customer customer)
+    public static void addCustomer(Customer customer,String repcode)
     {
 
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -308,13 +317,14 @@ public class WriteDataToDB {
         values.put(CustomerTable.PersonToConnect,customer.getPersonToConnect());
         values.put(CustomerTable.Tel,customer.getTel());
         values.put(CustomerTable.TAXID,customer.getTAXID());
+        values.put(CustomerTable.SalesRepCode,repcode);
         values.put(CustomerTable.Flag,"1");//
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
         CustomerContentProvider moviesContentProvider=new CustomerContentProvider(mdatabase);
         moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
-
+        list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
     }
     public static void addClassfication(Classification classification)
     {
@@ -344,7 +354,7 @@ public class WriteDataToDB {
         areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
 
     }
-    public static void addCustomerInvoice(CustomerInvoice customerInvoice)
+    public static void addCustomerInvoice(CustomerInvoice customerInvoice,String CustomerID)
     {
 
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -353,6 +363,7 @@ public class WriteDataToDB {
         values.put(CustomerInvoiceTable.InvoiceNo, customerInvoice.getInvoiceNo());
         values.put(CustomerInvoiceTable.Date, customerInvoice.getDate());
         values.put(CustomerInvoiceTable.Value, customerInvoice.getValue());
+        values.put(CustomerInvoiceTable.CustomerId, CustomerID);
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
@@ -377,7 +388,7 @@ public class WriteDataToDB {
         ItemContentProvider itemContentProvider=new ItemContentProvider(mdatabase);
         itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
     }
-    public static void addItemInvoice(ItemInvoice itemInvoice)
+    public static void addItemInvoice(ItemInvoice itemInvoice,String ItemCode)
     {
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -386,11 +397,13 @@ public class WriteDataToDB {
         values.put(ItemInvoiceTable.Price, itemInvoice.getPrice());
         values.put(ItemInvoiceTable.Quantity, itemInvoice.getQuantity());
         values.put(ItemInvoiceTable.Value, itemInvoice.getValue());
+        values.put(ItemInvoiceTable.ItemCode, ItemCode);
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
         ItemInvoiceContentProvider itemInvoiceContentProvider=new ItemInvoiceContentProvider(mdatabase);
         itemInvoiceContentProvider.insert(ItemInvoiceContentProvider.CONTENT_URI_add,values);
+
     }
     //invoices
     public static void StoreInvoices()
@@ -888,15 +901,16 @@ public class WriteDataToDB {
 
         // SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.UserName, user.getUserName());
         values.put(UserTable.UserPassword, user.getPassword());
-        values.put(UserTable.RepCode, user.getRepCodId());
         values.put(UserTable.LoginStatus, "1");
         // Inserting Row
         //db.insert(TABLE_MOVIES, null, values);
         //db.close(); // Closing database connection
         UserContentProvider userContentProvider=new UserContentProvider(mdatabase);
         userContentProvider.insert(UserContentProvider.CONTENT_URI_Add,values);
+        List<User>list=getLoginUser();
 
     }
     //upload

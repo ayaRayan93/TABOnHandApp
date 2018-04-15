@@ -21,6 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.content.ContentValues.TAG;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.storeCustomerInvoice;
 
 /**
  * Created by AyaAli on 05/03/2018.
@@ -50,10 +52,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
-
+                    storeCustomerInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getId());
                     Context context2 = v.getContext();
                     Intent intent = new Intent(context2, CustomerInvoices.class);
-                    //  intent.putExtra("item", (Serializable) DataSet.get(getPosition()));
+                    intent.putExtra("customer", DataSet.get(getPosition()));
                     context2.startActivity(intent);
 
                 }

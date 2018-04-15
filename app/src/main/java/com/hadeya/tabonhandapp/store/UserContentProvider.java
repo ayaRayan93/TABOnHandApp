@@ -26,6 +26,7 @@ public class UserContentProvider extends ContentProvider {
     public UserContentProvider(DataBaseHelper database) {
         this.database=database;
     }
+
     public UserContentProvider(Context context) {
         this.context = context;
         database = new DataBaseHelper(context);

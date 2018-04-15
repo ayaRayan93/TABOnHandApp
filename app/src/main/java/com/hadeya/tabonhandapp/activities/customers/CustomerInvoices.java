@@ -20,6 +20,7 @@ import android.widget.EditText;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.CustomerInvoicesAdapter;
 import com.hadeya.tabonhandapp.adapters.ItemInvoicesAdapter;
+import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
@@ -50,7 +51,7 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
     protected CustomerInvoicesAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected List<CustomerInvoice> dataSet;
-
+    Customer customer=null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -102,6 +103,13 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
 
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+             customer = extras.getParcelable("customer");
+
+        }
+
         final EditText search=(EditText)findViewById(R.id.searchCustomerInvoice);
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -144,10 +152,11 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
 
     public  void initiateRefresh()
     {
-
-        dataSet= getAllCustomerInvoice(this);
-        itemAdapter.filterList(dataSet);
-        onRefreshComplete();
+        if(customer!=null) {
+            dataSet = getAllCustomerInvoice(this, customer.getId());
+            itemAdapter.filterList(dataSet);
+            onRefreshComplete();
+        }
 
     }
     private void onRefreshComplete()

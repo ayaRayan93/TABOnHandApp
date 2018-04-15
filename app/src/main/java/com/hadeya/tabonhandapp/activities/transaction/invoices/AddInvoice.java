@@ -51,6 +51,7 @@ import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerClassification;
 
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 /**
@@ -168,7 +169,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
 
 
     //List<Customer>allCustomers= selectAllCustomers();
-     allCustomers = ReadDataFromDB.getAllCustomerForSalesPerson(this);
+     allCustomers = ReadDataFromDB.getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
     String[] customersArray = new String[allCustomers.size()];
     spinnerCustomersMap=new HashMap<Integer, String>();
     for(int i = 0;i<allCustomers.size();i++)

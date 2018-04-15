@@ -15,12 +15,14 @@ public class CustomerInvoiceTable {
     public static final String InvoiceNo ="InvoiceNo" ;
     public static final String Date ="Date" ;
     public static final String Value ="Value" ;
-
+    public static final String CustomerId ="CustomerId" ;
     public static String CREATE_Database_TABLE = "CREATE TABLE " + CustomerInvoiceTable + "("
             + InvoceId + " TEXT PRIMARY KEY,"
             +InvoiceNo+" TEXT,"
             +Date+" TEXT,"
-            + Value + " TEXT" + ")";
+            + Value + " TEXT,"
+            + CustomerId + " TEXT" +
+            ")";
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(CREATE_Database_TABLE);

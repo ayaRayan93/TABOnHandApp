@@ -160,7 +160,7 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
     public  void initiateRefresh()
     {
 
-        dataSet= getAllItems(this);
+        dataSet= getAllItems();
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
 

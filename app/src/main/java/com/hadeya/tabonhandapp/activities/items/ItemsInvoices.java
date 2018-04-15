@@ -51,7 +51,7 @@ public class ItemsInvoices extends AppCompatActivity implements NavigationView.O
     protected ItemInvoicesAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected List<ItemInvoice> dataSet;
-
+    Item item=null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -103,6 +103,12 @@ public class ItemsInvoices extends AppCompatActivity implements NavigationView.O
 
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            item = extras.getParcelable("item");
+
+        }
         final EditText search=(EditText)findViewById(R.id.searchItemInvoice);
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -145,9 +151,11 @@ public class ItemsInvoices extends AppCompatActivity implements NavigationView.O
 
     public  void initiateRefresh()
     {
-        dataSet= getAllItemInvoice(this);
-        itemAdapter.filterList(dataSet);
-        onRefreshComplete();
+        if(item!=null) {
+            dataSet = getAllItemInvoice(this, item.getItemCode());
+            itemAdapter.filterList(dataSet);
+            onRefreshComplete();
+        }
 
     }
     private void onRefreshComplete()

@@ -10,7 +10,15 @@ public class User
 
     String RepCodId;
 
-    String UserName , Password ;
+    String UserName , Password ,LoginStatus;
+
+    public String getLoginStatus() {
+        return LoginStatus;
+    }
+
+    public void setLoginStatus(String loginStatus) {
+        LoginStatus = loginStatus;
+    }
 
     public String getRepCodId() {
         return RepCodId;

@@ -147,7 +147,7 @@ public class ItemsActivity extends AppCompatActivity implements NavigationView.O
     public  void initiateRefresh()
     {
 
-        dataSet= getAllItems(this);
+        dataSet= getAllItems();
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
 

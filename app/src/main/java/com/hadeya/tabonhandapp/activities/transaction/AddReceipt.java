@@ -34,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 /**
@@ -105,7 +106,7 @@ public class AddReceipt extends AppCompatActivity implements NavigationView.OnNa
         type.setAdapter(adapter);
 
 
-        dataCustomer=getAllCustomerForSalesPerson(this);
+        dataCustomer=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
         String[] spinnerArrayArea = new String[dataCustomer.size()];
         spinnerMapCustomer = new HashMap<Integer, String>();
         for (int i = 0; i < dataCustomer.size(); i++)

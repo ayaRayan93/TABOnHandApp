@@ -16,13 +16,15 @@ public class ItemInvoiceTable {
     public static final String Price ="Price" ;
     public static final String Quantity ="Quantity" ;
     public static final String Value ="Value" ;
+    public static final String ItemCode ="ItemCode" ;
 
     public static String CREATE_Database_TABLE = "CREATE TABLE " + ItemInvoiceTable + "("
             + InvoiceNo + " TEXT PRIMARY KEY,"
             +CustomerName+" TEXT,"
             +Price+" TEXT,"
             +Quantity+" TEXT,"
-            + Value + " TEXT" + ")";
+            +Value+" TEXT,"
+            + ItemCode + " TEXT" + ")";
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(CREATE_Database_TABLE);
