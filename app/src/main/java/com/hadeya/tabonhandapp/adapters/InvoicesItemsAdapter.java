@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
@@ -39,8 +40,9 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
     {
         context=cont;
         DataSet = dataSet;
-        if (context instanceof InvoicesItemsAdapterListener)
+        if (context instanceof InvoicesItemsAdapterListener) {
             mInvoicesAdapterListener = (InvoicesItemsAdapterListener) context;
+        }
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder
@@ -52,17 +54,20 @@ public class InvoicesItemsAdapter extends RecyclerView.Adapter<InvoicesItemsAdap
         @BindView(R.id.qty)TextView qty;
         @BindView(R.id.discount)TextView discount;
         @BindView(R.id.net)TextView net;
-        //@BindView(R.id.net)TextView net;
+        @BindView(R.id.deleteItem)ImageView delete;
 
         public ViewHolder(View v)
         {
+
             super(v);
+
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
-                    if(mInvoicesAdapterListener != null)
+                    if(mInvoicesAdapterListener != null){
                         mInvoicesAdapterListener.onDeleteButtonClicked(getPosition());
+                    }
 
                 }
             });

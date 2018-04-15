@@ -1,6 +1,9 @@
 package com.hadeya.tabonhandapp.activities.transaction.invoices;
 
+import android.content.Context;
 import android.content.Intent;
+import android.print.PrintManager;
+import android.print.PrintDocumentAdapter;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.InvoicesItemsAdapter;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
+//import com.hadeya.tabonhandapp.adapters.MyPrintDocumentAdapter;
+import com.hadeya.tabonhandapp.adapters.MyPrintDocumentAdapter;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 
@@ -114,6 +119,16 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
                 finish();
             }
         });
+
+        Button print=(Button)findViewById(R.id.print);
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                doPrint();
+                finish();
+            }
+        });
     }
 
 
@@ -153,5 +168,19 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
             break;
         }
         return true;
+    }
+
+    private void doPrint() {
+        // Get a PrintManager instance
+        PrintManager printManager = (PrintManager) this
+                .getSystemService(Context.PRINT_SERVICE);
+
+        // Set job name, which will be displayed in the print queue
+        String jobName = this.getString(R.string.app_name) + " Document";
+
+        // Start a print job, passing in a PrintDocumentAdapter implementation
+        // to handle the generation of a print document
+        printManager.print(jobName, new MyPrintDocumentAdapter(this,dataSet),
+                null); //
     }
 }
