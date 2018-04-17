@@ -1,12 +1,15 @@
 package com.hadeya.tabonhandapp.json;
 
 
+import android.support.annotation.Nullable;
+
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
+import com.hadeya.tabonhandapp.models.InvoiceType;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
@@ -370,6 +373,45 @@ public class Parser {
             modelUser.setPassword(Password);
 
             return modelUser;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+
+    public static  List <InvoiceType>  parseInvoiceTypes(String data) {
+        List <InvoiceType>  modelInvoiceType =null;
+
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            modelInvoiceType = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++)
+            {
+                //modelInvoiceType.get(i) = new InvoiceType();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String BranchCode = jsonObject.optString("BranchCode");
+                String trxtypecode = jsonObject.optString("trxtypecode");
+                String TrxArbName = jsonObject.optString("TrxArbName");
+                String TrxEngName = jsonObject.optString("TrxEngName");
+                String TrxKind = jsonObject.optString("TrxKind");
+                String TrxTypeID = jsonObject.optString("TrxTypeID");
+                String TrxType = jsonObject.optString("TrxType");
+                InvoiceType invoiceT = new InvoiceType();
+                invoiceT.setBranchCode(Integer.parseInt(BranchCode));
+                invoiceT.setTrxtypecode(Integer.parseInt(trxtypecode));
+                invoiceT.setTrxArbName(TrxArbName);
+                invoiceT.setTrxEngName(TrxEngName);
+                invoiceT.setTrxKind(Integer.parseInt(TrxKind));
+                invoiceT.setTrxTypeID(Integer.parseInt(TrxTypeID));
+                invoiceT.setTrxType(Integer.parseInt(TrxType));
+                modelInvoiceType.add(invoiceT);
+
+
+        }
+            return modelInvoiceType;
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -35,11 +35,13 @@ import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.app.spinnerAdapter;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.Invoice;
+import com.hadeya.tabonhandapp.models.InvoiceType;
 import com.hadeya.tabonhandapp.store.CustomerContentProvider;
 import com.hadeya.tabonhandapp.store.CustomerTable;
 import com.hadeya.tabonhandapp.store.InvoiceContentProvider;
 import com.hadeya.tabonhandapp.store.InvoiceTable;
 import com.hadeya.tabonhandapp.store.ReadDataFromDB;
+import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +83,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     HashMap<Integer, String> spinnerMapType;
     HashMap<Integer, String> spinnerMapInvoiceType;
     List<Customer> allCustomers;
+    List<InvoiceType> allInvoiceTypes;
 
 
 
@@ -104,6 +107,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         // navigationView.setBackgroundResource(R.color.customColor);
         // navigationView.setItemTextColor(getColorStateList(11));
         navigationView.setNavigationItemSelectedListener(this);
+
 
 
     ButterKnife.bind(this);
@@ -150,19 +154,35 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         type.setAdapter(adapter);
         type.setSelection(adapter.getCount());
 
-    String[] spinnerArrayInvoicType = new String[2];
-    spinnerMapInvoiceType=new HashMap<Integer, String>();
 
-    spinnerMapInvoiceType.put(0,"1");
-    spinnerArrayInvoicType[0]="Check";
-    spinnerMapInvoiceType.put(1,"2");
-    spinnerArrayInvoicType[1]="Cash";
 
+        allInvoiceTypes = ReadDataFromDB.getAllInvoicesTypes(this);
+        int spinnerSize=0;
+        List<InvoiceType> allInvoiceTypesFinal=new ArrayList<>();
+        for (int i = 0;i<allInvoiceTypes.size();i++)
+        {
+            if(allInvoiceTypes.get(i).getTrxType()!=4)
+            {
+                allInvoiceTypesFinal.add(allInvoiceTypes.get(i));
+                spinnerSize++;
+            }
+
+        }
+       // String[] spinnerArrayInvoicType = new String[allInvoiceTypes.size()];
+        spinnerMapInvoiceType=new HashMap<Integer, String>();
+        String[] InvoiceTypesArray = new String[allInvoiceTypesFinal.size()];
+        spinnerMapInvoiceType=new HashMap<Integer, String>();
+        for(int i = 0;i<allInvoiceTypesFinal.size();i++)
+        {
+                spinnerMapInvoiceType.put(i, allInvoiceTypesFinal.get(i).getTrxType() + "");
+                InvoiceTypesArray[i] = allInvoiceTypesFinal.get(i).getTrxArbName();
+
+        }
    /* ArrayAdapter<String> adapterInvoiceT = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArrayInvoicType);
     adapterInvoiceT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     invoiceType.setAdapter(adapterInvoiceT);*/
         spinnerAdapter adapter1 = new spinnerAdapter(AddInvoice.this, android.R.layout.simple_list_item_1);
-        adapter1.addAll(spinnerArrayInvoicType);
+        adapter1.addAll(InvoiceTypesArray);
         adapter1.add("Select Invoice Type");
         invoiceType.setAdapter(adapter1);
         invoiceType.setSelection(adapter1.getCount());

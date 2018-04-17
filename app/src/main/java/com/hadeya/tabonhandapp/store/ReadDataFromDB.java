@@ -21,6 +21,7 @@ import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
+import com.hadeya.tabonhandapp.models.InvoiceType;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
@@ -403,6 +404,45 @@ public class ReadDataFromDB {
         }
 // return1 contact list
         return invoiceList;
+
+    }
+
+// Shaimaa
+    public static List<InvoiceType> getAllInvoicesTypes(Context context)
+    {
+        String[] projection={InvoiceTypeTable.BranchCode,
+                InvoiceTypeTable.trxtypecode,
+                InvoiceTypeTable.TrxArbName,
+                InvoiceTypeTable.TrxEngName,
+                InvoiceTypeTable.TrxKind,
+                InvoiceTypeTable.TrxTypeID,
+                InvoiceTypeTable.TrxType,
+        };
+
+        List<InvoiceType> InvoiceTypesList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + InvoiceTypeTable.InvoiceTypeTable;
+        InvoiceTypeContentProvider  areaContentProvider=new InvoiceTypeContentProvider( WriteDataToDB.mdatabase);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = areaContentProvider.query(InvoiceTypeContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InvoiceType invoiceType = new InvoiceType();
+               // invoiceType.setId(cursor.getString(0));
+                invoiceType.setBranchCode(Integer.parseInt(cursor.getString(1)));
+                invoiceType.setTrxtypecode(Integer.parseInt(cursor.getString(2)));
+                invoiceType.setTrxKind(Integer.parseInt(cursor.getString(3)));
+                invoiceType.setTrxTypeID(Integer.parseInt(cursor.getString(4)));
+                invoiceType.setTrxType(Integer.parseInt(cursor.getString(5)));
+                invoiceType.setTrxArbName(cursor.getString(6));
+                invoiceType.setTrxEngName(cursor.getString(7));
+// Adding contact to list
+                InvoiceTypesList.add(invoiceType);
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return InvoiceTypesList;
 
     }
     public static List<User> LoginLocalUser(String name,String pass)

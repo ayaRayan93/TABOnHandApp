@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hadeya.tabonhandapp.activities.start.LoginActivity;
+import com.hadeya.tabonhandapp.activities.transaction.invoices.AddInvoice;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
@@ -34,6 +35,7 @@ import com.hadeya.tabonhandapp.app.AppController;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
+import com.hadeya.tabonhandapp.models.InvoiceType;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
@@ -78,7 +80,7 @@ public class WriteDataToDB {
         storeArea();
 
         StoreItems();
-
+        storeAllInvoiceTypes();
 
 
 
@@ -1014,6 +1016,61 @@ public class WriteDataToDB {
         SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
         String query="update customer set Flag=1 where Flag=0";
         db.execSQL(query);
+    }
+    public static void storeAllInvoiceTypes()
+    {
+       // RequestQueue queue = Volley.newRequestQueue(context);
+        String Url="http://toh.hadeya.net/api/getalldata/TOHTrxTypeConfigs/13007";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+               List<InvoiceType>list=Parser.parseInvoiceTypes(response);
+                for(int i=0;i<list.size();i++)
+                {
+                  InvoiceType invoiceType = list.get(i);
+                   addInvoiceTypes(invoiceType);
+                }
+              // Iterator iterator = Parser.parseInvoiceTypes(response).iterator();
+           //     while (iterator.hasNext()){
+           //         InvoiceType invoiceType = (InvoiceType) iterator.next();
+            //        addInvoiceTypes(invoiceType);
+           //     }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+      //  queue.add(strReq);
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+        //return1 dataSet;
+    }
+
+    public static void addInvoiceTypes(InvoiceType invoiceType)
+    {
+
+        ContentValues values = new ContentValues();
+        values.put(InvoiceTypeTable.BranchCode, invoiceType.getBranchCode());
+        values.put(InvoiceTypeTable.trxtypecode,invoiceType.getTrxtypecode());
+        values.put(InvoiceTypeTable.TrxKind,invoiceType.getTrxKind());
+        values.put(InvoiceTypeTable.TrxTypeID,invoiceType.getTrxTypeID());
+        values.put(InvoiceTypeTable.TrxType,invoiceType.getTrxType());
+        values.put(InvoiceTypeTable.TrxArbName,invoiceType.getTrxArbName());
+        values.put(InvoiceTypeTable.TrxEngName,invoiceType.getTrxEngName());
+
+        InvoiceTypeContentProvider invoiceTypeContentProvider=new InvoiceTypeContentProvider(mdatabase);
+        invoiceTypeContentProvider.insert(InvoiceTypeContentProvider.CONTENT_URI_add,values);
+       // list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
     }
 
 }

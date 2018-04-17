@@ -37,6 +37,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         ReceiptTable.onCreate(db);
         //
         UserTable.onCreate(db);
+        InvoiceTypeTable.onCreate(db);
 
     }
 
@@ -60,6 +61,8 @@ public static  void resetDataBase(SQLiteDatabase db)
     db.execSQL(clearDBQuery);
     //clearDBQuery = "DELETE FROM "+UserTable.UserTable;
     //db.execSQL(clearDBQuery);
+    clearDBQuery = "DELETE FROM "+InvoiceTypeTable.InvoiceTypeTable;
+    db.execSQL(clearDBQuery);
 }
     public static  void resetInvoice(SQLiteDatabase db)
     {
@@ -82,5 +85,6 @@ public static  void resetDataBase(SQLiteDatabase db)
 
         InvoiceTable.onUpgrade(db,oldVersion,newVersion);
         InvoiceItemTable.onUpgrade(db,oldVersion,newVersion);
+        InvoiceTypeTable.onUpgrade(db,oldVersion,newVersion);
     }
 }
