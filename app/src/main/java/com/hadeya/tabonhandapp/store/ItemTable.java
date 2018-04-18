@@ -12,15 +12,18 @@ public class ItemTable {
     public static final String ItemTable ="item" ;
     // Customer Table Columns names
     public static final String UnitCode ="UnitCode" ;
+    public static final String UnitName ="UnitName" ;
     public static final String ItemName ="ItemName" ;
     public static final String ItemNameLat ="ItemNameLat" ;
     public static final String ItemCode ="ItemCode" ;
+
     public static final String TaxSet ="TaxSet" ;
     public static final String SelPrice1Default ="SelPrice1Default" ;
     public static final String NotActive ="NotActive" ;
 
     public static String CREATE_Database_TABLE = "CREATE TABLE " + ItemTable + "("
             + UnitCode + " TEXT PRIMARY KEY,"
+            + UnitName + " TEXT,"
             + ItemName + " TEXT,"
             + ItemNameLat + " TEXT,"
             + ItemCode + " TEXT,"

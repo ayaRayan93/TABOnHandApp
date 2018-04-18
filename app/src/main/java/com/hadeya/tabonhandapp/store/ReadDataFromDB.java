@@ -457,7 +457,7 @@ public class ReadDataFromDB {
         };
 
         List<User> userList = new ArrayList<>();
-            userList=null;
+           // userList=null;
 // Select All Query
         String selectQuery = "SELECT * FROM " + UserTable.UserTable+" where UserName='"+name+"' and UserPassword='"+pass+"'";
         UserContentProvider  userContentProvider=new UserContentProvider( WriteDataToDB.mdatabase);
@@ -474,6 +474,7 @@ public class ReadDataFromDB {
 // Adding contact to list
                 userList.add(user);
                 String updateQuery = "update user set LoginStatus=1 where UserName='"+name+"' and UserPassword='"+pass+"'";
+                WriteDataToDB.mdatabase.db=WriteDataToDB.mdatabase.getWritableDatabase();
                 WriteDataToDB.mdatabase.db.execSQL(updateQuery);
             } while (cursor.moveToNext());
         }
@@ -497,7 +498,7 @@ public class ReadDataFromDB {
                     UserTable.LoginStatus,
             };
 
-            List<User> userList = new ArrayList<>();
+            List<User> userList = null;
 // Select All Query
             String selectQuery = "SELECT * FROM " + UserTable.UserTable+" where LoginStatus='1'";
             UserContentProvider  userContentProvider=new UserContentProvider( WriteDataToDB.mdatabase);
@@ -505,6 +506,7 @@ public class ReadDataFromDB {
             Cursor cursor = userContentProvider.query(UserContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
 // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
+                userList=new ArrayList<>();
                 do {
                     User user = new User();
                     user.setRepCodId(cursor.getString(0));
@@ -530,6 +532,7 @@ public class ReadDataFromDB {
         try {
 
             String updateQuery = "update user set LoginStatus=0 where LoginStatus=1";
+            WriteDataToDB.mdatabase.db=WriteDataToDB.mdatabase.getWritableDatabase();
             WriteDataToDB.mdatabase.db.execSQL(updateQuery);
 
         }

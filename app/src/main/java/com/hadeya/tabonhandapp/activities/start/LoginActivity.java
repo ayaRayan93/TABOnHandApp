@@ -68,8 +68,8 @@ public class LoginActivity extends Activity
                 password = Password.getText().toString();
                 try {
 
-                    DataBaseHelper dataBaseHelper=new DataBaseHelper(getBaseContext());
-                    WriteDataToDB.mdatabase=dataBaseHelper;
+                   /* DataBaseHelper dataBaseHelper=new DataBaseHelper(getBaseContext());
+                    WriteDataToDB.mdatabase=dataBaseHelper;*/
                /*User user=new User();
                 user.setRepCodId("11");
                 user.setPassword("123");
@@ -77,7 +77,7 @@ public class LoginActivity extends Activity
                 addUser(user);*/
                if(!userName.isEmpty()&&!password.isEmpty()) {
                    List<User> list = LoginLocalUser(userName, password);
-                   if (list != null) {
+                   if (list!=null&&list.size()!= 0) {
                        Intent main = new Intent("MainTopicsActivity");
                        startActivity(main);
                        finish();

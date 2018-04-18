@@ -11,12 +11,21 @@ public class Item implements Parcelable
 {
 
     private String UnitCode;
+    private String UnitName;
     private String ItemName;
     private String ItemNameLat;
     private String ItemCode;
     private String TaxSet;
     private String SelPrice1Default;
     private String NotActive;
+
+    public String getUnitName() {
+        return UnitName;
+    }
+
+    public void setUnitName(String unitName) {
+        UnitName = unitName;
+    }
 
     public Item() {
     }

@@ -70,7 +70,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     @BindView(R.id.refno)EditText RefNo;
     @BindView(R.id.type)Spinner type;
     @BindView(R.id.invoiceType)Spinner invoiceType;
-    @BindView(R.id.customer)Spinner spinnerCustomers;
+    @BindView(R.id.custName)TextView custName;
 
     @BindView(R.id.invoiceButtonDate)ImageButton invoiceButtonDate;
 
@@ -85,7 +85,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     List<Customer> allCustomers;
     List<InvoiceType> allInvoiceTypes;
 
-
+    Customer customer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,10 +108,24 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         // navigationView.setItemTextColor(getColorStateList(11));
         navigationView.setNavigationItemSelectedListener(this);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            customer = extras.getParcelable("customer");
 
+        }
 
     ButterKnife.bind(this);
 
+        custName.setText(customer.getCustName());
+        Button change = (Button) findViewById(R.id.change);
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent main = new Intent("CustomerList");
+                startActivity(main);
+                finish();
+            }
+        });
     Button addInvoice = (Button) findViewById(R.id.save);
     addInvoice.setOnClickListener(new View.OnClickListener()
 
@@ -188,22 +202,6 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         invoiceType.setSelection(adapter1.getCount());
 
 
-    //List<Customer>allCustomers= selectAllCustomers();
-     allCustomers = ReadDataFromDB.getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
-    String[] customersArray = new String[allCustomers.size()];
-    spinnerCustomersMap=new HashMap<Integer, String>();
-    for(int i = 0;i<allCustomers.size();i++)
-
-    {
-        spinnerCustomersMap.put(i, allCustomers.get(i).getId());
-        customersArray[i] = allCustomers.get(i).getCustName();
-    }
-
-        spinnerAdapter adapterc = new spinnerAdapter(AddInvoice.this, android.R.layout.simple_list_item_1);
-        adapterc.addAll(customersArray);
-        adapterc.add("Select Customer");
-        spinnerCustomers.setAdapter(adapterc);
-        spinnerCustomers.setSelection(adapterc.getCount());
 
         setCurrentDateOnView();
         invoiceButtonDate.setOnClickListener(new View.OnClickListener() {
@@ -291,8 +289,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         newInvoice.setRefNO(refNo);
         newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
         newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
-        newInvoice.setCustmerId(spinnerCustomersMap.get(spinnerCustomers.getSelectedItemPosition()));
-        Customer customer=allCustomers.get(spinnerCustomers.getSelectedItemPosition());
+        newInvoice.setCustmerId(customer.getId());
         newInvoice.setCustomer(customer);
 
         return newInvoice;
@@ -306,7 +303,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         newInvoice=new Invoice("",invoiceNo,invoiceDate,"","",notes,refNo,"");
         newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
         newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
-        newInvoice.setCustmerId(spinnerCustomersMap.get(spinnerCustomers.getSelectedItemPosition()));
+        newInvoice.setCustmerId(customer.getId());
         ContentValues values = new ContentValues();
        // values.put(InvoiceTable.Id, newInvoice.getInvoiceNo());
         values.put(InvoiceTable.InvoiceNo, newInvoice.getInvoiceNo());

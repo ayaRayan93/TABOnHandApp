@@ -202,6 +202,7 @@ public class Parser {
                 String ItemName = JsonObject.optString("ItemName");
                 String ItemNameLat = JsonObject.optString("ItemNameLat");
                 String UnitCode = JsonObject.optString("UnitCode");
+                String UnitName = JsonObject.optString("UnitAraName");
                 String TaxSet = JsonObject.optString("TaxSet");
                 String SelPrice1Default = JsonObject.optString("SelPrice1Default");
                 String NotActive = JsonObject.optString("NotActive");
@@ -212,6 +213,7 @@ public class Parser {
                 item.setItemName(ItemName);
                 item.setItemNameLat(ItemNameLat);
                 item.setUnitCode(UnitCode);
+                item.setUnitName(UnitName);
                 item.setTaxSet(TaxSet);
                 item.setSelPrice1Default(SelPrice1Default);
                 item.setNotActive(NotActive);

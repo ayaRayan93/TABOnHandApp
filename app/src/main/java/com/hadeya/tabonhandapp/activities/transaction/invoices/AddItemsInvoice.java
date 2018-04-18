@@ -48,11 +48,16 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
     @BindView(R.id.customerName1)TextView customerName;
     @BindView(R.id.itemName1)TextView itemName;
     @BindView(R.id.itemCode1)TextView itemCode;
+    @BindView(R.id.unit)TextView unit;
     @BindView(R.id.price1)TextView price;
+    @BindView(R.id.valueBeforDis)TextView valueBeforDis;
+    @BindView(R.id.valueAfterDiscount)TextView valueAfterDiscount;
 
-    @BindView(R.id.discount)EditText discount;
+    @BindView(R.id.discount)TextView discount;
+    @BindView(R.id.discountValue)EditText discountValue;
     @BindView(R.id.qty)EditText qty;
     @BindView(R.id.tax)EditText tax;
+    @BindView(R.id.taxValue)TextView taxValue;
     @BindView(R.id.net)TextView net;
 
     @BindView(R.id.itemInvoicDate)
@@ -105,6 +110,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             itemName.setText(invoiceItem.getItemName());
             itemCode.setText(invoiceItem.getItemCode());
             price.setText(invoiceItem.getSelPrice1Default());
+            unit.setText(invoiceItem.getUnitName());
             calNet();
         }
 
@@ -164,14 +170,14 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             public void afterTextChanged(Editable s) {
                 try {
 
-
+                    calValueBeforeDiscount();
                     calNet();
                 }
                 catch (Exception e)
                 {}
             }
         });
-        discount.addTextChangedListener(new TextWatcher() {
+        discountValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -186,7 +192,8 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             public void afterTextChanged(Editable s) {
                 try {
 
-
+                    calDiscount();
+                    calValueAfterDiscount();
                     calNet();
                 }
                 catch (Exception e)
@@ -208,7 +215,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             public void afterTextChanged(Editable s) {
                 try {
 
-
+                    calValueBeforeDiscount();
                     calNet();
                 }
                 catch (Exception e)
@@ -230,7 +237,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             public void afterTextChanged(Editable s) {
                 try {
 
-
+                    calTaxValue();
                     calNet();
                 }
                 catch (Exception e)
@@ -239,6 +246,54 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
         });
     }
 
+
+    public void calValueBeforeDiscount()
+    {
+        double Price = Double.parseDouble(price.getText().toString());
+        int Qty = Integer.parseInt(qty.getText().toString());
+        double res=Price*Qty;
+        valueBeforDis.setText(res+"");
+    }
+    public void calDiscount()
+    {
+        double Price = Double.parseDouble(price.getText().toString());
+        int Qty = Integer.parseInt(qty.getText().toString());
+        double DiscountValue = Double.parseDouble(discountValue.getText().toString());
+        double res;
+        if(DiscountType.getSelectedItemPosition()==0)
+        {
+            res = (Price * Qty) - DiscountValue ;
+        }
+        else
+        {
+            if(DiscountValue<=100) {
+                res= (Price * Qty) - ((Price * Qty) * DiscountValue/100) ;
+            }
+            else
+            {
+                Toast.makeText(this, "Iscount must be less than 100", Toast.LENGTH_SHORT).show();
+                discount.setText("0");
+                DiscountValue=0;
+                res= (Price * Qty) - ((Price * Qty) * DiscountValue/100) ;
+            }
+        }
+    }
+    public void calValueAfterDiscount()
+    {
+        double valuebeforedis = Double.parseDouble(valueBeforDis.getText().toString());
+        double dis = Integer.parseInt(discount.getText().toString());
+        double res=valuebeforedis-dis;
+        valueAfterDiscount.setText(res+"");
+    }
+    public void calTaxValue()
+    {
+        double Price = Double.parseDouble(price.getText().toString());
+        int Qty = Integer.parseInt(qty.getText().toString());
+        double Tax = Double.parseDouble(tax.getText().toString());
+        double dis=Double.parseDouble(discount.getText().toString());
+        double taxV=( (Price * Qty) - dis ) * (Tax/100) ;
+        taxValue.setText(taxV+"");
+    }
     public void calNet()
     {
         double Price = Double.parseDouble(price.getText().toString());
