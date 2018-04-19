@@ -423,5 +423,39 @@ public class Parser {
         return null;
     }
 
+    public static  List <Invoice>  parseAllInvoices(String data) {
+        List <Invoice>  modelInvoices =null;
+
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            modelInvoices = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++)
+            {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String InvoiceNo = jsonObject.optString("InvoiceNo");
+                String CustName = jsonObject.optString("CustName");
+                String InvoiceDate = jsonObject.optString("InvoiceDate");
+                String netValue = jsonObject.optString("value");
+                Invoice invoiceT = new Invoice();
+                Customer c=new Customer();
+                c.setCustName(CustName);
+                invoiceT.setCustomer(c);
+                invoiceT.setInvoiceNo(InvoiceNo);
+                invoiceT.setInvoiceDate(InvoiceDate);
+                invoiceT.setNet(netValue);
+                modelInvoices.add(invoiceT);
+
+
+            }
+            return modelInvoices;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+
 
 }

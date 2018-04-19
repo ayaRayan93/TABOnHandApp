@@ -148,8 +148,6 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
 
         );
 
-
-
     }
 
 

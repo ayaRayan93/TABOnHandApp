@@ -445,6 +445,38 @@ public class ReadDataFromDB {
         return InvoiceTypesList;
 
     }
+
+    public static List<Invoice> getAllInvoices(Context context)
+    {
+        String[] projection={InvoiceSimpleTable.InvoiceNo,
+                InvoiceSimpleTable.InvoiceDate,
+                InvoiceSimpleTable.CustmerName,
+                InvoiceSimpleTable.Net,
+        };
+
+        List<Invoice> InvoicesList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + InvoiceSimpleTable.InvoiceSimpleTable;
+        InvoiceSimpleContentProvider  invoiceContentProvider=new InvoiceSimpleContentProvider( WriteDataToDB.mdatabase);
+        Cursor cursor = invoiceContentProvider.query(InvoiceSimpleContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Invoice invoiceS = new Invoice();
+                Customer c=new Customer();
+                invoiceS.setInvoiceNo(cursor.getString(1));
+                invoiceS.setInvoiceDate(cursor.getString(2));
+                c.setCustName(cursor.getString(3));
+                invoiceS.setCustomer(c);
+                invoiceS.setNet(cursor.getString(4));
+
+                // Adding contact to list
+                InvoicesList.add(invoiceS);
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return InvoicesList;
+
+    }
     public static List<User> LoginLocalUser(String name,String pass)
     {
         try {

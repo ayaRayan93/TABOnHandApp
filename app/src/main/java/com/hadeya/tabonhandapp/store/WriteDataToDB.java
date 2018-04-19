@@ -81,9 +81,7 @@ public class WriteDataToDB {
 
         StoreItems();
         storeAllInvoiceTypes();
-
-
-
+        StoreAllInvoices(context);
         //StoreInvoiceItems();
         //StoreInvoices();
     }
@@ -1035,11 +1033,7 @@ public class WriteDataToDB {
                   InvoiceType invoiceType = list.get(i);
                    addInvoiceTypes(invoiceType);
                 }
-              // Iterator iterator = Parser.parseInvoiceTypes(response).iterator();
-           //     while (iterator.hasNext()){
-           //         InvoiceType invoiceType = (InvoiceType) iterator.next();
-            //        addInvoiceTypes(invoiceType);
-           //     }
+
             }
         }, new Response.ErrorListener() {
 
@@ -1073,4 +1067,57 @@ public class WriteDataToDB {
        // list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
     }
 
+
+    public static void  StoreAllInvoices(Context mContext)
+    {
+        // List<Invoice> dataSet=new ArrayList<>();
+        // RequestQueue queue = Volley.newRequestQueue(mContext);
+        String Url="http://toh.hadeya.net/api/TOHInvoices/allTOHInvoices/13007";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+
+                Log.d("response", response);
+                List<Invoice> list= Parser.parseAllInvoices(response);
+                for(int i=0;i<list.size();i++)
+                {
+                    Invoice invoice = list.get(i);
+                    addAllInvoices(invoice);
+                    //dataSet.add(invoice);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+        // queue.add(strReq);
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+       // return dataSet;
+    }
+
+    public static void addAllInvoices (Invoice invoice)
+    {
+        ContentValues values = new ContentValues();
+        values.put(InvoiceSimpleTable.InvoiceNo, invoice.getInvoiceNo());
+        values.put(InvoiceSimpleTable.InvoiceDate, invoice.getInvoiceDate());
+        values.put(InvoiceSimpleTable.CustmerName, invoice.getCustomer().getCustName());
+        values.put(InvoiceSimpleTable.Net, invoice.getNet());
+        InvoiceSimpleContentProvider invoiceContentProvider=new InvoiceSimpleContentProvider(mdatabase);
+        Uri UriId=invoiceContentProvider.insert(InvoiceSimpleContentProvider.CONTENT_URI_add,values);
+    }
+
 }
+
+
+

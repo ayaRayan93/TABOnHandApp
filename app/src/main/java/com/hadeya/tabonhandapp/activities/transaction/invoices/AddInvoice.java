@@ -300,7 +300,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         String invoiceDate=InvoiceDate.getText().toString();
         String notes=Notes.getText().toString();
         String refNo=RefNo.getText().toString();
-        newInvoice=new Invoice("",invoiceNo,invoiceDate,"","",notes,refNo,"");
+        newInvoice=new Invoice("",invoiceNo,invoiceDate,"","",notes,refNo,"","");
         newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
         newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
         newInvoice.setCustmerId(customer.getId());

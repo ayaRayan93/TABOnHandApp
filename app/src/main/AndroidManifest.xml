@@ -166,14 +166,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.transaction.invoices.PrintInvoice"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+        <activity
+            android:name=".activities.transaction.invoices.PrintInvoice"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="PrintInvoice" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activities.transaction.invoices.FirstInvoiceList"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="FirstInvoiceList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
     </application>
 

@@ -18,7 +18,7 @@ public class Invoice implements Parcelable {
 
 
     String  Id;
-    String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId;
+    String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId,net;
     Customer customer;
     public List<InvoiceItem> invoiceItems;
 
@@ -68,7 +68,7 @@ public class Invoice implements Parcelable {
         invoiceItems=new ArrayList<>();
     }
 
-    public Invoice(String invoiceTypeId, String invoiceNo, String InvoiceDate, String custmerId, String payementTypeId, String notes, String refNO, String repCodeId) {
+    public Invoice(String invoiceTypeId, String invoiceNo, String InvoiceDate, String custmerId, String payementTypeId, String notes, String refNO, String repCodeId,String net) {
         InvoiceTypeId = invoiceTypeId;
         InvoiceNo = invoiceNo;
         InvoiceDate=InvoiceDate;
@@ -77,6 +77,7 @@ public class Invoice implements Parcelable {
         Notes = notes;
         RefNO = refNO;
         RepCodeId = repCodeId;
+        net = net;
 
     }
 
@@ -152,6 +153,14 @@ public class Invoice implements Parcelable {
         RepCodeId = repCodeId;
     }
 
+    public String getNet() {
+        return net;
+    }
+
+    public void setNet(String net) {
+        this.net = net;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -171,6 +180,7 @@ public class Invoice implements Parcelable {
         dest.writeString(RepCodeId);
         dest.writeParcelable(customer,flags);
         dest.writeList(invoiceItems);
+        dest.writeString(net);
 
     }
 }

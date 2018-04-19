@@ -85,7 +85,7 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View view)
             {
-                Intent main = new Intent("CustomerList");
+                Intent main = new Intent("FirstInvoiceList");
                 startActivity(main);
             }
         });
