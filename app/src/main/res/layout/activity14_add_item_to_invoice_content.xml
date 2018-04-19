@@ -402,6 +402,7 @@
                         android:layout_width="85dp"
                         android:layout_height="match_parent"
                         android:id="@id/discount"
+                        android:text="0"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
                         />

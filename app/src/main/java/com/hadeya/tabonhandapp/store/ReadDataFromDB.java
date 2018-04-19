@@ -210,9 +210,11 @@ public class ReadDataFromDB {
     public static List<Item> getAllItems()
     {
         String[] projection={ItemTable.UnitCode,
+                ItemTable.UnitName,
                 ItemTable.ItemName,
                 ItemTable.ItemNameLat,
                 ItemTable.ItemCode,
+
                 ItemTable.TaxSet,
                 ItemTable.SelPrice1Default,
                 ItemTable.NotActive,
@@ -229,12 +231,13 @@ public class ReadDataFromDB {
             do {
                 Item item = new Item();
                 item.setUnitCode(cursor.getString(0));
-                item.setItemName(cursor.getString(1));
-                item.setItemNameLat(cursor.getString(2));
-                item.setItemCode(cursor.getString(3));
-                item.setTaxSet(cursor.getString(4));
-                item.setSelPrice1Default(cursor.getString(5));
-                item.setNotActive(cursor.getString(6));
+                item.setUnitName(cursor.getString(1));
+                item.setItemName(cursor.getString(2));
+                item.setItemNameLat(cursor.getString(3));
+                item.setItemCode(cursor.getString(4));
+                item.setTaxSet(cursor.getString(5));
+                item.setSelPrice1Default(cursor.getString(6));
+                item.setNotActive(cursor.getString(7));
 // Adding contact to list
                 itemList.add(item);
             } while (cursor.moveToNext());

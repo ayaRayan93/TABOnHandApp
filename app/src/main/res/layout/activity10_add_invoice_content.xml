@@ -162,33 +162,6 @@
                         />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:background="@drawable/edittextstyl"
-                    >
-                <Spinner android:id="@+id/customer"
-                    android:layout_width="0dp"
-                    android:layout_weight="10"
-                    android:layout_height="40dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:backgroundTint="@color/white"
-                    android:textSize="20dp"
-                    android:hint="Select Customer"
-                    android:textColor="@color/customColor"
-                    android:layout_margin="5dp"
-                    >
-                </Spinner>
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/arrow"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    />
-                </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
