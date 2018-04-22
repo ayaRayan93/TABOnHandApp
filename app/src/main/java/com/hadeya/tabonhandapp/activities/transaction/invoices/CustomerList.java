@@ -19,19 +19,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.CustomerAdapter;
 import com.hadeya.tabonhandapp.adapters.TransactionCustomerAdapter;
 import com.hadeya.tabonhandapp.models.Customer;
+import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerBalance;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
@@ -44,17 +48,20 @@ import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 public class CustomerList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.recyclerView)
+    @BindView(R.id.recyclerViewtransactioncustomer)
     RecyclerView mRecyclerView;
 
 
-    @BindView(R.id.swipeRefresh)
+    @BindView(R.id.swipeRefreshtransactioncustomer)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @BindView(R.id.balanceTotal)
+    TextView balanceTotal;
 
     private Menu menu;
     protected TransactionCustomerAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<Customer> dataSet;
+    protected List<Customer_Balance> dataSet;
     private int flag;
 
 
@@ -78,10 +85,10 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
+        ButterKnife.bind(this);
         dataSet = new ArrayList<>();
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewtransactioncustomer);
+        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshtransactioncustomer);
         mRecyclerView.setHasFixedSize(true);
         itemAdapter = new TransactionCustomerAdapter(this,dataSet);
         mRecyclerView.setAdapter(itemAdapter);
@@ -136,12 +143,12 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
 
     private void filter(String text) {
         //new array list that will hold the filtered data
-        List<Customer> filterdNames = new ArrayList<>();
+        List<Customer_Balance> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (Customer s : dataSet) {
+        for (Customer_Balance s : dataSet) {
             //if the existing elements contains the search input
-            if (s.getCustName().toLowerCase().contains(text.toLowerCase())) {
+            if (s.getAraName().toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
                 filterdNames.add(s);
 
@@ -155,9 +162,10 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
     public  void initiateRefresh(int i)
     {
 
-        dataSet= getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
+        dataSet= getAllCustomerBalance(getLoginUser().get(0).getRepCodId());
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
+        calTotalBalance();
 
     }
 
@@ -180,5 +188,15 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
             break;
         }
         return true;
+    }
+
+    public void calTotalBalance()
+    {
+        double total=0;
+        for (int i=0;i<dataSet.size();i++)
+        {
+            total+=Double.parseDouble(dataSet.get(i).getBalance());
+        }
+        balanceTotal.setText(total+"");
     }
 }

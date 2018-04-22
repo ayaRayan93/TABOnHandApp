@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,12 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FirstInvoiceList extends AppCompatActivity {
     @BindView(R.id.recyclerView18)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefresh18)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.netTotal)
+    TextView netTotal;
 
     Context mContext;
     List<Invoice> dataSet;
@@ -57,7 +61,8 @@ public class FirstInvoiceList extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         itemAdapter = new InvoiceFirstAdapter(this,dataSet);
         mRecyclerView.setAdapter(itemAdapter);
-
+        ButterKnife.bind(this);
+        initiateRefresh();
         mSwipeRefreshLayout.setColorScheme(
                 R.color.colorPrimaryDark, R.color.colorAccent,
                 R.color.colorAccent, R.color.colorPrimaryDark);
@@ -88,7 +93,7 @@ public class FirstInvoiceList extends AppCompatActivity {
             public void onClick (View v){
 
                 try {
-                    Intent main = new Intent("CustomerList");
+                    Intent main = new Intent(getBaseContext(), CustomerList.class);
                     startActivity(main);
                     finish();
                 }
@@ -109,7 +114,7 @@ public class FirstInvoiceList extends AppCompatActivity {
         dataSet= ReadDataFromDB.getAllInvoices(mContext);
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
-
+        calTotalBalance();
     }
 
     private void onRefreshComplete()
@@ -118,5 +123,13 @@ public class FirstInvoiceList extends AppCompatActivity {
 
     }
 
-
+    public void calTotalBalance()
+    {
+        double total=0;
+        for (int i=0;i<dataSet.size();i++)
+        {
+            total+=Double.parseDouble(dataSet.get(i).getNet());
+        }
+        netTotal.setText(total+"");
+    }
 }

@@ -7,6 +7,7 @@ import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
+import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.InvoiceType;
@@ -264,6 +265,39 @@ public class Parser {
         return null;
     }
    //
+   public static List<Customer_Balance> parseCustomerBalance(String data) {
+       List<Customer_Balance> modelCustomer_Balance;
+
+       try {
+           JSONArray jsonArray = new JSONArray(data);
+           modelCustomer_Balance = new ArrayList<>();
+
+           for (int i = 0; i < jsonArray.length(); i++) {
+               JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
+               String CustomerCode = employeeJsonObject.optString("CustomerCode");
+               String araName =employeeJsonObject.optString("araName");
+               String balance = employeeJsonObject.optString("balance");
+
+               Customer_Balance customer_Balance = new Customer_Balance();
+               customer_Balance.setCustomerCode(CustomerCode);
+               customer_Balance.setAraName(araName);
+               customer_Balance.setBalance(balance);
+
+               modelCustomer_Balance.add(customer_Balance);
+
+
+
+           }
+
+           return modelCustomer_Balance;
+
+       } catch (JSONException e) {
+           e.printStackTrace();
+       }
+
+
+       return null;
+   }
     public static List<Invoice> parseInvoice(String data) {
         List<Invoice> modelInvoice;
 

@@ -19,6 +19,7 @@ import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
+import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.InvoiceType;
@@ -73,6 +74,34 @@ public class ReadDataFromDB {
                 customer.setTAXID(cursor.getString(6));
                 customer.setSaleAreaCode(cursor.getString(7));
                 customer.setFlag(cursor.getString(8));
+// Adding contact to list
+                customerList.add(customer);
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return customerList;
+
+    }
+    public static List<Customer_Balance> getAllCustomerBalance(String repcode)
+    {
+        String[] projection={CustomerBalanceTable.CustomerCode,
+                CustomerBalanceTable.araName,
+                CustomerBalanceTable.balance,
+        };
+
+        List<Customer_Balance> customerList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + CustomerBalanceTable.CustomerBalanceTable+ " where SalesRepCode='"+repcode+"'";
+        CustomerBalanceContentProvider  movieContentProvider=new CustomerBalanceContentProvider( WriteDataToDB.mdatabase);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = movieContentProvider.query(CustomerBalanceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Customer_Balance customer = new Customer_Balance();
+                customer.setCustomerCode(cursor.getString(0));
+                customer.setAraName(cursor.getString(1));
+                customer.setBalance(cursor.getString(2));
 // Adding contact to list
                 customerList.add(customer);
             } while (cursor.moveToNext());

@@ -33,6 +33,7 @@ import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.app.AppController;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
+import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.InvoiceType;
@@ -74,7 +75,7 @@ public class WriteDataToDB {
        // mdatabase.resetDataBase();
 
         storeCustomer(getLoginUser().get(0).getRepCodId());
-
+        storeCustomerBalance(getLoginUser().get(0).getRepCodId());
 
         storeClassification();
         storeArea();
@@ -1117,6 +1118,48 @@ public class WriteDataToDB {
         Uri UriId=invoiceContentProvider.insert(InvoiceSimpleContentProvider.CONTENT_URI_add,values);
     }
 
+
+    public static void  storeCustomerBalance(final String RepCodeId)
+    {
+        String Url="http://toh.hadeya.net/api/TOHCustomers/CustomersBalanceReport/"+RepCodeId;
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+
+                Log.d("response", response);
+                List<Customer_Balance> list= Parser.parseCustomerBalance(response);
+                for(int i=0;i<list.size();i++)
+                {
+                    Customer_Balance customer_balance = list.get(i);
+                    addCustomerBalance(customer_balance,RepCodeId);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("response", error.toString());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(strReq);
+
+
+    }
+    public  static void addCustomerBalance(Customer_Balance customer_balance,String RepCodeId)
+    {
+        ContentValues values = new ContentValues();
+        values.put(CustomerBalanceTable.CustomerCode, customer_balance.getCustomerCode());
+        values.put(CustomerBalanceTable.araName, customer_balance.getAraName());
+        values.put(CustomerBalanceTable.balance, customer_balance.getBalance());
+        values.put(CustomerBalanceTable.SalesRepCode, RepCodeId);
+        CustomerBalanceContentProvider customerBalanceContentProvider=new CustomerBalanceContentProvider(mdatabase);
+        Uri UriId=customerBalanceContentProvider.insert(CustomerBalanceContentProvider.CONTENT_URI_add,values);
+    }
 }
 
 

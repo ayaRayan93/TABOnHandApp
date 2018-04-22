@@ -294,6 +294,7 @@
                         android:layout_width="85dp"
                         android:layout_height="match_parent"
                         android:id="@+id/valueBeforDis"
+                        android:text="0"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
                         />
@@ -460,6 +461,7 @@
                         android:padding="0dp"
                         android:textColor="@color/textColor1"
                         android:text="0"
+                        android:inputType="numberDecimal"
                         android:layout_margin="10dp"
                         android:id="@+id/tax"
                         />
