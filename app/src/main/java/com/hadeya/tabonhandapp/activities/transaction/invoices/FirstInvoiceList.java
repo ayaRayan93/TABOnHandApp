@@ -84,8 +84,6 @@ public class FirstInvoiceList extends AppCompatActivity {
             }
         });
 
-
-
         Button addInvoice = (Button) findViewById(R.id.addNewInvoice);
         addInvoice.setOnClickListener(new View.OnClickListener()
         {
