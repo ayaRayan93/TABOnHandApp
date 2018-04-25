@@ -59,8 +59,8 @@ public class MainTopicsActivity  extends AppCompatActivity implements Navigation
         DataBaseHelper dataBaseHelper=new DataBaseHelper(this);
         WriteDataToDB.mdatabase=dataBaseHelper;
         SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
-        resetDataBase(sqlDB);
-        downloadData(this);
+        //resetDataBase(sqlDB);
+        //downloadData(this);
         Button btn=(Button)findViewById(R.id.btn_BasicData);
         btn.setOnClickListener(new View.OnClickListener()
         {

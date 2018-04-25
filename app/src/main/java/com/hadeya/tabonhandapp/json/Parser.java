@@ -13,6 +13,7 @@ import com.hadeya.tabonhandapp.models.InvoiceType;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
+import com.hadeya.tabonhandapp.store.InvoiceTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -425,24 +426,60 @@ public class Parser {
 
     public static  List <Invoice>  parseAllInvoices(String data) {
         List <Invoice>  modelInvoices =null;
+        Customer c=new Customer();
 
         try {
             JSONArray jsonArray = new JSONArray(data);
             modelInvoices = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++)
-            {
+            {   Invoice invoiceT = new Invoice();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String InvoiceId = jsonObject.optString("InvoceId");
                 String InvoiceNo = jsonObject.optString("InvoiceNo");
                 String CustName = jsonObject.optString("CustName");
+                String CustId = jsonObject.optString("CustmerId");
                 String InvoiceDate = jsonObject.optString("InvoiceDate");
+                String PayTypeId = jsonObject.optString("PayementTypeId");
                 String netValue = jsonObject.optString("value");
-                Invoice invoiceT = new Invoice();
-                Customer c=new Customer();
+                String RepCode = jsonObject.optString("RepCodeId");
+                JSONArray TOHInvoiceDetails =jsonObject.getJSONArray("TOHInvoiceDetails");
+                List <InvoiceItem> invoiceItems =new ArrayList<>();
+                for(int j=0;j<TOHInvoiceDetails.length();j++)
+                {   InvoiceItem invoiceItem=new InvoiceItem();
+                    JSONObject TOHInvoiceObj=TOHInvoiceDetails.getJSONObject(j);
+                    String itemId = TOHInvoiceObj.optString("Id");
+                    String ItemCode = TOHInvoiceObj.optString("ItemCode");
+                    String ItemName = TOHInvoiceObj.optString("ItemName");
+                    String Quantity=TOHInvoiceObj.optString("Quantity");
+                    String Tax = TOHInvoiceObj.optString("Tax");
+                    String ExpityDate = TOHInvoiceObj.optString("ExpityDate");
+                    String Price = TOHInvoiceObj.optString("Price");
+                    String DiscountPercent=TOHInvoiceObj.optString("DiscountPercent");
+                    String DiscountAmount=TOHInvoiceObj.optString("DiscountAmount");
+                    invoiceItem.setId(itemId);
+                    invoiceItem.setItemCode(ItemCode);
+                    invoiceItem.setItemName(ItemName);
+                    invoiceItem.setQuantity(Quantity);
+                    invoiceItem.setTax(Tax);
+                    invoiceItem.setExpityDate(ExpityDate);
+                    invoiceItem.setPrice(Price);
+                    invoiceItem.setDiscountPercent(DiscountPercent);
+                    invoiceItem.setDiscountAmount(DiscountAmount);
+                    invoiceItems.add(invoiceItem);
+
+                }
+                invoiceT.setInvoiceItems(invoiceItems);
+                invoiceT.setId(InvoiceId);
+                invoiceT.setCustmerId(CustId);
+                c.setId(CustId);
                 c.setCustName(CustName);
                 invoiceT.setCustomer(c);
                 invoiceT.setInvoiceNo(InvoiceNo);
                 invoiceT.setInvoiceDate(InvoiceDate);
                 invoiceT.setNet(netValue);
+                invoiceT.setPayementTypeId(PayTypeId);
+                invoiceT.setRepCodeId(RepCode);
+                invoiceT.setFlag("0");
                 modelInvoices.add(invoiceT);
 
 

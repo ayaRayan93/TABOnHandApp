@@ -54,6 +54,7 @@ import java.util.Map;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllNewLocalInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getCustomer;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoice;
@@ -68,11 +69,13 @@ public class WriteDataToDB {
     public static DataBaseHelper mdatabase;
     static List<Customer> list;
     static List<Item> listItems;
+
     public static void downloadData(Context context)
     {
         //basicAuthorize data
        // mdatabase.resetDataBase();
-
+        SQLiteDatabase sqlDB = mdatabase.getWritableDatabase();
+        sqlDB.beginTransaction();
         storeCustomer(getLoginUser().get(0).getRepCodId());
 
 
@@ -82,6 +85,8 @@ public class WriteDataToDB {
         StoreItems();
         storeAllInvoiceTypes();
         StoreAllInvoices(context);
+        sqlDB.setTransactionSuccessful();
+        sqlDB.endTransaction();
         //StoreInvoiceItems();
         //StoreInvoices();
     }
@@ -102,12 +107,14 @@ public class WriteDataToDB {
                     dataSet.clear();
 
                 }*/
+
                 Iterator iterator = Parser.parseStringToJson(response).iterator();
                 while (iterator.hasNext()){
                     Customer customer = (Customer) iterator.next();
                     //dataSet.add(customer);
                     addCustomer(customer,repCode);
                 }
+
             }
         }, new Response.ErrorListener() {
 
@@ -324,7 +331,7 @@ public class WriteDataToDB {
         //db.close(); // Closing database connection
         CustomerContentProvider moviesContentProvider=new CustomerContentProvider(mdatabase);
         moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
-        list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
+        //list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
     }
     public static void addClassfication(Classification classification)
     {
@@ -515,10 +522,14 @@ public class WriteDataToDB {
         values.put(InvoiceTable.InvoiceTypeId, invoice.getInvoiceTypeId());
         values.put(InvoiceTable.InvoiceNo, invoice.getInvoiceNo());
         values.put(InvoiceTable.CustmerId, invoice.getCustmerId());
+        values.put(InvoiceTable.CustmerName, invoice.getCustomer().getCustName());
+        values.put(InvoiceTable.InvoiceDate, invoice.getInvoiceDate());
         values.put(InvoiceTable.PayementTypeId, invoice.getPayementTypeId());
         values.put(InvoiceTable.Notes, invoice.getNotes());
         values.put(InvoiceTable.RefNO, invoice.getRefNO());
         values.put(InvoiceTable.RepCodeId, invoice.getRepCodeId());
+        values.put(InvoiceTable.Flag, invoice.getFlag());
+        values.put(InvoiceTable.Net, invoice.getNet());
         InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider(mdatabase);
         Uri UriId=invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
         UriMatcher sURIMatcher = new UriMatcher(
@@ -570,7 +581,7 @@ public class WriteDataToDB {
     public static void  uploadInvoice(final Context context, String RepCodeId) {
         Customer customer =new Customer();
         List<InvoiceItem> invoiceItems = new ArrayList<>();
-        List<Invoice> invoiceList = getInvoices(context, RepCodeId);
+        List<Invoice> invoiceList = getAllNewLocalInvoices();
         for (int i = 0; i < invoiceList.size(); i++) {
             customer = getCustomer(context, invoiceList.get(i).getCustmerId());
             invoiceItems = getItemInvoice(context, invoiceList.get(i).getId());
@@ -821,7 +832,7 @@ public class WriteDataToDB {
       //  totalData.put(jsonArrayInvoices);
 
 
-                String url="http://toh.hadeya.net/api/TOHInvoices/addTOHInvoices/"+RepCodeId;
+        String url="http://toh.hadeya.net/api/TOHInvoices/addTOHInvoices/"+RepCodeId;
         RequestQueue queue = Volley.newRequestQueue(context);
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.POST,url, jsonArrayInvoices,
                     new Response.Listener<JSONArray>() {
@@ -1109,12 +1120,12 @@ public class WriteDataToDB {
     public static void addAllInvoices (Invoice invoice)
     {
         ContentValues values = new ContentValues();
-        values.put(InvoiceSimpleTable.InvoiceNo, invoice.getInvoiceNo());
-        values.put(InvoiceSimpleTable.InvoiceDate, invoice.getInvoiceDate());
-        values.put(InvoiceSimpleTable.CustmerName, invoice.getCustomer().getCustName());
-        values.put(InvoiceSimpleTable.Net, invoice.getNet());
-        InvoiceSimpleContentProvider invoiceContentProvider=new InvoiceSimpleContentProvider(mdatabase);
-        Uri UriId=invoiceContentProvider.insert(InvoiceSimpleContentProvider.CONTENT_URI_add,values);
+        values.put(InvoiceTable.InvoiceNo, invoice.getInvoiceNo());
+        values.put(InvoiceTable.InvoiceDate, invoice.getInvoiceDate());
+        values.put(InvoiceTable.CustmerName, invoice.getCustomer().getCustName());
+        values.put(InvoiceTable.Net, invoice.getNet());
+        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider(mdatabase);
+        Uri UriId=invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
     }
 
 }

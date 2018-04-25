@@ -18,10 +18,17 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.hadeya.tabonhandapp.R;
+import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
+import com.hadeya.tabonhandapp.store.ReadDataFromDB;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
+import com.hadeya.tabonhandapp.utils.NetworkConnect;
 
+import java.util.List;
+
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllNewLocalInvoices;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.StoreAllInvoices;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploadInvoice;
 
@@ -63,14 +70,30 @@ public class TransactionMain  extends AppCompatActivity implements NavigationVie
             public void onClick(View view)
             {
                try {
+                   if(NetworkConnect.isConnected()==true)
+                   {
+                   List<Invoice> invoiceList = getAllNewLocalInvoices();
+                   if(invoiceList.size()==0||invoiceList==null)
+                   {
+                       Toast.makeText(TransactionMain.this, "There is no invoice to uploade", Toast.LENGTH_SHORT).show();
+                   }
+                   else
+                   {
+                        uploadInvoice(getBaseContext(), "13007");
+                        DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
+                        WriteDataToDB.mdatabase=dataBaseHelper;
+                        SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
+                        DataBaseHelper.resetInvoice(sqlDB);
+                        StoreAllInvoices(mContext);
+                        //ReadDataFromDB.getAllInvoices(mContext);
+                   }
 
-                   uploadInvoice(getBaseContext(), "13007");
-                   DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
-                   WriteDataToDB.mdatabase=dataBaseHelper;
-                   SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
-                   DataBaseHelper.resetInvoice(sqlDB);
                    Toast.makeText(TransactionMain.this, "Upload Done", Toast.LENGTH_SHORT).show();
-                }
+                }else {
+                       Toast.makeText(TransactionMain.this, "No Internet , Please connect", Toast.LENGTH_SHORT).show();
+                   }
+               }
+
                 catch (Exception e)
                 {
                     Toast.makeText(TransactionMain.this, "There is no invoice to uploade", Toast.LENGTH_SHORT).show();
