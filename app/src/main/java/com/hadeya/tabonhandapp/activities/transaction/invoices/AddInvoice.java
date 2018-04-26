@@ -168,8 +168,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         type.setAdapter(adapter);
         type.setSelection(adapter.getCount());
 
-
-
+        //WriteDataToDB.storeAllInvoiceTypes();
         allInvoiceTypes = ReadDataFromDB.getAllInvoicesTypes(this);
         int spinnerSize=0;
         List<InvoiceType> allInvoiceTypesFinal=new ArrayList<>();

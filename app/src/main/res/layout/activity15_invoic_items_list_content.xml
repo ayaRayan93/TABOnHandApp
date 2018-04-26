@@ -28,7 +28,7 @@
                 android:orientation="horizontal"
                 >
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Transaction > Items"
                     android:textColor="@color/mainColor"
@@ -37,6 +37,14 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
                     />
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/update_items_button"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="45dp"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cloudcomputing"/>
 
             </LinearLayout>
             <LinearLayout
@@ -75,6 +83,8 @@
 
             </LinearLayout>
         </LinearLayout>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

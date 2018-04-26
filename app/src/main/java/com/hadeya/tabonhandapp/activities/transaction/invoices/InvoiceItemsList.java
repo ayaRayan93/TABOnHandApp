@@ -138,6 +138,11 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
             public void onClick (View v){
 
                 //save to local database
+                invoice.setFlag("1");
+                invoice.setInvoiceItems(ItemsListData.itemsListData);
+                TextView tot=(TextView)findViewById(R.id.total);
+                String total=tot.getText().toString();
+                invoice.setNet(total);
                 StoreInvoiceLocal(invoice);
                 Intent main = new Intent("PrintInvoice");
                 main.putExtra("invoice",invoice);

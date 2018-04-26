@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.hadeya.tabonhandapp.models.Customer;
+
 /**
  * Created by AyaAli on 07/03/2018.
  */
@@ -81,6 +83,22 @@ public static  void resetDataBase(SQLiteDatabase db)
         clearDBQuery = "DELETE FROM "+InvoiceItemTable.InvoiceItemTable;
         db.execSQL(clearDBQuery);
 
+    }
+    public static  void resetCustomers(SQLiteDatabase db)
+    {
+
+        String clearDBQuery = "DELETE FROM "+ CustomerTable.CustomerTable;
+        db.execSQL(clearDBQuery);
+        clearDBQuery = "DELETE FROM "+ InvoiceTypeTable.InvoiceTypeTable;
+        db.execSQL(clearDBQuery);
+
+
+    }
+    public static  void resetItems(SQLiteDatabase db)
+    {
+
+        String clearDBQuery = "DELETE FROM "+ ItemTable.ItemTable;
+        db.execSQL(clearDBQuery);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

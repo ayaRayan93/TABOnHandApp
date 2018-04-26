@@ -480,32 +480,98 @@ public class ReadDataFromDB {
 
     public static List<Invoice> getAllInvoices(Context context)
     {
-        String[] projection={InvoiceSimpleTable.InvoiceNo,
-                InvoiceSimpleTable.InvoiceDate,
-                InvoiceSimpleTable.CustmerName,
-                InvoiceSimpleTable.Net,
+        String[] projection={InvoiceTable.InvoiceNo,
+                InvoiceTable.InvoiceDate,
+                InvoiceTable.CustmerId,
+                InvoiceTable.Net,
         };
 
         List<Invoice> InvoicesList = new ArrayList<>();
 // Select All Query
-        String selectQuery = "SELECT * FROM " + InvoiceSimpleTable.InvoiceSimpleTable;
-        InvoiceSimpleContentProvider  invoiceContentProvider=new InvoiceSimpleContentProvider( WriteDataToDB.mdatabase);
-        Cursor cursor = invoiceContentProvider.query(InvoiceSimpleContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+        String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable;
+        InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider( WriteDataToDB.mdatabase);
+        Cursor cursor = invoiceContentProvider.query(InvoiceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 Invoice invoiceS = new Invoice();
                 Customer c=new Customer();
-                invoiceS.setInvoiceNo(cursor.getString(1));
-                invoiceS.setInvoiceDate(cursor.getString(2));
-                c.setCustName(cursor.getString(3));
+                invoiceS.setInvoiceNo(cursor.getString(2));
+                invoiceS.setInvoiceDate(cursor.getString(3));
+                invoiceS.setCustmerId(cursor.getString(4));
+                c.setId(cursor.getString(4));
+                c.setCustName(cursor.getString(5));
                 invoiceS.setCustomer(c);
-                invoiceS.setNet(cursor.getString(4));
+                invoiceS.setNet(cursor.getString(9));
 
                 // Adding contact to list
                 InvoicesList.add(invoiceS);
             } while (cursor.moveToNext());
         }
 // return1 contact list
+        return InvoicesList;
+
+    }
+    public static List<Invoice> getAllNewLocalInvoices()
+    {
+        String[] projection={InvoiceTable.InvoiceNo,
+                InvoiceTable.InvoiceDate,
+                InvoiceTable.CustmerId,
+                InvoiceTable.Net,
+        };
+
+        List<Invoice> InvoicesList = new ArrayList<>();
+        List<InvoiceItem> InvoiceItemList = new ArrayList<>();
+
+        String selectQueryInv = "SELECT * FROM " + InvoiceTable.InvoiceTable +" WHERE Flag = 1 ";
+        InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider( WriteDataToDB.mdatabase);
+        Cursor cursor = invoiceContentProvider.query(InvoiceContentProvider.CONTENT_URI,projection,selectQueryInv,null,null); //db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Invoice invoiceS = new Invoice();
+                Customer c=new Customer();
+                String invoiceId=cursor.getString(0);
+                invoiceS.setId(invoiceId);
+                invoiceS.setInvoiceTypeId(cursor.getString(1));
+                invoiceS.setInvoiceNo(cursor.getString(2));
+                invoiceS.setInvoiceDate(cursor.getString(3));
+                invoiceS.setCustmerId(cursor.getString(4));
+                c.setId(cursor.getString(4));
+                c.setCustName(cursor.getString(5));
+                invoiceS.setCustomer(c);
+                invoiceS.setPayementTypeId(cursor.getString(6));
+                invoiceS.setRefNO(cursor.getString(7));
+                invoiceS.setNotes(cursor.getString(8));
+                invoiceS.setRepCodeId(cursor.getString(9));
+                invoiceS.setNet(cursor.getString(10));
+                invoiceS.setFlag(cursor.getString(11));
+                String selectQueryItems = "SELECT * FROM " + InvoiceItemTable.InvoiceItemTable +" WHERE InvoiceId = "+invoiceId;
+                InvoiceItemContentProvider  invoiceItemContentProvider=new InvoiceItemContentProvider( WriteDataToDB.mdatabase);
+                Cursor cursor2 = invoiceItemContentProvider.query(InvoiceItemContentProvider.CONTENT_URI,projection,selectQueryItems,null,null); //db.rawQuery(selectQuery, null);
+                if (cursor2.moveToFirst()) {
+                    do {
+                        InvoiceItem invoiceItem = new InvoiceItem();
+                        invoiceItem.setId(cursor2.getString(0));//id
+                        invoiceItem.setInvoiceId(cursor2.getString(1));//invoiceid
+                        String s = cursor2.getString(2);
+                        //  invoiceItem.setItemCode(cursor.getString(2));
+
+                        invoiceItem.setItemCode(cursor2.getString(2));//itemcode
+                        invoiceItem.setItemName(cursor2.getString(3));//itemname0
+                        invoiceItem.setQuantity(cursor2.getString(4));//qty
+                        invoiceItem.setTax(cursor2.getString(5));//tax0
+                        invoiceItem.setExpityDate(cursor2.getString(6));//date0
+                        invoiceItem.setPrice(cursor2.getString(7));//0
+                        invoiceItem.setDiscountAmount(cursor2.getString(9));//amountper
+                        String s2 = cursor2.getString(9);
+                        invoiceItem.setDiscountPercent(cursor2.getString(8));
+                        InvoiceItemList.add(invoiceItem);
+
+                    } while (cursor2.moveToNext());
+                }
+                invoiceS.setInvoiceItems(InvoiceItemList);
+                InvoicesList.add(invoiceS);
+            } while (cursor.moveToNext());
+        }
         return InvoicesList;
 
     }
