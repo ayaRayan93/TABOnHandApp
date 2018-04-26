@@ -52,44 +52,6 @@ public class FirstInvoiceList extends AppCompatActivity {
         dataSet = new ArrayList<>();
         dataSet = ReadDataFromDB.getAllInvoices(this);
         ButterKnife.bind(this);
-      /*  textNo_data = (TextView) findViewById(R.id.text_no_data);
-        fabDownloadInvoices = (FloatingActionButton) findViewById(R.id.download_invoices_button);
-        if (dataSet.size() == 0 || dataSet == null) {
-            textNo_data.setVisibility(View.VISIBLE);
-            fabDownloadInvoices.setVisibility(View.VISIBLE);
-
-        } else
-        {
-            textNo_data.setVisibility(View.INVISIBLE);
-            fabDownloadInvoices.setVisibility(View.INVISIBLE);
-
-        }
-       // fabDownloadInvoices = (FloatingActionButton) findViewById(R.id.upload_invoices_button);
-        fabDownloadInvoices.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick (View v){
-
-                try {
-                    WriteDataToDB.StoreAllInvoices(mContext);
-                    dataSet = ReadDataFromDB.getAllInvoices(mContext);
-                    textNo_data.setVisibility(View.INVISIBLE);
-                    fabDownloadInvoices.setVisibility(View.INVISIBLE);
-                    mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView18);
-                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh18);
-                    mRecyclerView.setHasFixedSize(true);
-                    itemAdapter = new InvoiceFirstAdapter(mContext, dataSet);
-                    mRecyclerView.setAdapter(itemAdapter);
-
-                }
-                catch (Exception e)
-                {
-
-                }
-            }
-        }
-
-        );*/
         fabUpdateInvoices = (FloatingActionButton) findViewById(R.id.update_invoices_button);
         fabUpdateInvoices.setOnClickListener(new View.OnClickListener()
         {
@@ -99,39 +61,13 @@ public class FirstInvoiceList extends AppCompatActivity {
                 AlertDialog diaBox =AskOption();
                 diaBox.show();
 
-                /*try {
-                    if(NetworkConnect.isConnected()==true)
-                    {
-                    textNo_data.setVisibility(View.INVISIBLE);
-                    fabDownloadInvoices.setVisibility(View.INVISIBLE);
-                    DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
-                    WriteDataToDB.mdatabase=dataBaseHelper;
-                    SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
-                    DataBaseHelper.resetInvoice(sqlDB);
-                    WriteDataToDB.StoreAllInvoices(mContext);
-                    dataSet = ReadDataFromDB.getAllInvoices(mContext);
-                    mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView18);
-                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh18);
-                    mRecyclerView.setHasFixedSize(true);
-                    itemAdapter = new InvoiceFirstAdapter(mContext, dataSet);
-                    mRecyclerView.setAdapter(itemAdapter);
 
-                }
-                    else
-                    {
-                        Toast.makeText(FirstInvoiceList.this, "No Internet , Please connect", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                catch (Exception e)
-                {
-
-                }*/
             }
         }
 
         );
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView18);
+            mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView18);
             mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh18);
             mRecyclerView.setHasFixedSize(true);
             itemAdapter = new InvoiceFirstAdapter(this, dataSet);

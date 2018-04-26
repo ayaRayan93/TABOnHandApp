@@ -238,6 +238,7 @@ public class ItemList extends AppCompatActivity implements NavigationView.OnNavi
                                 SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
                                 DataBaseHelper.resetItems(sqlDB);
                                 WriteDataToDB.StoreItems();
+                                mSwipeRefreshLayout.setRefreshing(true);
                                 dataSet = ReadDataFromDB.getAllItems();
                                 mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                                 mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);

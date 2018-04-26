@@ -79,7 +79,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String clearDBQuery = "DELETE FROM "+CustomerTable.CustomerTable;
         db.execSQL(clearDBQuery);
-        clearDBQuery = "DELETE FROM "+CustomerTable.CustomerTable;
+        clearDBQuery = "DELETE FROM "+InvoiceTypeTable.InvoiceTypeTable;
         db.execSQL(clearDBQuery);
 
     }

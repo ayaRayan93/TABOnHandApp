@@ -224,6 +224,7 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
                         SQLiteDatabase sqlDB = WriteDataToDB.mdatabase.getWritableDatabase();
                         resetCustomers(sqlDB);
                         downloadCustomer(customerMainActivity);
+                        WriteDataToDB.storeAllInvoiceTypes();
 
                     }
 
