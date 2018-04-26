@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.hadeya.tabonhandapp.models.Customer;
+import com.hadeya.tabonhandapp.models.CustomerInvoice;
 
 /**
  * Created by AyaAli on 07/03/2018.
@@ -83,12 +84,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(clearDBQuery);
 
     }
+    public static  void resetCustomerInvoices(SQLiteDatabase db)
+    {
+
+        String clearDBQuery = "DELETE FROM "+ CustomerInvoiceTable.CustomerInvoiceTable;
+        db.execSQL(clearDBQuery);
+        clearDBQuery = "DELETE FROM "+CustomerInvoiceTable.CustomerInvoiceTable;
+        db.execSQL(clearDBQuery);
+
+    }
     public static  void resetItems(SQLiteDatabase db)
     {
 
         String clearDBQuery = "DELETE FROM "+ItemTable.ItemTable;
         db.execSQL(clearDBQuery);
         clearDBQuery = "DELETE FROM "+ItemTable.ItemTable;
+        db.execSQL(clearDBQuery);
+
+    }
+    public static  void resetItemInvoices(SQLiteDatabase db)
+    {
+
+        String clearDBQuery = "DELETE FROM "+ItemInvoiceTable.ItemInvoiceTable;
+        db.execSQL(clearDBQuery);
+        clearDBQuery = "DELETE FROM "+ItemInvoiceTable.ItemInvoiceTable;
         db.execSQL(clearDBQuery);
 
     }

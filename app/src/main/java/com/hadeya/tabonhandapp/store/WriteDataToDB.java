@@ -19,8 +19,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.hadeya.tabonhandapp.activities.customers.CustomerInvoices;
 import com.hadeya.tabonhandapp.activities.customers.CustomerMainActivity;
 import com.hadeya.tabonhandapp.activities.items.ItemsActivity;
+import com.hadeya.tabonhandapp.activities.items.ItemsInvoices;
 import com.hadeya.tabonhandapp.activities.start.LoginActivity;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.json.Parser;
@@ -94,14 +96,25 @@ public class WriteDataToDB {
     {
         storeCustomer(getLoginUser().get(0).getRepCodId());
     }
+    public static void downloadCustomerInvoices(final String CustomerID,CustomerInvoices customerInvoices)
+    {
+        storeCustomerInvoice(getLoginUser().get(0).getRepCodId(),CustomerID,customerInvoices);
+    }
+
     public static void downloadItems()
     {
         StoreItems();
     }
+
     public static void downloadItems(ItemsActivity itemsActivity)
     {
         StoreItems(itemsActivity);
     }
+    public static void downloadItemInvoices(String itemCode, ItemsInvoices itemsInvoices)
+    {
+        storeItemInvoice(getLoginUser().get(0).getRepCodId(),itemCode,itemsInvoices);
+    }
+
     //Customers
     public static void storeCustomer(final String repCode)
     {
@@ -286,7 +299,7 @@ public class WriteDataToDB {
         areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
 
     }
-    public static void storeCustomerInvoice(String repCode,final String CustomerID)
+    public static void storeCustomerInvoice(String repCode, final String CustomerID, final CustomerInvoices customerInvoices)
     {
         //final List<Area> dataArea=new ArrayList<>();
         String Url="http://toh.hadeya.net/api/TOHInvoices/CustomerTOHInvoices/"+repCode+"?CustomerId="+CustomerID;
@@ -298,16 +311,14 @@ public class WriteDataToDB {
             public void onResponse(String response)
             {
                 Log.d("response", response);
-               /* if (dataArea != null){
-                    dataArea.clear();
-                }*/
+
                 Iterator iterator = Parser.parseCustomerInvoice(response).iterator();
                 while (iterator.hasNext()){
                     CustomerInvoice customerInvoice = (CustomerInvoice) iterator.next();
-                    // dataArea.add(movie);
+
                     addCustomerInvoice(customerInvoice,CustomerID);
                 }
-
+            customerInvoices.initiateList();
             }
         }, new Response.ErrorListener() {
 
@@ -427,7 +438,7 @@ public class WriteDataToDB {
         ItemContentProvider itemContentProvider=new ItemContentProvider(mdatabase);
         itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
     }
-    public static void storeItemInvoice(String repCode ,final String ItemCode)
+    public static void storeItemInvoice(String repCode , final String ItemCode, final ItemsInvoices itemsInvoices)
     {
         //final List<Area> dataArea=new ArrayList<>();
         String Url="http://toh.hadeya.net/api/TOHInvoices/ItemTOHInvoices/"+repCode+"?itemCode="+ItemCode;
@@ -448,7 +459,7 @@ public class WriteDataToDB {
                     // dataArea.add(movie);
                     addItemInvoice(itemInvoice,ItemCode);
                 }
-
+                itemsInvoices.initiateList();
             }
         }, new Response.ErrorListener() {
 

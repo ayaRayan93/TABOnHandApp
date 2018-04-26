@@ -171,6 +171,10 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
                 filterdNames.add(s);
 
             }
+           /* else if(s.getCustomerCode().toLowerCase().contains(text.toLowerCase()))
+            {
+                filterdNames.add(s);
+            }*/
         }
         itemAdapter.filterList(filterdNames);
     }

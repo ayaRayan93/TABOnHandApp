@@ -58,7 +58,7 @@ public  class ViewHolder extends RecyclerView.ViewHolder
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Element " + getPosition() + " clicked.");
-                    storeItemInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getItemCode());
+                    //storeItemInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getItemCode());
                     Context context2 = v.getContext();
                     Intent intent = new Intent(context2, ItemsInvoices.class);
                     intent.putExtra("item", DataSet.get(getPosition()));

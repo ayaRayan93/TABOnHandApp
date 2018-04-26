@@ -51,7 +51,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                 Log.d(TAG, "Element " + getPosition() + " clicked.");
-                storeCustomerInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getId());
+                //storeCustomerInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getId());
                 Context context2 = v.getContext();
                 Intent intent = new Intent(context2, CustomerInvoices.class);
                 intent.putExtra("customer", DataSet.get(getPosition()));

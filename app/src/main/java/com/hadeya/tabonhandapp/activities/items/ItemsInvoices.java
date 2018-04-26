@@ -1,12 +1,15 @@
 package com.hadeya.tabonhandapp.activities.items;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,21 +21,29 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.hadeya.tabonhandapp.R;
+import com.hadeya.tabonhandapp.activities.customers.CustomerInvoices;
 import com.hadeya.tabonhandapp.adapters.ItemInvoicesAdapter;
 import com.hadeya.tabonhandapp.adapters.ItemsAdapter;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.models.ItemInvoice;
+import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
+import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetCustomerInvoices;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerInvoice;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItemInvoice;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadCustomerInvoices;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadItemInvoices;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 /**
  * Created by AyaAli on 21/03/2018.
@@ -148,22 +159,73 @@ public class ItemsInvoices extends AppCompatActivity implements NavigationView.O
     }
 
 
-
     public  void initiateRefresh()
     {
         if(item!=null) {
             dataSet = getAllItemInvoice(this, item.getItemCode());
+            if (dataSet.size()==0)
+            {
+                AlertDialog diaBox = AskOption(item.getItemCode(),this);
+                diaBox.show();
+            }
+            else {
+                itemAdapter.filterList(dataSet);
+                onRefreshComplete();
+            }
+        }
+
+    }
+    public  void initiateList()
+    {
+        if(item!=null) {
+            dataSet = getAllItemInvoice(this, item.getItemCode());
             itemAdapter.filterList(dataSet);
+
             onRefreshComplete();
         }
 
     }
+
     private void onRefreshComplete()
     {
         mSwipeRefreshLayout.setRefreshing(false);
 
     }
 
+    private AlertDialog AskOption(final String itemCode,final ItemsInvoices itemsInvoices)
+    {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Update")
+                .setMessage("Do you want to Update Item Invoices List")
+                .setIcon(R.mipmap.logo)
+
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        SQLiteDatabase sqlDB = WriteDataToDB.mdatabase.getWritableDatabase();
+                        resetCustomerInvoices(sqlDB);
+                        downloadItemInvoices(itemCode,itemsInvoices);
+                    }
+
+                })
+
+
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
