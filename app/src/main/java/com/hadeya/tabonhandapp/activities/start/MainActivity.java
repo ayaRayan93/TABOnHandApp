@@ -18,22 +18,19 @@ import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.activities.customers.CustomerMainActivity;
 import com.hadeya.tabonhandapp.activities.items.ItemsActivity;
 
+import static com.hadeya.tabonhandapp.activities.start.StarterActivity.languageType;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
-
 {
     Button btn_customers , btn_items;
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SetUp();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,15 +40,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-    public void SetUp()
-    {
+
         btn_customers=(Button)findViewById(R.id.btn_customers);
         btn_customers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,CustomerMainActivity.class));
-                // MainActivity.this.finish();
+
             }
         });
 
@@ -60,12 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,ItemsActivity.class));
-                // MainActivity.this.finish();
+
             }
         });
-
-
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -76,6 +70,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent main = new Intent("login");
                 startActivity(main);
             }
+
+
+            break;
+            case R.id.aboutus:
+            {
+                if(languageType) {
+                    Intent main = new Intent("aboutusAR");
+                    startActivity(main);
+                }
+                else
+                {
+                    Intent main = new Intent("aboutusEN");
+                    startActivity(main);
+                }
+            }
+
+
+            break;
+            case R.id.contact:
+            {
+                if(languageType) {
+                    Intent main = new Intent("contactusAR");
+                    startActivity(main);
+                }
+                else
+                {
+                    Intent main = new Intent("contactusEN");
+                    startActivity(main);
+                }
+            }
+
+
+            break;
+            case R.id.arabic:
+            {
+                if(languageType)
+                languageType=false;
+                else
+                    languageType=true;
+
+            }
+
 
             break;
         }

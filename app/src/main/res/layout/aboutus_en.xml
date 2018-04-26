@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About Us"
+        android:textSize="20sp"
+        android:textColor="@color/mainColor"
+        android:layout_margin="10dp"
+        />
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="A company specialized in the production and marketing of financial and management systems. The company has serving many companies of different  volume and activity which enrich their systems with many appropriate functions  for Arab and African nation. The company has serving  more than 700 companies with  more than 30 different system during this period. The company has branches in Africa and the Arab world and we seek to increase its branches to serve many new users"
+        android:textColor="@color/thirdColor"
+
+        />
+</LinearLayout>

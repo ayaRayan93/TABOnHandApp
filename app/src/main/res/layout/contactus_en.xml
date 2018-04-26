@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact Us"
+        android:textSize="20sp"
+        android:textColor="@color/mainColor"
+        android:layout_margin="10dp"
+        />
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/thirdColor"
+        android:text="
+Saudi Arabia:
+Riyadh:
+Mob. 00966569862603
+Jeddah:
+Mob. 00966569868037
+Egypt -Cairo
+Mob: (+20) 1000726206- 1010337746
+Bahrain - Sigma Gulf
+Mobile: 0097366716173
+Mobile: 0097366907303
+Kenya -   Nairobi
+Tel: +254 728 436118
+Oman
+Tel: 0096891271231
+Kuwait
+Tel: 0096551109035"
+        />
+</LinearLayout>

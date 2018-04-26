@@ -21,6 +21,7 @@ import com.hadeya.tabonhandapp.store.CustomerContentProvider;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
+import static com.hadeya.tabonhandapp.activities.start.StarterActivity.languageType;
 import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
@@ -50,17 +51,9 @@ public class MainTopicsActivity  extends AppCompatActivity implements Navigation
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-       // navigationView.setBackgroundResource(R.color.customColor);
-       // navigationView.setItemTextColor(getColorStateList(11));
-         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        //CustomerContentProvider c=new CustomerContentProvider(this);
 
-        DataBaseHelper dataBaseHelper=new DataBaseHelper(this);
-        WriteDataToDB.mdatabase=dataBaseHelper;
-        SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
-        //resetDataBase(sqlDB);
-        //downloadData(this);
         Button btn=(Button)findViewById(R.id.btn_BasicData);
         btn.setOnClickListener(new View.OnClickListener()
         {
@@ -94,6 +87,47 @@ public class MainTopicsActivity  extends AppCompatActivity implements Navigation
             }
 
                 break;
+            case R.id.aboutus:
+            {
+                if(languageType) {
+                    Intent main = new Intent("aboutusAR");
+                    startActivity(main);
+                }
+                else
+                {
+                    Intent main = new Intent("aboutusEN");
+                    startActivity(main);
+                }
+            }
+
+
+            break;
+            case R.id.contact:
+            {
+                if(languageType) {
+                    Intent main = new Intent("contactusAR");
+                    startActivity(main);
+                }
+                else
+                {
+                    Intent main = new Intent("contactusEN");
+                    startActivity(main);
+                }
+            }
+
+
+            break;
+            case R.id.arabic:
+            {
+                if(languageType)
+                    languageType=false;
+                else
+                    languageType=true;
+
+            }
+
+
+            break;
         }
      return true;
     }

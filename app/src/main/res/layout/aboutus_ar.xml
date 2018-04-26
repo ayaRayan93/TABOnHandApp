@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="المزيد عنا"
+        android:textSize="20sp"
+        android:textColor="@color/mainColor"
+        android:layout_margin="10dp"
+        />
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/thirdColor"
+        android:text="شركة متخصصة في مجال إنتاج وتسويق الأنظمة المحاسبية و الإدارية.قامت الشركة بخدمة العديد من الشركات المتباينة فى الحجم و النشاط الأمر الذى أثرى أنظمتها بوظائف عديدة ملائمة للوطن العربى و الافريقى. قامت الشركة خلال هذه الفترة بخدمة أكثر من 600 شركة بأكثر من 30 نظام مختلف.للشركة العديد من الفروع على  مستوى افريقيا و العالم العربى و تسعى الشركة فى زيادة أفرعها لخدمة العديد من المستخدمين الجدد."
+        />
+</LinearLayout>

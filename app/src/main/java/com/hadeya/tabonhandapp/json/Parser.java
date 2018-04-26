@@ -1,13 +1,10 @@
 package com.hadeya.tabonhandapp.json;
 
 
-import android.support.annotation.Nullable;
-
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
-import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.InvoiceType;
@@ -22,8 +19,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.hadeya.tabonhandapp.store.UserTable.UserName;
 
 /**
  * Created by AyaAli on 05/03/2018.
@@ -42,8 +37,8 @@ public class Parser {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
                 String CustomerCode = employeeJsonObject.optString("CustomerCode");
-                String CustName =employeeJsonObject.optString("CustName");
-                String CustomerNameLat = employeeJsonObject.optString("CustomerNameLat");
+                String CustName =employeeJsonObject.optString("araName");
+                String CustomerNameLat = employeeJsonObject.optString("LatName");
                 String StreetAra = employeeJsonObject.optString("StreetAra");
                 String Classification = employeeJsonObject.optString("ClassificationTable");
                 String PersonToConnect = employeeJsonObject.optString("PersonToConnect");
@@ -54,7 +49,7 @@ public class Parser {
                 String SalesRepCode = employeeJsonObject.optString("SalesRepCode");
                 String CodeList = employeeJsonObject.optString("CodeList");
                 String NotActive = employeeJsonObject.optString("NotActive");
-
+                String Balance = employeeJsonObject.optString("balance");
 
                 Customer customer = new Customer();
                 customer.setCustomerCode(CustomerCode);
@@ -72,7 +67,7 @@ public class Parser {
                 customer.setSalesRepCode(SalesRepCode);
                 customer.setCodeList(CodeList);
                 customer.setNotActive(NotActive);
-
+                customer.setBalance(Balance);
                 modelCustomer.add(customer);
 
 
@@ -209,6 +204,7 @@ public class Parser {
                 String SelPrice1Default = JsonObject.optString("SelPrice1Default");
                 String NotActive = JsonObject.optString("NotActive");
 
+
                 Item item = new Item();
 
                 item.setItemCode(ItemCode);
@@ -218,7 +214,7 @@ public class Parser {
                 item.setUnitName(UnitName);
                 item.setTaxSet(TaxSet);
                 item.setSelPrice1Default(SelPrice1Default);
-                item.setNotActive(NotActive);
+                item.setNotActive(NotActive);;
                 modelItem.add(item);
             }
             return modelItem;
@@ -266,39 +262,6 @@ public class Parser {
         return null;
     }
    //
-   public static List<Customer_Balance> parseCustomerBalance(String data) {
-       List<Customer_Balance> modelCustomer_Balance;
-
-       try {
-           JSONArray jsonArray = new JSONArray(data);
-           modelCustomer_Balance = new ArrayList<>();
-
-           for (int i = 0; i < jsonArray.length(); i++) {
-               JSONObject employeeJsonObject = jsonArray.getJSONObject(i);
-               String CustomerCode = employeeJsonObject.optString("CustomerCode");
-               String araName =employeeJsonObject.optString("araName");
-               String balance = employeeJsonObject.optString("balance");
-
-               Customer_Balance customer_Balance = new Customer_Balance();
-               customer_Balance.setCustomerCode(CustomerCode);
-               customer_Balance.setAraName(araName);
-               customer_Balance.setBalance(balance);
-
-               modelCustomer_Balance.add(customer_Balance);
-
-
-
-           }
-
-           return modelCustomer_Balance;
-
-       } catch (JSONException e) {
-           e.printStackTrace();
-       }
-
-
-       return null;
-   }
     public static List<Invoice> parseInvoice(String data) {
         List<Invoice> modelInvoice;
 

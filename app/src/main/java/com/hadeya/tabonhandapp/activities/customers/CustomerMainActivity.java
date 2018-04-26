@@ -1,6 +1,7 @@
 package com.hadeya.tabonhandapp.activities.customers;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -36,10 +39,12 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetCustomers;
 import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
+import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadCustomer;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
@@ -51,6 +56,9 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
 
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @BindView(R.id.balanceTotal)
+    TextView balanceTotal;
 
     private Menu menu;
     protected CustomerAdapter itemAdapter;
@@ -78,32 +86,6 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //downloadData();//for first time do load to database
-        ImageButton AddNew=(ImageButton)findViewById(R.id.AddNew);
-        AddNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent("AddNewCustomer");
-                startActivity(intent);
-            }
-        });
-        ImageButton update=(ImageButton)findViewById(R.id.update);
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                uploade(getBaseContext(),"13007");
-
-                DataBaseHelper dataBaseHelper=new DataBaseHelper(getBaseContext());
-                SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
-                 resetDataBase(sqlDB);
-                downloadData(getBaseContext());
-
-            }
-        });
-
-
-
         dataSet = new ArrayList<>();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
@@ -129,12 +111,11 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-
-                    initiateRefresh(flag);
-
+                    initiateRefresh();
             }
         });
+        initiateRefresh();
+
         final EditText search=(EditText)findViewById(R.id.searchCustomers);
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -153,8 +134,27 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
             }
         });
 
-        initiateRefresh(flag);
-        //insertCustomersTolocalDB(dataSet);
+
+        ImageButton AddNew=(ImageButton)findViewById(R.id.AddNew);
+        AddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent("AddNewCustomer");
+                startActivity(intent);
+            }
+        });
+        ImageButton update=(ImageButton)findViewById(R.id.update);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                uploade(getBaseContext(),getLoginUser().get(0).getRepCodId());
+                SQLiteDatabase sqlDB = WriteDataToDB.mdatabase.getWritableDatabase();
+                resetCustomers(sqlDB);
+                downloadCustomer();
+
+            }
+        });
     }
 
 
@@ -175,51 +175,84 @@ public class CustomerMainActivity extends AppCompatActivity implements Navigatio
         itemAdapter.filterList(filterdNames);
     }
 
-
-
-    public  void initiateRefresh(int i)
+    public  void initiateRefresh()
     {
 
         dataSet= getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
+
+
+        if (dataSet.size()==0)
+        {
+            AlertDialog diaBox = AskOption(this);
+            diaBox.show();
+        }
+        else {
+            itemAdapter.filterList(dataSet);
+            onRefreshComplete();
+        }
+
+    }
+    public  void initiateList()
+    {
+
+        dataSet = getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
         itemAdapter.filterList(dataSet);
+
         onRefreshComplete();
 
     }
-
     private void onRefreshComplete()
     {
         mSwipeRefreshLayout.setRefreshing(false);
 
     }
-    public void insertCustomersTolocalDB(List<Customer> customers)
+
+    private AlertDialog AskOption(final CustomerMainActivity customerMainActivity)
     {
-        for (int i=0;i<customers.size();i++)
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Update")
+                .setMessage("Do you want to Update Customer List")
+                .setIcon(R.mipmap.logo)
+
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        uploade(getBaseContext(),getLoginUser().get(0).getRepCodId());
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        SQLiteDatabase sqlDB = WriteDataToDB.mdatabase.getWritableDatabase();
+                        resetCustomers(sqlDB);
+                        downloadCustomer(customerMainActivity);
+
+                    }
+
+                })
+
+
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    public void calTotalBalance()
+    {
+        double total=0;
+        for (int i=0;i<dataSet.size();i++)
         {
-            addCustomer(customers.get(i));
+            total+=Double.parseDouble(dataSet.get(i).getBalance());
         }
+        balanceTotal.setText(total+"");
     }
-
-    public void addCustomer(Customer customer)
-    {
-
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-       // values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
-        values.put(CustomerTable.CustName, customer.getCustName());
-        values.put(CustomerTable.StreetAra,customer.getStreetAra());
-        values.put(CustomerTable.Classification,customer.getClassification());
-        values.put(CustomerTable.PersonToConnect,customer.getPersonToConnect());
-        values.put(CustomerTable.Tel,customer.getTel());
-        values.put(CustomerTable.TAXID,customer.getTAXID());
-        values.put(CustomerTable.Flag,"1");//
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        CustomerContentProvider moviesContentProvider=new CustomerContentProvider(this);
-        moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
-
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

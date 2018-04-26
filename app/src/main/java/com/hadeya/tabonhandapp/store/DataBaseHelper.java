@@ -42,12 +42,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         UserTable.onCreate(db);
         InvoiceTypeTable.onCreate(db);
         InvoiceSimpleTable.onCreate(db);
-        CustomerBalanceTable.onCreate(db);
 
     }
 
-public static  void resetDataBase(SQLiteDatabase db)
-{
+
+     public static  void resetDataBase(SQLiteDatabase db)
+     {
     String clearDBQuery = "DELETE FROM "+AreaTable.AreaTable;
     db.execSQL(clearDBQuery);
     clearDBQuery = "DELETE FROM "+ClassificationTable.ClassificationTable;
@@ -70,11 +70,28 @@ public static  void resetDataBase(SQLiteDatabase db)
     db.execSQL(clearDBQuery);
     clearDBQuery = "DELETE FROM "+InvoiceSimpleTable.InvoiceSimpleTable;
     db.execSQL(clearDBQuery);
-    clearDBQuery = "DELETE FROM "+CustomerBalanceTable.CustomerBalanceTable;
-    db.execSQL(clearDBQuery);
+
 
 
 }
+    public static  void resetCustomers(SQLiteDatabase db)
+    {
+
+        String clearDBQuery = "DELETE FROM "+CustomerTable.CustomerTable;
+        db.execSQL(clearDBQuery);
+        clearDBQuery = "DELETE FROM "+CustomerTable.CustomerTable;
+        db.execSQL(clearDBQuery);
+
+    }
+    public static  void resetItems(SQLiteDatabase db)
+    {
+
+        String clearDBQuery = "DELETE FROM "+ItemTable.ItemTable;
+        db.execSQL(clearDBQuery);
+        clearDBQuery = "DELETE FROM "+ItemTable.ItemTable;
+        db.execSQL(clearDBQuery);
+
+    }
     public static  void resetInvoice(SQLiteDatabase db)
     {
 
@@ -84,22 +101,7 @@ public static  void resetDataBase(SQLiteDatabase db)
         db.execSQL(clearDBQuery);
 
     }
-    public static  void resetCustomers(SQLiteDatabase db)
-    {
 
-        String clearDBQuery = "DELETE FROM "+ CustomerTable.CustomerTable;
-        db.execSQL(clearDBQuery);
-        clearDBQuery = "DELETE FROM "+ InvoiceTypeTable.InvoiceTypeTable;
-        db.execSQL(clearDBQuery);
-
-
-    }
-    public static  void resetItems(SQLiteDatabase db)
-    {
-
-        String clearDBQuery = "DELETE FROM "+ ItemTable.ItemTable;
-        db.execSQL(clearDBQuery);
-    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         CustomerTable.onUpgrade(db,oldVersion,newVersion);
@@ -114,6 +116,5 @@ public static  void resetDataBase(SQLiteDatabase db)
         InvoiceItemTable.onUpgrade(db,oldVersion,newVersion);
         InvoiceTypeTable.onUpgrade(db,oldVersion,newVersion);
         InvoiceSimpleTable.onUpgrade(db,oldVersion,newVersion);
-        CustomerBalanceTable.onUpgrade(db,oldVersion,newVersion);
     }
 }

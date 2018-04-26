@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
-import com.hadeya.tabonhandapp.activities.customers.CustomerInvoices;
 import com.hadeya.tabonhandapp.activities.transaction.invoices.AddInvoice;
 import com.hadeya.tabonhandapp.models.Customer;
-import com.hadeya.tabonhandapp.models.Customer_Balance;
 
 import java.util.List;
 
@@ -21,8 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.content.ContentValues.TAG;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
-import static com.hadeya.tabonhandapp.store.WriteDataToDB.storeCustomerInvoice;
 
 /**
  * Created by AyaAli on 2018-04-18.
@@ -30,10 +26,10 @@ import static com.hadeya.tabonhandapp.store.WriteDataToDB.storeCustomerInvoice;
 
 public class TransactionCustomerAdapter  extends RecyclerView.Adapter<TransactionCustomerAdapter.ViewHolder> {
 
-    private List<Customer_Balance> DataSet;
+    private List<Customer> DataSet;
     private static Context context;
 
-    public TransactionCustomerAdapter(Context cont, List<Customer_Balance> dataSet)
+    public TransactionCustomerAdapter(Context cont, List<Customer> dataSet)
     {
         context=cont;
         DataSet = dataSet;
@@ -42,7 +38,7 @@ public class TransactionCustomerAdapter  extends RecyclerView.Adapter<Transactio
     public  class ViewHolder extends RecyclerView.ViewHolder
     {
         //@BindView(R.id.image)ImageView poster;
-        @BindView(R.id.title)TextView title;
+         @BindView(R.id.title)TextView title;
          @BindView(R.id.balance)TextView balance;
 
         public ViewHolder(View v)
@@ -99,7 +95,7 @@ public class TransactionCustomerAdapter  extends RecyclerView.Adapter<Transactio
         if (DataSet.get(position) != null)
         {
             Log.d("", "Element " + position + " set.");
-            holder.getTitle().setText(DataSet.get(position).getAraName());
+            holder.getTitle().setText(DataSet.get(position).getCustName());
             holder.getBalance().setText(DataSet.get(position).getBalance());
         }
     }
@@ -109,7 +105,7 @@ public class TransactionCustomerAdapter  extends RecyclerView.Adapter<Transactio
         return DataSet.size();
     }
 
-    public void filterList(List<Customer_Balance> filterdNames) {
+    public void filterList(List<Customer> filterdNames) {
         this.DataSet = filterdNames;
         notifyDataSetChanged();
     }

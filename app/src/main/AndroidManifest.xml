@@ -23,11 +23,41 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.start.AboutUs_AR">
+            <intent-filter>
+                <action android:name="aboutusAR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.start.AboutUs_EN">
+            <intent-filter>
+                <action android:name="aboutusEN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.start.ContactUs_AR">
+            <intent-filter>
+                <action android:name="contactusAR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.start.ContactUS_EN">
+            <intent-filter>
+                <action android:name="contactusEN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.start.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="login" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

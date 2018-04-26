@@ -3,8 +3,6 @@ package com.hadeya.tabonhandapp.activities.transaction.invoices;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 
 import android.content.Intent;
 
@@ -18,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,18 +27,14 @@ import android.widget.Toast;
 import android.view.MenuItem;
 
 import com.hadeya.tabonhandapp.R;
-import com.hadeya.tabonhandapp.activities.customers.AddNewCustomer;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.app.spinnerAdapter;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceType;
-import com.hadeya.tabonhandapp.store.CustomerContentProvider;
-import com.hadeya.tabonhandapp.store.CustomerTable;
 import com.hadeya.tabonhandapp.store.InvoiceContentProvider;
 import com.hadeya.tabonhandapp.store.InvoiceTable;
 import com.hadeya.tabonhandapp.store.ReadDataFromDB;
-import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,9 +44,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerClassification;
-
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
 
 /**

@@ -1,6 +1,5 @@
 package com.hadeya.tabonhandapp.store;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +7,9 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,11 +17,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.hadeya.tabonhandapp.activities.customers.CustomerMainActivity;
+import com.hadeya.tabonhandapp.activities.items.ItemsActivity;
 import com.hadeya.tabonhandapp.activities.start.LoginActivity;
-import com.hadeya.tabonhandapp.activities.transaction.invoices.AddInvoice;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
@@ -33,7 +29,6 @@ import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.app.AppController;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
-import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.InvoiceType;
@@ -48,10 +43,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllItems;
@@ -73,12 +66,12 @@ public class WriteDataToDB {
 
     public static void downloadData(Context context)
     {
+       // storeCustomer(getLoginUser().get(0).getRepCodId());
         //basicAuthorize data
        // mdatabase.resetDataBase();
         SQLiteDatabase sqlDB = mdatabase.getWritableDatabase();
         sqlDB.beginTransaction();
         storeCustomer(getLoginUser().get(0).getRepCodId());
-        storeCustomerBalance(getLoginUser().get(0).getRepCodId());
 
         storeClassification();
         storeArea();
@@ -92,10 +85,28 @@ public class WriteDataToDB {
         //StoreInvoices();
     }
 
+    //Basic Data Part
+    public static void downloadCustomer(CustomerMainActivity customerMainActivity)
+    {
+        storeCustomer(getLoginUser().get(0).getRepCodId(),customerMainActivity);
+    }
+    public static void downloadCustomer()
+    {
+        storeCustomer(getLoginUser().get(0).getRepCodId());
+    }
+    public static void downloadItems()
+    {
+        StoreItems();
+    }
+    public static void downloadItems(ItemsActivity itemsActivity)
+    {
+        StoreItems(itemsActivity);
+    }
+    //Customers
     public static void storeCustomer(final String repCode)
     {
       // final List<Customer> dataSet=new ArrayList<>();
-        String Url="http://toh.hadeya.net/api/TOHCustomers/repCodeTOHCustomers/"+repCode;
+        String Url="http://toh.hadeya.net/api/TOHCustomers/CustomersDataWithBalanceReport/"+repCode;
 
         /////////////connection//////////
         StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
@@ -104,15 +115,10 @@ public class WriteDataToDB {
             public void onResponse(String response)
             {
                 Log.d("response", response);
-              /*  if (dataSet != null){
-                    dataSet.clear();
-
-                }*/
 
                 Iterator iterator = Parser.parseStringToJson(response).iterator();
                 while (iterator.hasNext()){
                     Customer customer = (Customer) iterator.next();
-                    //dataSet.add(customer);
                     addCustomer(customer,repCode);
                 }
 
@@ -129,7 +135,56 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
-        //return1 dataSet;
+    }
+    public static void storeCustomer(final String repCode, final CustomerMainActivity customerMainActivity)
+    {
+        // final List<Customer> dataSet=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/TOHCustomers/CustomersDataWithBalanceReport/"+repCode;
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+
+                Iterator iterator = Parser.parseStringToJson(response).iterator();
+                while (iterator.hasNext()){
+                    Customer customer = (Customer) iterator.next();
+                    addCustomer(customer,repCode);
+                }
+                customerMainActivity.initiateList();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+    }
+    public static void addCustomer(Customer customer,String repcode)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(CustomerTable.CustName, customer.getCustName());
+        values.put(CustomerTable.StreetAra,customer.getStreetAra());
+        values.put(CustomerTable.Classification,customer.getClassification());
+        values.put(CustomerTable.PersonToConnect,customer.getPersonToConnect());
+        values.put(CustomerTable.Tel,customer.getTel());
+        values.put(CustomerTable.TAXID,customer.getTAXID());
+        values.put(CustomerTable.SalesRepCode,repcode);
+        values.put(CustomerTable.Flag,"1");
+
+        CustomerContentProvider moviesContentProvider=new CustomerContentProvider(mdatabase);
+        moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
+        list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
     }
     public static void storeClassification()
     {
@@ -167,6 +222,20 @@ public class WriteDataToDB {
 
        // return1 dataClass;
     }
+    public static void addClassfication(Classification classification)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ClassificationTable.ClassificationId, classification.getId());
+        values.put(ClassificationTable.ClassificationName, classification.getName());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        ClassificationContentProvider classificationContentProvider=new ClassificationContentProvider(mdatabase);
+        classificationContentProvider.insert(ClassificationContentProvider.CONTENT_URI_add,values);
+
+    }
     public static void storeArea()
     {
         //final List<Area> dataArea=new ArrayList<>();
@@ -202,6 +271,20 @@ public class WriteDataToDB {
         AppController.getInstance().addToRequestQueue(strReq);
 
        // return1 dataArea;
+    }
+    public static void addArea(Area area)
+    {
+
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AreaTable.AreaId, area.getId());
+        values.put(AreaTable.AreaName, area.getName());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        AreaContentProvider areaContentProvider=new AreaContentProvider(mdatabase);
+        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
+
     }
     public static void storeCustomerInvoice(String repCode,final String CustomerID)
     {
@@ -239,7 +322,24 @@ public class WriteDataToDB {
 
         // return1 dataArea;
     }
+    public static void addCustomerInvoice(CustomerInvoice customerInvoice,String CustomerID)
+    {
 
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CustomerInvoiceTable.InvoceId, customerInvoice.getInvoceId());
+        values.put(CustomerInvoiceTable.InvoiceNo, customerInvoice.getInvoiceNo());
+        values.put(CustomerInvoiceTable.Date, customerInvoice.getDate());
+        values.put(CustomerInvoiceTable.Value, customerInvoice.getValue());
+        values.put(CustomerInvoiceTable.CustomerId, CustomerID);
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        CustomerInvoiceContentProvider customerInvoiceContentProvider=new CustomerInvoiceContentProvider(mdatabase);
+        customerInvoiceContentProvider.insert(CustomerInvoiceContentProvider.CONTENT_URI_add,values);
+
+    }
+    //Items
     public static void StoreItems()
     {
         // final List<Customer> dataSet=new ArrayList<>();
@@ -275,6 +375,57 @@ public class WriteDataToDB {
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(strReq);
 
+    }
+    public static void StoreItems(final ItemsActivity itemsActivity)
+    {
+        // final List<Customer> dataSet=new ArrayList<>();
+        String Url="http://toh.hadeya.net/api/getalldata/TOHItems/13007";
+
+        /////////////connection//////////
+        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("response", response);
+
+                Iterator iterator = Parser.parseItem(response).iterator();
+                while (iterator.hasNext()){
+                    Item item = (Item) iterator.next();
+
+                    addItem(item);
+                }
+                itemsActivity.initiateList();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Stop the refreshing indicator
+                Log.d("response", error.toString());
+            }
+        });
+
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+
+    }
+    public static void addItem(Item item)
+    {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ItemTable.UnitCode, item.getUnitCode());
+        values.put(ItemTable.ItemName, item.getItemName());
+        values.put(ItemTable.ItemNameLat, item.getItemNameLat());
+        values.put(ItemTable.ItemCode, item.getItemCode());
+        values.put(ItemTable.TaxSet, item.getTaxSet());
+        values.put(ItemTable.SelPrice1Default, item.getSelPrice1Default());
+        values.put(ItemTable.NotActive, item.getNotActive());
+        // Inserting Row
+        //db.insert(TABLE_MOVIES, null, values);
+        //db.close(); // Closing database connection
+        ItemContentProvider itemContentProvider=new ItemContentProvider(mdatabase);
+        itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
     }
     public static void storeItemInvoice(String repCode ,final String ItemCode)
     {
@@ -312,90 +463,6 @@ public class WriteDataToDB {
 
         // return1 dataArea;
     }
-
-    public static void addCustomer(Customer customer,String repcode)
-    {
-
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        //values.put(CustomerTable.CustomerCode, customer.getCustomerCode());
-        values.put(CustomerTable.CustName, customer.getCustName());
-        values.put(CustomerTable.StreetAra,customer.getStreetAra());
-        values.put(CustomerTable.Classification,customer.getClassification());
-        values.put(CustomerTable.PersonToConnect,customer.getPersonToConnect());
-        values.put(CustomerTable.Tel,customer.getTel());
-        values.put(CustomerTable.TAXID,customer.getTAXID());
-        values.put(CustomerTable.SalesRepCode,repcode);
-        values.put(CustomerTable.Flag,"1");//
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        CustomerContentProvider moviesContentProvider=new CustomerContentProvider(mdatabase);
-        moviesContentProvider.insert(CustomerContentProvider.CONTENT_URI_add,values);
-        //list=getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
-    }
-    public static void addClassfication(Classification classification)
-    {
-
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ClassificationTable.ClassificationId, classification.getId());
-        values.put(ClassificationTable.ClassificationName, classification.getName());
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        ClassificationContentProvider classificationContentProvider=new ClassificationContentProvider(mdatabase);
-        classificationContentProvider.insert(ClassificationContentProvider.CONTENT_URI_add,values);
-
-    }
-    public static void addArea(Area area)
-    {
-
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(AreaTable.AreaId, area.getId());
-        values.put(AreaTable.AreaName, area.getName());
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        AreaContentProvider areaContentProvider=new AreaContentProvider(mdatabase);
-        areaContentProvider.insert(AreaContentProvider.CONTENT_URI_add,values);
-
-    }
-    public static void addCustomerInvoice(CustomerInvoice customerInvoice,String CustomerID)
-    {
-
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(CustomerInvoiceTable.InvoceId, customerInvoice.getInvoceId());
-        values.put(CustomerInvoiceTable.InvoiceNo, customerInvoice.getInvoiceNo());
-        values.put(CustomerInvoiceTable.Date, customerInvoice.getDate());
-        values.put(CustomerInvoiceTable.Value, customerInvoice.getValue());
-        values.put(CustomerInvoiceTable.CustomerId, CustomerID);
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        CustomerInvoiceContentProvider customerInvoiceContentProvider=new CustomerInvoiceContentProvider(mdatabase);
-        customerInvoiceContentProvider.insert(CustomerInvoiceContentProvider.CONTENT_URI_add,values);
-
-    }
-    public static void addItem(Item item)
-    {
-        // SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ItemTable.UnitCode, item.getUnitCode());
-        values.put(ItemTable.ItemName, item.getItemName());
-        values.put(ItemTable.ItemNameLat, item.getItemNameLat());
-        values.put(ItemTable.ItemCode, item.getItemCode());
-        values.put(ItemTable.TaxSet, item.getTaxSet());
-        values.put(ItemTable.SelPrice1Default, item.getSelPrice1Default());
-        values.put(ItemTable.NotActive, item.getNotActive());
-        // Inserting Row
-        //db.insert(TABLE_MOVIES, null, values);
-        //db.close(); // Closing database connection
-        ItemContentProvider itemContentProvider=new ItemContentProvider(mdatabase);
-        itemContentProvider.insert(ItemContentProvider.CONTENT_URI_add,values);
-    }
     public static void addItemInvoice(ItemInvoice itemInvoice,String ItemCode)
     {
         // SQLiteDatabase db = this.getWritableDatabase();
@@ -413,6 +480,12 @@ public class WriteDataToDB {
         itemInvoiceContentProvider.insert(ItemInvoiceContentProvider.CONTENT_URI_add,values);
 
     }
+
+
+
+
+
+
     //invoices
     public static void StoreInvoices()
     {
@@ -1002,7 +1075,7 @@ public class WriteDataToDB {
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray jsonObject) {
-                            Toast.makeText(context, "Uploaded Done"+jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                          // Toast.makeText(context, "Uploaded Done"+jsonObject.toString(), Toast.LENGTH_SHORT).show();
                             //update local
                             updateDB(context);
                         }
@@ -1130,47 +1203,6 @@ public class WriteDataToDB {
     }
 
 
-    public static void  storeCustomerBalance(final String RepCodeId)
-    {
-        String Url="http://toh.hadeya.net/api/TOHCustomers/CustomersBalanceReport/"+RepCodeId;
-
-        /////////////connection//////////
-        StringRequest strReq = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response)
-            {
-
-                Log.d("response", response);
-                List<Customer_Balance> list= Parser.parseCustomerBalance(response);
-                for(int i=0;i<list.size();i++)
-                {
-                    Customer_Balance customer_balance = list.get(i);
-                    addCustomerBalance(customer_balance,RepCodeId);
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("response", error.toString());
-            }
-        });
-        AppController.getInstance().addToRequestQueue(strReq);
-
-
-    }
-    public  static void addCustomerBalance(Customer_Balance customer_balance,String RepCodeId)
-    {
-        ContentValues values = new ContentValues();
-        values.put(CustomerBalanceTable.CustomerCode, customer_balance.getCustomerCode());
-        values.put(CustomerBalanceTable.araName, customer_balance.getAraName());
-        values.put(CustomerBalanceTable.balance, customer_balance.getBalance());
-        values.put(CustomerBalanceTable.SalesRepCode, RepCodeId);
-        CustomerBalanceContentProvider customerBalanceContentProvider=new CustomerBalanceContentProvider(mdatabase);
-        Uri UriId=customerBalanceContentProvider.insert(CustomerBalanceContentProvider.CONTENT_URI_add,values);
-    }
 }
 
 

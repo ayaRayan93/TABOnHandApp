@@ -47,7 +47,7 @@
                     android:gravity="left"
                     android:layout_weight="7"
                     android:textColor="@color/customColor"
-                    android:id="@+id/title"/>
+                    android:id="@+id/custName1"/>
                 <ImageView
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -60,51 +60,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:gravity="center"
                 >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DEBIT: "
+                    android:text="Balance: "
                     android:textColor="@color/customColor"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
+                    android:id="@+id/balance"
                     android:text="0.00"
                     android:textColor="@color/textColor2"
                     />
-               <LinearLayout
-                   android:layout_width="1dp"
-                   android:layout_height="match_parent"
-                   android:orientation="vertical"
-                   android:background="@color/textColor2"
-                   android:layout_marginRight="10dp"
-                   android:layout_marginLeft="10dp"
-                   android:layout_marginTop="5dp"
-                   android:layout_marginBottom="5dp"
-                   >
 
-               </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="CREDIT: "
-                    android:textColor="@color/customColor"
 
-                    />
-
-                <TextView
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0.00"
-                    android:textColor="@color/textColor2"
-                    />
             </LinearLayout>
     </LinearLayout>
     </LinearLayout>

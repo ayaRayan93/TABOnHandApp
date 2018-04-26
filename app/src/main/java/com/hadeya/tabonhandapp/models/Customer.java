@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class Customer implements Parcelable{
 
-    String id, Flag,CustomerCode,CustName,CustomerNameLat,StreetAra,Classification,PersonToConnect,Tel,TAXID,SaleAreaCode,Notes,SalesRepCode,CodeList,NotActive;
+    String id, Flag,CustomerCode,CustName,CustomerNameLat,StreetAra,Classification,PersonToConnect,Tel,TAXID,SaleAreaCode,Notes,SalesRepCode,CodeList,NotActive,balance;
 
 
     protected Customer(Parcel in) {
@@ -28,6 +28,7 @@ public class Customer implements Parcelable{
         SalesRepCode = in.readString();
         CodeList = in.readString();
         NotActive = in.readString();
+        balance = in.readString();
     }
 
     public static final Creator<Customer> CREATOR = new Creator<Customer>() {
@@ -177,6 +178,14 @@ public class Customer implements Parcelable{
         NotActive = notActive;
     }
 
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -199,5 +208,6 @@ public class Customer implements Parcelable{
         dest.writeString(SalesRepCode);
         dest.writeString(CodeList);
         dest.writeString(NotActive);
+        dest.writeString(balance);
     }
 }

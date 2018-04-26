@@ -12,6 +12,7 @@ import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 
 public class StarterActivity extends AppCompatActivity {
 
+    static boolean languageType=false;//mean en
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="اتصل بنا"
+        android:textSize="20sp"
+        android:textColor="@color/mainColor"
+        android:layout_margin="10dp"
+        />
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/thirdColor"
+        android:text="
+السعودية
+
+الرياض
+
+جوال:  00966569862603
+
+جــــدة
+
+جوال: 00966569868037
+
+مصر - القاهرة
+
+موبايل :1010337746-  1000726206 20+
+
+البحرين
+
+موبايل: 0097366907303 - 0097366716173
+
+كينيا -  نيروبي
+
+التليفون:436118 728 254+
+
+سلطنة عمان
+
+التليفون: 0096891271231
+
+الكويت
+
+التليفون:0096551109035
+"
+        />
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.hadeya.tabonhandapp.activities.transaction.invoices;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,17 +15,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hadeya.tabonhandapp.R;
-import com.hadeya.tabonhandapp.adapters.CustomerAdapter;
 import com.hadeya.tabonhandapp.adapters.TransactionCustomerAdapter;
 import com.hadeya.tabonhandapp.models.Customer;
-import com.hadeya.tabonhandapp.models.Customer_Balance;
-import com.hadeya.tabonhandapp.store.DataBaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +28,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetDataBase;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerBalance;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
-import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadData;
-import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 /**
  * Created by AyaAli on 2018-04-18.
@@ -61,7 +51,7 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
     private Menu menu;
     protected TransactionCustomerAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<Customer_Balance> dataSet;
+    protected List<Customer> dataSet;
     private int flag;
 
 
@@ -143,12 +133,12 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
 
     private void filter(String text) {
         //new array list that will hold the filtered data
-        List<Customer_Balance> filterdNames = new ArrayList<>();
+        List<Customer> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (Customer_Balance s : dataSet) {
+        for (Customer s : dataSet) {
             //if the existing elements contains the search input
-            if (s.getAraName().toLowerCase().contains(text.toLowerCase())) {
+            if (s.getCustName().toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
                 filterdNames.add(s);
 
@@ -162,7 +152,7 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
     public  void initiateRefresh(int i)
     {
 
-        dataSet= getAllCustomerBalance(getLoginUser().get(0).getRepCodId());
+        dataSet= getAllCustomerForSalesPerson(getLoginUser().get(0).getRepCodId());
         itemAdapter.filterList(dataSet);
         onRefreshComplete();
         calTotalBalance();
@@ -195,6 +185,7 @@ public class CustomerList extends AppCompatActivity implements NavigationView.On
         double total=0;
         for (int i=0;i<dataSet.size();i++)
         {
+            if(dataSet.get(i).getBalance()!=null)
             total+=Double.parseDouble(dataSet.get(i).getBalance());
         }
         balanceTotal.setText(total+"");

@@ -41,9 +41,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
 
     public  class ViewHolder extends RecyclerView.ViewHolder
     {
-        //@BindView(R.id.image)ImageView poster;
-        @BindView(R.id.title)TextView title;
-        // @BindView(R.id.text)TextView text;
+         @BindView(R.id.custName1)TextView title;
+         @BindView(R.id.balance)TextView balance;
 
         public ViewHolder(View v)
         {
@@ -51,22 +50,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element " + getPosition() + " clicked.");
-                    storeCustomerInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getId());
-                    Context context2 = v.getContext();
-                    Intent intent = new Intent(context2, CustomerInvoices.class);
-                    intent.putExtra("customer", DataSet.get(getPosition()));
-                    context2.startActivity(intent);
+                Log.d(TAG, "Element " + getPosition() + " clicked.");
+                storeCustomerInvoice(getLoginUser().get(0).getRepCodId(),DataSet.get(getPosition()).getId());
+                Context context2 = v.getContext();
+                Intent intent = new Intent(context2, CustomerInvoices.class);
+                intent.putExtra("customer", DataSet.get(getPosition()));
+                context2.startActivity(intent);
 
                 }
             });
             ButterKnife.bind(this,v);
 
         }
-
-      /*  public ImageView getPoster() {
-            return1 poster;
-        }*/
 
         public TextView getTitle() {
             return title;
@@ -76,13 +71,13 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
             this.title = title;
         }
 
-       /* public TextView getText() {
-            return1 text;
+        public TextView getText() {
+            return balance;
         }
 
         public void setText(TextView text) {
-            this.text = text;
-        }*/
+            this.balance = text;
+        }
     }
 
     @Override
@@ -101,6 +96,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         {
             Log.d("", "Element " + position + " set.");
             holder.getTitle().setText(DataSet.get(position).getCustName());
+            holder.getText().setText(DataSet.get(position).getBalance());
 
         }
     }

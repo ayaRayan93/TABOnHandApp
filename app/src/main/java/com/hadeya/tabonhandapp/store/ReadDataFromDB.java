@@ -2,24 +2,11 @@ package com.hadeya.tabonhandapp.store;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.hadeya.tabonhandapp.app.AppController;
-import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
-import com.hadeya.tabonhandapp.models.Customer_Balance;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.InvoiceType;
@@ -28,10 +15,7 @@ import com.hadeya.tabonhandapp.models.ItemInvoice;
 import com.hadeya.tabonhandapp.models.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by AyaAli on 09/03/2018.
@@ -74,6 +58,7 @@ public class ReadDataFromDB {
                 customer.setTAXID(cursor.getString(6));
                 customer.setSaleAreaCode(cursor.getString(7));
                 customer.setFlag(cursor.getString(8));
+                customer.setBalance(cursor.getString(9));
 // Adding contact to list
                 customerList.add(customer);
             } while (cursor.moveToNext());
@@ -82,34 +67,7 @@ public class ReadDataFromDB {
         return customerList;
 
     }
-    public static List<Customer_Balance> getAllCustomerBalance(String repcode)
-    {
-        String[] projection={CustomerBalanceTable.CustomerCode,
-                CustomerBalanceTable.araName,
-                CustomerBalanceTable.balance,
-        };
 
-        List<Customer_Balance> customerList = new ArrayList<>();
-// Select All Query
-        String selectQuery = "SELECT * FROM " + CustomerBalanceTable.CustomerBalanceTable+ " where SalesRepCode='"+repcode+"'";
-        CustomerBalanceContentProvider  movieContentProvider=new CustomerBalanceContentProvider( WriteDataToDB.mdatabase);
-        //SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = movieContentProvider.query(CustomerBalanceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
-// looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Customer_Balance customer = new Customer_Balance();
-                customer.setCustomerCode(cursor.getString(0));
-                customer.setAraName(cursor.getString(1));
-                customer.setBalance(cursor.getString(2));
-// Adding contact to list
-                customerList.add(customer);
-            } while (cursor.moveToNext());
-        }
-// return1 contact list
-        return customerList;
-
-    }
     public static Customer getCustomer(Context context,String customerId)
     {
         String[] projection={CustomerTable.ID,
@@ -308,6 +266,7 @@ public class ReadDataFromDB {
         return ItemInvoiceList;
 
     }
+
     //
     public static List<InvoiceItem> getItemInvoices(Context context)
     {
@@ -366,12 +325,12 @@ public class ReadDataFromDB {
         };
 
         List<InvoiceItem> invoiceItemList = new ArrayList<>();
-// Select All Query
+        // Select All Query
         String selectQuery = "SELECT * FROM " + InvoiceItemTable.InvoiceItemTable+" where InvoiceId="+invoiceId;
         InvoiceItemContentProvider  itemInvoiceContentProvider=new InvoiceItemContentProvider( WriteDataToDB.mdatabase);
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = itemInvoiceContentProvider.query(InvoiceItemContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
-// looping through all rows and adding to list
+        // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 InvoiceItem invoiceItem = new InvoiceItem();
