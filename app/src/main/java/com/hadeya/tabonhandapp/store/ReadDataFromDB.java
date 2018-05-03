@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.hadeya.tabonhandapp.models.Area;
+import com.hadeya.tabonhandapp.models.AutomticInvoiceNo;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
@@ -447,20 +448,22 @@ public class ReadDataFromDB {
 
         List<Invoice> InvoicesList = new ArrayList<>();
 // Select All Query
-        String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable;
+        String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable +" ORDER BY Id DESC ; ";
         InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider( WriteDataToDB.mdatabase);
         Cursor cursor = invoiceContentProvider.query(InvoiceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 Invoice invoiceS = new Invoice();
                 Customer c=new Customer();
+                invoiceS.setId(cursor.getString(0));
                 invoiceS.setInvoiceNo(cursor.getString(2));
                 invoiceS.setInvoiceDate(cursor.getString(3));
                 invoiceS.setCustmerId(cursor.getString(4));
                 c.setId(cursor.getString(4));
                 c.setCustName(cursor.getString(5));
                 invoiceS.setCustomer(c);
-                invoiceS.setNet(cursor.getString(9));
+                invoiceS.setNet(cursor.getString(10));
+                invoiceS.setFlag(cursor.getString(11));
 
                 // Adding contact to list
                 InvoicesList.add(invoiceS);
@@ -631,6 +634,71 @@ public class ReadDataFromDB {
         }
 
     }
+
+    public static AutomticInvoiceNo getAutomticInvoiceNo(String LoginRepCode)
+    {
+        List<Invoice> InvoicesList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + AutomticInvoiceNoTable.AutomticInvoiceNoTable +" WHERE LoginRepCode = "+LoginRepCode;
+        AutomticInvoiceNoContentProvider  automticInvoiceNoContentProvider=new AutomticInvoiceNoContentProvider( WriteDataToDB.mdatabase);
+        Cursor cursor = automticInvoiceNoContentProvider.query(AutomticInvoiceNoContentProvider.CONTENT_URI,null,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+        AutomticInvoiceNo invoiceS = new AutomticInvoiceNo();
+        if (cursor.moveToFirst()) {
+            do {
+
+                invoiceS.setLoginRepCode(cursor.getString(0));
+                invoiceS.setSerialInvoice(Integer.parseInt(cursor.getString(1)));
+
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return invoiceS;
+
+    }
+
+    public static Invoice getInvoice(int id)
+    {
+        String[] projection={InvoiceTable.InvoiceNo,
+                InvoiceTable.InvoiceDate,
+                InvoiceTable.CustmerId,
+                InvoiceTable.Net,
+        };
+
+
+        Invoice invoiceS = new Invoice();
+
+        String selectQuery = "SELECT * FROM " + InvoiceTable.InvoiceTable +" WHERE Id = "+id;
+        InvoiceContentProvider  invoiceContentProvider=new InvoiceContentProvider( WriteDataToDB.mdatabase);
+        Cursor cursor = invoiceContentProvider.query(InvoiceContentProvider.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                Customer c=new Customer();
+                invoiceS.setId(cursor.getString(0));
+                invoiceS.setInvoiceTypeId(cursor.getString(1));
+                invoiceS.setInvoiceNo(cursor.getString(2));
+                invoiceS.setInvoiceDate(cursor.getString(3));
+                invoiceS.setCustmerId(cursor.getString(4));
+                c.setId(cursor.getString(4));
+                c.setCustName(cursor.getString(5));
+                invoiceS.setCustomer(c);
+                invoiceS.setPayementTypeId(cursor.getString(6));
+                invoiceS.setRefNO(cursor.getString(7));
+                invoiceS.setNotes(cursor.getString(8));
+                invoiceS.setRepCodeId(cursor.getString(9));
+                invoiceS.setNet(cursor.getString(10));
+                invoiceS.setFlag(cursor.getString(11));
+
+                // Adding contact to list
+
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return invoiceS;
+
+    }
+
+
 
 
 }

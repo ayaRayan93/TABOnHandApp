@@ -21,7 +21,10 @@ import com.hadeya.tabonhandapp.activities.transaction.TransactionMain;
 import com.hadeya.tabonhandapp.adapters.InvoiceFirstAdapter;
 import com.hadeya.tabonhandapp.adapters.transactionItemAdapter;
 import com.hadeya.tabonhandapp.models.Invoice;
+import com.hadeya.tabonhandapp.models.InvoiceItem;
+import com.hadeya.tabonhandapp.store.AreaTable;
 import com.hadeya.tabonhandapp.store.DataBaseHelper;
+import com.hadeya.tabonhandapp.store.InvoiceTable;
 import com.hadeya.tabonhandapp.store.ReadDataFromDB;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
 import com.hadeya.tabonhandapp.utils.NetworkConnect;
@@ -32,7 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FirstInvoiceList extends AppCompatActivity {
+public class FirstInvoiceList extends AppCompatActivity implements InvoiceFirstAdapter.InvoicesListAdapterListener {
     @BindView(R.id.recyclerView18)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefresh18)
@@ -60,7 +63,6 @@ public class FirstInvoiceList extends AppCompatActivity {
             {
                 AlertDialog diaBox =AskOption();
                 diaBox.show();
-
 
             }
         }
@@ -188,5 +190,38 @@ public class FirstInvoiceList extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onDeleteButtonClicked (int id)
+    {
+        String invId=dataSet.get(id).getId();
+        deleteItem(invId);
+        dataSet.remove(id);
+        itemAdapter.notifyItemRemoved(id);
+        itemAdapter.notifyItemRangeChanged(id,dataSet.size());
+
+
+    }
+
+    public void deleteItem(String invId)
+    {
+        DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
+        SQLiteDatabase sqlDB = dataBaseHelper.getWritableDatabase();
+        String clearDBQuery = "DELETE FROM "+ InvoiceTable.InvoiceTable +" WHERE Id = "+invId;
+        sqlDB.execSQL(clearDBQuery);
+    }
+    @Override
+    public void onEditButtonClicked (int id)
+    {
+        String invId=dataSet.get(id).getId();
+        Invoice invoice = ReadDataFromDB.getInvoice(Integer.parseInt(invId));
+        List<InvoiceItem> invItems=ReadDataFromDB.getItemInvoice(mContext,invId);
+        invoice.setInvoiceItems(invItems);
+
+        Intent main = new Intent("AddInvoice");
+        main.putExtra("invoiceEdit",invoice);
+        startActivity(main);
+        finish();
+
+    }
 
 }

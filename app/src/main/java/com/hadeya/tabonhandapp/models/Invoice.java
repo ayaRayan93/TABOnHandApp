@@ -18,7 +18,7 @@ public class Invoice implements Parcelable {
 
 
     String  Id;
-    String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId,net,flag;
+    String InvoiceTypeId,InvoiceNo,InvoiceDate,CustmerId,PayementTypeId,Notes,RefNO,RepCodeId,net,flag,InvoiceTypeName;
     Customer customer;
     public List<InvoiceItem> invoiceItems;
 
@@ -36,6 +36,7 @@ public class Invoice implements Parcelable {
         invoiceItems = in.createTypedArrayList(InvoiceItem.CREATOR);
         net = in.readString();
         flag = in.readString();
+        InvoiceTypeName = in.readString();
     }
 
     public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {
@@ -171,6 +172,14 @@ public class Invoice implements Parcelable {
         this.flag = flag;
     }
 
+    public String getInvoiceTypeName() {
+        return InvoiceTypeName;
+    }
+
+    public void setInvoiceTypeName(String invoiceTypeName) {
+        InvoiceTypeName = invoiceTypeName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -192,6 +201,7 @@ public class Invoice implements Parcelable {
         dest.writeList(invoiceItems);
         dest.writeString(net);
         dest.writeString(flag);
+        dest.writeString(InvoiceTypeName);
 
     }
 }

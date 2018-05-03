@@ -2,10 +2,15 @@ package com.hadeya.tabonhandapp.activities.transaction.invoices;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 
+import android.content.Context;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,12 +34,17 @@ import android.view.MenuItem;
 import com.hadeya.tabonhandapp.R;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.app.spinnerAdapter;
+import com.hadeya.tabonhandapp.json.Parser;
+import com.hadeya.tabonhandapp.models.AutomticInvoiceNo;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceType;
+import com.hadeya.tabonhandapp.store.AutomticInvoiceNoContentProvider;
+import com.hadeya.tabonhandapp.store.AutomticInvoiceNoTable;
 import com.hadeya.tabonhandapp.store.InvoiceContentProvider;
 import com.hadeya.tabonhandapp.store.InvoiceTable;
 import com.hadeya.tabonhandapp.store.ReadDataFromDB;
+import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,14 +84,17 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
     HashMap<Integer, String> spinnerMapInvoiceType;
     List<Customer> allCustomers;
     List<InvoiceType> allInvoiceTypes;
-
+    String[] InvoiceTypesArray;
+    Context context ;
     Customer customer;
+
+    Invoice InvoiceEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity10_add_invoice_main);
-
+         context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -103,10 +116,36 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
             customer = extras.getParcelable("customer");
 
         }
+        InvoiceEdit=null;
+        Bundle extrasEdit = getIntent().getExtras();
+        if (extrasEdit != null) {
+             InvoiceEdit = extrasEdit.getParcelable("invoiceEdit");
 
-    ButterKnife.bind(this);
+        }
 
+
+        ButterKnife.bind(this);
+        if(InvoiceEdit==null)
+        {
         custName.setText(customer.getCustName());
+        }else
+        {
+            custName.setText(InvoiceEdit.getCustomer().getCustName());
+            InvoiceNo.setText(InvoiceEdit.getInvoiceNo());
+            InvoiceDate.setText(InvoiceEdit.getInvoiceDate());
+            Notes.setText(InvoiceEdit.getNotes());
+            RefNo.setText(InvoiceEdit.getRefNO());
+            invoiceType.setSelection(Integer.parseInt(InvoiceEdit.getInvoiceTypeId()));
+            try
+            {
+                type.setSelection(Integer.parseInt(InvoiceEdit.getPayementTypeId()));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         Button change = (Button) findViewById(R.id.change);
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +170,12 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
                 Invoice invoice= getNewInvoice(allCustomers);
                 Toast.makeText(AddInvoice.this, "Done ", Toast.LENGTH_SHORT).show();
                 Intent main = new Intent("InvoiceItemsList");
-                main.putExtra("invoice",invoice);
+                if(InvoiceEdit ==null) {
+                    main.putExtra("invoice", invoice);
+                }else
+                {
+                    main.putExtra("InvoiceEdit", InvoiceEdit);
+                }
                 startActivity(main);
                 finish();
             }
@@ -173,7 +217,7 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         }
        // String[] spinnerArrayInvoicType = new String[allInvoiceTypes.size()];
         spinnerMapInvoiceType=new HashMap<Integer, String>();
-        String[] InvoiceTypesArray = new String[allInvoiceTypesFinal.size()];
+        InvoiceTypesArray = new String[allInvoiceTypesFinal.size()];
         spinnerMapInvoiceType=new HashMap<Integer, String>();
         for(int i = 0;i<allInvoiceTypesFinal.size();i++)
         {
@@ -191,8 +235,34 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         invoiceType.setSelection(adapter1.getCount());
 
 
+        String LoginRepCod=ReadDataFromDB.getLoginUser().get(0).getRepCodId();
+        String userNum=LoginRepCod.substring(LoginRepCod.length()-3,LoginRepCod.length());
+        AutomticInvoiceNo autInv=ReadDataFromDB.getAutomticInvoiceNo(LoginRepCod);
+        // int serialInv=ReadDataFromDB.getAutomticInvoiceNo(LoginRepCod).getSerialInvoice();
+        ItemsListData.serialInv=ReadDataFromDB.getAutomticInvoiceNo(LoginRepCod).getSerialInvoice();
+        String serialInvString=ItemsListData.serialInv+"";
+        int numDigits=serialInvString.length();
+        if(numDigits<5)
+        {
+            int numZeroDigits=5-numDigits;
+            for(int i=0;i<numZeroDigits;i++)
+            {
+                userNum=userNum+"0";
+            }
+        }
+        ButterKnife.bind(this);
+        if(InvoiceEdit ==null) {
+            InvoiceNo.setText(userNum + ItemsListData.serialInv);
+        }
 
+        //serialInv++;
+        //WriteDataToDB.updateAutomaticInvoiceNo(LoginRepCod,ItemsListData.serialInv);
+        AutomticInvoiceNo au=ReadDataFromDB.getAutomticInvoiceNo(LoginRepCod);
+
+        if(InvoiceEdit ==null)
+       {
         setCurrentDateOnView();
+       }
         invoiceButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,10 +333,10 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
 
     }
 
-    public Invoice getNewInvoice(List<Customer> allCustomers)
-    {
+    public Invoice getNewInvoice(List<Customer> allCustomers) throws Exception {
 
         String invoiceNo=InvoiceNo.getText().toString();
+
         String invoiceDate=InvoiceDate.getText().toString();
         String notes=Notes.getText().toString();
         String refNo=RefNo.getText().toString();
@@ -277,35 +347,35 @@ public class AddInvoice extends AppCompatActivity implements NavigationView.OnNa
         newInvoice.setNotes(notes);
         newInvoice.setRefNO(refNo);
         newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
-        newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
+
+        int n=invoiceType.getSelectedItemPosition();
+        int size =InvoiceTypesArray.length;
+        if(n<size )
+        {
+            newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
+            newInvoice.setInvoiceTypeName(InvoiceTypesArray[n]);
+
+        }
+        else {
+            Toast.makeText(AddInvoice.this, "Enter Payment Type", Toast.LENGTH_SHORT).show();
+            throw new  Exception("Enter Payment Type");
+        }
+
         newInvoice.setCustmerId(customer.getId());
         newInvoice.setCustomer(customer);
 
         return newInvoice;
     }
-    public void addNewInvoice()
+
+
+    public int createSharedInvoiceNo ( String LoginRepCod)
     {
-        String invoiceNo=InvoiceNo.getText().toString();
-        String invoiceDate=InvoiceDate.getText().toString();
-        String notes=Notes.getText().toString();
-        String refNo=RefNo.getText().toString();
-        newInvoice=new Invoice("",invoiceNo,invoiceDate,"","",notes,refNo,"","");
-        newInvoice.setPayementTypeId(spinnerMapType.get(type.getSelectedItemPosition()));
-        newInvoice.setInvoiceTypeId(spinnerMapInvoiceType.get(invoiceType.getSelectedItemPosition()));
-        newInvoice.setCustmerId(customer.getId());
-        ContentValues values = new ContentValues();
-       // values.put(InvoiceTable.Id, newInvoice.getInvoiceNo());
-        values.put(InvoiceTable.InvoiceNo, newInvoice.getInvoiceNo());
-        values.put(InvoiceTable.InvoiceDate,newInvoice.getInvoiceDate());
-        values.put(InvoiceTable.Notes,newInvoice.getNotes());
-        values.put(InvoiceTable.RefNO,newInvoice.getRefNO());
-        values.put(InvoiceTable.PayementTypeId,newInvoice.getPayementTypeId());
-        values.put(InvoiceTable.CustmerId,newInvoice.getCustmerId());
-        values.put(InvoiceTable.InvoiceTypeId,newInvoice.getInvoiceTypeId());
-
-        InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider(this);
-        invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
-
+        SharedPreferences pref = context.getSharedPreferences("prefInviceNo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt( LoginRepCod,0);
+        editor.apply();
+        int counter=pref.getInt(LoginRepCod, 0);
+        return counter;
     }
 
 

@@ -15,4 +15,5 @@ public  class ItemsListData {
     public static List<InvoiceItem> itemsListData =new ArrayList<InvoiceItem>();
     public static List<Item> itemsList=new ArrayList<Item>();
     public static Invoice invoice;
+    public static int serialInv;
 }

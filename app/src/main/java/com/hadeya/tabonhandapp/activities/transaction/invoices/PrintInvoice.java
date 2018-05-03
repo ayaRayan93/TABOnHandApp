@@ -39,6 +39,7 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
 
     Invoice invoice;
     @BindView(R.id.invoiceNo)TextView invoiceNo;
+    @BindView(R.id.invoiceType)TextView invoiceType;
     @BindView(R.id.customerName)TextView customerName;
     @BindView(R.id.date)TextView date;
     @BindView(R.id.totalPrint)TextView totalPrint;
@@ -101,6 +102,7 @@ public class PrintInvoice extends AppCompatActivity implements NavigationView.On
         if (extras != null) {
             invoice = extras.getParcelable("invoice");
             invoiceNo.setText(invoice.getInvoiceNo());
+            invoiceType.setText(ItemsListData.invoice.getInvoiceTypeName());
             customerName.setText(invoice.getCustomer().getCustName());
             date.setText(invoice.getInvoiceDate());
 

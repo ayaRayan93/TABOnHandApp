@@ -46,6 +46,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
     Invoice invoice;
 
     @BindView(R.id.invoiceNo1)TextView invoiceNo;
+    @BindView(R.id.invoiceType1)TextView invoiceType;
     @BindView(R.id.customerName1)TextView customerName;
     @BindView(R.id.itemName1)TextView itemName;
     @BindView(R.id.itemCode1)TextView itemCode;
@@ -106,6 +107,7 @@ public class AddItemsInvoice extends AppCompatActivity implements NavigationView
             invoice = extras.getParcelable("invoice");
             invoiceItem = extras.getParcelable("item");
             invoiceNo.setText(invoice.getInvoiceNo());
+            invoiceType.setText(ItemsListData.invoice.getInvoiceTypeName());
             customerName.setText(invoice.getCustomer().getCustName());
             itemName.setText(invoiceItem.getItemName());
             itemCode.setText(invoiceItem.getItemCode());

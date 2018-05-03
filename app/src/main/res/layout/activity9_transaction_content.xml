@@ -63,7 +63,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/basicbutton"
-                                android:text="Add Invoice"
+                                android:text=" Invoices "
                                 android:textAllCaps="false"
                                 android:textColor="@color/mainColor"
                                 android:drawableTop="@drawable/add"

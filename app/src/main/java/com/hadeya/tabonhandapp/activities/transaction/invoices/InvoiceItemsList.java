@@ -26,6 +26,7 @@ import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.models.Item;
 import com.hadeya.tabonhandapp.store.ReadDataFromDB;
+import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
 
     Invoice invoice;
     @BindView(R.id.invoiceNo)TextView invoiceNo;
+    @BindView(R.id.invoiceType)TextView invoiceType;
     @BindView(R.id.customerName)TextView customerName;
     @BindView(R.id.date)TextView date;
     @BindView(R.id.total)TextView total;
@@ -107,6 +109,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
         if (extras != null) {
             invoice = extras.getParcelable("invoice");
             invoiceNo.setText(invoice.getInvoiceNo());
+            invoiceType.setText(invoice.getInvoiceTypeName());
             customerName.setText(invoice.getCustomer().getCustName());
             date.setText(invoice.getInvoiceDate());
             //dataSet.clear();
@@ -121,6 +124,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
           public void onClick (View v){
 
           Intent main = new Intent("ItemList");
+          ItemsListData.invoice=invoice;
           main.putExtra("invoice",invoice);
           startActivity(main);
               finish();
@@ -144,6 +148,9 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
                 String total=tot.getText().toString();
                 invoice.setNet(total);
                 StoreInvoiceLocal(invoice);
+                ItemsListData.serialInv++;
+                String LoginRepCod=ReadDataFromDB.getLoginUser().get(0).getRepCodId();
+                WriteDataToDB.updateAutomaticInvoiceNo(LoginRepCod,ItemsListData.serialInv);
                 Intent main = new Intent("PrintInvoice");
                 main.putExtra("invoice",invoice);
                 startActivity(main);
@@ -201,5 +208,7 @@ public class InvoiceItemsList extends AppCompatActivity implements NavigationVie
         dataSet.remove(id);
         itemAdapter.notifyItemRemoved(id);
         itemAdapter.notifyItemRangeChanged(id,dataSet.size());
+        calTotal();
     }
+
 }

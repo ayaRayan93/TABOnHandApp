@@ -43,7 +43,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         UserTable.onCreate(db);
         InvoiceTypeTable.onCreate(db);
         InvoiceSimpleTable.onCreate(db);
-
+        AutomticInvoiceNoTable.onCreate(db);
     }
 
 
@@ -135,5 +135,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         InvoiceItemTable.onUpgrade(db,oldVersion,newVersion);
         InvoiceTypeTable.onUpgrade(db,oldVersion,newVersion);
         InvoiceSimpleTable.onUpgrade(db,oldVersion,newVersion);
+        AutomticInvoiceNoTable.onUpgrade(db,oldVersion,newVersion);
     }
 }

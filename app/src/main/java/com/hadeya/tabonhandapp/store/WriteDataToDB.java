@@ -27,6 +27,7 @@ import com.hadeya.tabonhandapp.activities.start.LoginActivity;
 import com.hadeya.tabonhandapp.adapters.ItemsListData;
 import com.hadeya.tabonhandapp.json.Parser;
 import com.hadeya.tabonhandapp.models.Area;
+import com.hadeya.tabonhandapp.models.AutomticInvoiceNo;
 import com.hadeya.tabonhandapp.models.Classification;
 import com.hadeya.tabonhandapp.models.Customer;
 import com.hadeya.tabonhandapp.app.AppController;
@@ -962,6 +963,8 @@ public class WriteDataToDB {
                 User user  = Parser.parseUser(response);
                    //dataSet.add(customer);
                     addUser(user);
+                    String RepCode= ReadDataFromDB.getLoginUser().get(0).getRepCodId();
+                    WriteDataToDB.AddAutomaticInvoiceNo(RepCode,0);
 
                 Intent main = new Intent("MainTopicsActivity");
                 context.startActivity(main);
@@ -1205,13 +1208,41 @@ public class WriteDataToDB {
     public static void addAllInvoices (Invoice invoice)
     {
         ContentValues values = new ContentValues();
+        values.put(InvoiceTable.InvoiceTypeId, invoice.getInvoiceTypeId());
         values.put(InvoiceTable.InvoiceNo, invoice.getInvoiceNo());
         values.put(InvoiceTable.InvoiceDate, invoice.getInvoiceDate());
+        values.put(InvoiceTable.CustmerId, invoice.getCustomer().getId());
         values.put(InvoiceTable.CustmerName, invoice.getCustomer().getCustName());
+        values.put(InvoiceTable.PayementTypeId, invoice.getPayementTypeId());
+        values.put(InvoiceTable.Notes, invoice.getNotes());
+        values.put(InvoiceTable.RefNO, invoice.getRefNO());
+        values.put(InvoiceTable.RepCodeId, invoice.getRepCodeId());
         values.put(InvoiceTable.Net, invoice.getNet());
+        values.put(InvoiceTable.Flag,invoice.getFlag());
         InvoiceContentProvider invoiceContentProvider=new InvoiceContentProvider(mdatabase);
         Uri UriId=invoiceContentProvider.insert(InvoiceContentProvider.CONTENT_URI_add,values);
     }
+
+    public static void updateAutomaticInvoiceNo (String LoginRepCode,int serial)
+    {
+        ContentValues values = new ContentValues();
+        values.put(AutomticInvoiceNoTable.LoginRepCode, LoginRepCode);
+        values.put(AutomticInvoiceNoTable.SerialInvoice, serial);
+        AutomticInvoiceNoContentProvider invoiceContentProvider=new AutomticInvoiceNoContentProvider(mdatabase);
+        int Id=invoiceContentProvider.update(AutomticInvoiceNoContentProvider.CONTENT_URI_add,values,AutomticInvoiceNoTable.LoginRepCode+" =?",new String[]{LoginRepCode});
+
+    }
+    public static void AddAutomaticInvoiceNo (String LoginRepCode,int serial)
+    {
+        ContentValues values = new ContentValues();
+        values.put(AutomticInvoiceNoTable.LoginRepCode, LoginRepCode);
+        values.put(AutomticInvoiceNoTable.SerialInvoice, serial);
+        AutomticInvoiceNoContentProvider invoiceContentProvider=new AutomticInvoiceNoContentProvider(mdatabase);
+        Uri Id=invoiceContentProvider.insert(AutomticInvoiceNoContentProvider.CONTENT_URI_add,values);
+
+    }
+
+
 
 
 }

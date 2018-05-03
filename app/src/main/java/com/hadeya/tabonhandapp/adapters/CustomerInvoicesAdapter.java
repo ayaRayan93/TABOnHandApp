@@ -13,6 +13,9 @@ import com.hadeya.tabonhandapp.models.CustomerInvoice;
 import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -87,9 +90,25 @@ public class CustomerInvoicesAdapter extends RecyclerView.Adapter<CustomerInvoic
     public void onBindViewHolder(final CustomerInvoicesAdapter.ViewHolder holder, int position)
     {
         if (DataSet.get(position) != null) {
+            SimpleDateFormat sdf;
+            Date dateDWithoutTime;
+            String dateFromDB;
+            String d;
             Log.d("", "Element " + position + " set.");
+            try{
+               // sdf = new SimpleDateFormat("dd/MM/yyyy");
+                 dateFromDB=DataSet.get(position).getDate().substring(0,10);
+               // dateDWithoutTime =sdf.parse(dateFromDB);
+               // d=dateDWithoutTime.toString();
+
+            }
+            catch (Exception e)
+            {
+                dateFromDB=DataSet.get(position).getDate();
+            }
+
             holder.getInvoiceCustomerNo().setText(DataSet.get(position).getInvoiceNo());
-            holder.getDate().setText(DataSet.get(position).getDate());
+            holder.getDate().setText(dateFromDB);
             holder.getValue1().setText(DataSet.get(position).getValue());
         }
     }
