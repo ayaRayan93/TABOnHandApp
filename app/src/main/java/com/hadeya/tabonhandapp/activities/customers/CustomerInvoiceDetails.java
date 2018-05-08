@@ -14,18 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.hadeya.tabonhandapp.R;
-import com.hadeya.tabonhandapp.adapters.CustomerInvoicesAdapter;
-import com.hadeya.tabonhandapp.adapters.ItemInvoicesAdapter;
-import com.hadeya.tabonhandapp.models.Customer;
+import com.hadeya.tabonhandapp.adapters.CustomerInvoiceItemsAdapter;
 import com.hadeya.tabonhandapp.models.CustomerInvoice;
-import com.hadeya.tabonhandapp.models.Invoice;
 import com.hadeya.tabonhandapp.models.InvoiceItem;
 import com.hadeya.tabonhandapp.store.WriteDataToDB;
 
@@ -35,21 +29,16 @@ import java.util.List;
 import butterknife.BindView;
 
 import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetCustomerInvoices;
-import static com.hadeya.tabonhandapp.store.DataBaseHelper.resetCustomers;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerForSalesPerson;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getAllCustomerInvoice;
-import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getItemInvoices;
+import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getInvoiceItems;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.getLoginUser;
 import static com.hadeya.tabonhandapp.store.ReadDataFromDB.logout;
-import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadCustomer;
-import static com.hadeya.tabonhandapp.store.WriteDataToDB.downloadCustomerInvoices;
 import static com.hadeya.tabonhandapp.store.WriteDataToDB.uploade;
 
 /**
- * Created by AyaAli on 21/03/2018.
+ * Created by AyaAli on 2018-05-04.
  */
 
-public class CustomerInvoices extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CustomerInvoiceDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.recyclerViewInvoiceCustomer)
     RecyclerView mRecyclerView;
@@ -59,19 +48,18 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Menu menu;
-    protected CustomerInvoicesAdapter itemAdapter;
+    protected CustomerInvoiceItemsAdapter itemAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<CustomerInvoice> dataSet;
-    Customer customer=null;
+    protected List<InvoiceItem> dataSet;
+    CustomerInvoice customerInvoice = null;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity8_customer_invoice_main);
+        setContentView(R.layout.activity19_invoice_item_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -87,9 +75,9 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
         dataSet = new ArrayList<>();
         // dataSet=getAllItems(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewInvoiceCustomer);
-        mSwipeRefreshLayout=(SwipeRefreshLayout) findViewById(R.id.swipeRefreshInvoiceCustomer);
-//        mRecyclerView.setHasFixedSize(true);
-        itemAdapter = new CustomerInvoicesAdapter(this,dataSet);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshInvoiceCustomer);
+        mRecyclerView.setHasFixedSize(true);
+        itemAdapter = new CustomerInvoiceItemsAdapter(this, dataSet);
         mRecyclerView.setAdapter(itemAdapter);
 
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
@@ -99,10 +87,9 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
                 R.color.colorAccent, R.color.colorPrimaryDark);
 
 
-        mLayoutManager = new GridLayoutManager(this,1);
+        mLayoutManager = new GridLayoutManager(this, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        if (!mSwipeRefreshLayout.isRefreshing())
-        {
+        if (!mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -117,39 +104,21 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-             customer = extras.getParcelable("customerInvoice");
+            customerInvoice = extras.getParcelable("invoice");
 
         }
-
-        final EditText search=(EditText)findViewById(R.id.searchCustomerInvoice);
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filter(s.toString());
-            }
-        });
 
         initiateRefresh();
     }
 
     private void filter(String text) {
         //new array list that will hold the filtered data
-        List<CustomerInvoice> filterdNames = new ArrayList<>();
+        List<InvoiceItem> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (CustomerInvoice s : dataSet) {
+        for (InvoiceItem s : dataSet) {
             //if the existing elements contains the search input
-            if (s.getInvoiceNo().toLowerCase().contains(text.toLowerCase())) {
+            if (s.getItemName().toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
                 filterdNames.add(s);
 
@@ -159,41 +128,37 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
     }
 
 
-
-    public  void initiateRefresh()
-    {
-        if(customer!=null) {
-            dataSet = getAllCustomerInvoice(this, customer.getId());
-            if (dataSet.size()==0)
-            {
-                AlertDialog diaBox = AskOption(customer.getId(),this);
+    public void initiateRefresh() {
+        if (customerInvoice != null) {
+            dataSet = getInvoiceItems(customerInvoice.getInvoceId());
+            if (dataSet.size() == 0) {
+                AlertDialog diaBox = AskOption(customerInvoice.getInvoceId(), this);
                 diaBox.show();
-            }
-            else {
+            } else {
                 itemAdapter.filterList(dataSet);
                 onRefreshComplete();
             }
         }
 
     }
-    public  void initiateList()
-    {
-        if(customer!=null) {
-            dataSet = getAllCustomerInvoice(this, customer.getId());
+
+    public void initiateList() {
+        if (customerInvoice != null) {
+            dataSet = getInvoiceItems(customerInvoice.getInvoceId());
             itemAdapter.filterList(dataSet);
 
             onRefreshComplete();
         }
 
     }
-    private void onRefreshComplete()
-    {
+
+    private void onRefreshComplete() {
         mSwipeRefreshLayout.setRefreshing(false);
 
     }
-    private AlertDialog AskOption(final String custCode,final CustomerInvoices customerInvoices)
-    {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+
+    private AlertDialog AskOption(final String custCode, final CustomerInvoiceDetails customerInvoices) {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Update")
                 .setMessage("Do you want to Update Customer Invoice List")
@@ -203,17 +168,16 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
-                        uploade(getBaseContext(),getLoginUser().get(0).getRepCodId());
+                        uploade(getBaseContext(), getLoginUser().get(0).getRepCodId());
                         mSwipeRefreshLayout.setRefreshing(true);
                         SQLiteDatabase sqlDB = WriteDataToDB.mdatabase.getWritableDatabase();
                         resetCustomerInvoices(sqlDB);
-                        downloadCustomerInvoices(custCode,customerInvoices);
+                       // downloadCustomerInvoices(custCode, customerInvoices);
                         WriteDataToDB.storeAllInvoiceTypes();
 
                     }
 
                 })
-
 
 
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -228,11 +192,11 @@ public class CustomerInvoices extends AppCompatActivity implements NavigationVie
         return myQuittingDialogBox;
 
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logout:
-            {
+            case R.id.logout: {
                 logout();
                 Intent main = new Intent("login");
                 startActivity(main);

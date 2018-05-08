@@ -87,6 +87,14 @@ public class MainTopicsActivity  extends AppCompatActivity implements Navigation
             }
 
                 break;
+            case R.id.changePassword:
+            {
+                logout();
+                Intent main = new Intent("ChangePassword");
+                startActivity(main);
+            }
+
+            break;
             case R.id.aboutus:
             {
                 if(languageType) {

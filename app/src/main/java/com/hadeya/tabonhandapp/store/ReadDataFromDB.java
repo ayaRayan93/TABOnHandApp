@@ -267,7 +267,48 @@ public class ReadDataFromDB {
         return ItemInvoiceList;
 
     }
+    public static List<InvoiceItem> getInvoiceItems(String invoiceId)
+    {
+        String[] projection={InvoiceItemTable.Id,
+                InvoiceItemTable.InvoiceId,
+                InvoiceItemTable.ItemCode,
+                InvoiceItemTable.ItemName,
+                InvoiceItemTable.Quantity,
+                InvoiceItemTable.Tax,
+                InvoiceItemTable.ExpityDate,
+                InvoiceItemTable.Price,
+                InvoiceItemTable.DiscountPercent,
+                InvoiceItemTable.DiscountAmount,
+        };
 
+        List<InvoiceItem> invoiceItemList = new ArrayList<>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + InvoiceItemTable.InvoiceItemTable+" where "+InvoiceItemTable.InvoiceId+"="+invoiceId;
+        InvoiceItemContentProvider2BasicData  itemInvoiceContentProvider=new InvoiceItemContentProvider2BasicData( WriteDataToDB.mdatabase);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = itemInvoiceContentProvider.query(InvoiceItemContentProvider2BasicData.CONTENT_URI,projection,selectQuery,null,null); //db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InvoiceItem invoiceItem = new InvoiceItem();
+                invoiceItem.setId(cursor.getString(0));
+                invoiceItem.setInvoiceId(cursor.getString(1));
+                invoiceItem.setItemCode(cursor.getString(2));
+                invoiceItem.setItemName(cursor.getString(3));
+                invoiceItem.setQuantity(cursor.getString(4));
+                invoiceItem.setTax(cursor.getString(5));
+                invoiceItem.setExpityDate(cursor.getString(6));
+                invoiceItem.setPrice(cursor.getString(7));
+                invoiceItem.setDiscountPercent(cursor.getString(8));
+                invoiceItem.setDiscountAmount(cursor.getString(9));
+// Adding contact to list
+                invoiceItemList.add(invoiceItem);
+            } while (cursor.moveToNext());
+        }
+// return1 contact list
+        return invoiceItemList;
+
+    }
     //
     public static List<InvoiceItem> getItemInvoices(Context context)
     {

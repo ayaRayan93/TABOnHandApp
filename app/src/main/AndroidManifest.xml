@@ -54,6 +54,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.start.ChangePassword">
+            <intent-filter>
+                <action android:name="ChangePassword" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.start.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
